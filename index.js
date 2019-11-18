@@ -53,6 +53,10 @@ router
 function(request, response){
   console.log("******R : " + request + " Res : " + response)
 })
+.get('auth3','/auth3/login/return',passport.authenticate('salesforce',{ failureRedirect: '/auth/salesforce/callback' }),
+function(request, response){
+  console.log("******R : " + request + " Res : " + response)
+})
 
 app.use(router.routes()).use(router.allowedMethods)
 var port = process.env.PORT || 1234
