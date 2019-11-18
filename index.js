@@ -36,10 +36,11 @@ router
 .get('hello','/hello', (ctx) =>{
     ctx.body = "Hello"
 })
-.get('auth','/auth',passport.authenticate('salesforce',{ failureRedirect: '/hello' }),
+.get('auth','/auth',passport.authenticate('salesforce',{ failureRedirect: '/auth/salesforce/callback' }),
   function(request, response){
     console.log("R : " + request + " Res : " + response)
-  }
+  } //http://localhost:1234/auth/salesforce/callback
+
 )
 
 app.use(router.routes()).use(router.allowedMethods)

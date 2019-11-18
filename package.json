@@ -9,6 +9,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "jsforce": "^1.9.3",
         "koa": "^2.11.0",
         "koa-ejs": "^4.2.0",
         "koa-passport": "^4.1.3",
