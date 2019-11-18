@@ -55,5 +55,5 @@ function(request, response){
 })
 
 app.use(router.routes()).use(router.allowedMethods)
-
-app.listen(80, ()=> console.log("Running on port 80"))
+var port = process.env.PORT || 1234
+app.listen(port, ()=> console.log("Running on port 80"))
