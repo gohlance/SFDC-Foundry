@@ -1,14 +1,14 @@
 //This is auth.js
 "use strict";
 const passport = require('koa-passport')
-const SalesforceStrategy = require('passport-salesforce')
+const Strategy = require('passport-salesforce-oauth2').Strategy
 
-passport.use(new SalesforceStrategy({
-    clientID: "3MVG9i1HRpGLXp.qKwbWJHwmeMLmgspmmKGeCEMgq7Kftsb56h8o4N8GUF75jKIXJ5jAIXVd.ILGr5kMlNIac",
-    clientSecret: "115F62ABE052C3381CA24D5BFCCBF0D74A6CE310EF82E2A8BEDA871F97FB73E9",
-    scope: ['api'],
-    callbackurl: "http://localhost:1234/auth/salesforce/callback"
+passport.use(new Strategy({
+    clientID: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
+    clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
+    callbackURL: 'https://login.salesforce.com/services/oauth2/success'
 }, function(accessToken, refreshToken, profile, done){
+  console.log("A")
     console.log("A : " + accessToken)
 }))
 

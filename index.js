@@ -39,9 +39,20 @@ router
 .get('auth','/auth',passport.authenticate('salesforce',{ failureRedirect: '/auth/salesforce/callback' }),
   function(request, response){
     console.log("R : " + request + " Res : " + response)
-  } //http://localhost:1234/auth/salesforce/callback
-
+  } 
 )
+.get('auth2','/auth2', (ctx) => {
+  return ctx.render('index', {
+    
+  })
+})
+.get('auth3','/auth3', (ctx)=>{
+  return ctx.render('index2')
+})
+.get('auth3', '/auth3/login', passport.authenticate('salesforce',{ failureRedirect: '/auth/salesforce/callback' }),
+function(request, response){
+  console.log("******R : " + request + " Res : " + response)
+})
 
 app.use(router.routes()).use(router.allowedMethods)
 
