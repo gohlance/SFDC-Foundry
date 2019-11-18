@@ -56,4 +56,4 @@ function(request, response){
 
 app.use(router.routes()).use(router.allowedMethods)
 
-app.listen(1234, ()=> console.log("Running on port 1234"))
+app.listen(80, ()=> console.log("Running on port 80"))
