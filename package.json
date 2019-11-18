@@ -15,5 +15,11 @@
         "koa-passport": "^4.1.3",
         "koa-router": "^7.4.0",
         "passport-salesforce-oauth2": "0.0.1"
+    },
+    "engines": {
+        "node": "13.1.x"
+    },
+    "scripts": {
+        "start": "node index.js"
     }
 }
