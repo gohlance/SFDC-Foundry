@@ -8,6 +8,9 @@ const passport = require('./auth')
 
 const app = new Koa()
 const router = new koa_router()
+var port = process.env.PORT || 1234
+
+let accesscode = '' || 'aPrxwwNuBlmuqjnefHLaFwt7x9qKnAO3G8HmHl.det4g0fz3NqxAfDtbmoQMt5IU_tQmVRlXGw=='
 
 app.use(passport.initialize());
 
@@ -45,13 +48,12 @@ function(request, response){
   console.log("******R : " + request + " Res : " + response)
 })
 .get('auth3','/auth3/login/return', (ctx)=>{
-  var code = ctx.request.query["code"]
+  accesscode = ctx.request.query["code"]
   return ctx.render('success',{
-    code: code
+    code: accesscode
   })
 })
 
 app.use(router.routes()).use(router.allowedMethods)
 
-var port = process.env.PORT || 1234
 app.listen(port, ()=> console.log("Running on port 80"))
