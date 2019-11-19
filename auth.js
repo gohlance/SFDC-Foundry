@@ -6,7 +6,7 @@ const Strategy = require('passport-salesforce-oauth2').Strategy
 passport.use(new Strategy({
     clientID: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
     clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
-    callbackURL: 'https://login.salesforce.com/services/oauth2/success'
+    callbackURL: 'https://testingauth123.herokuapp.com/auth3/login/return'
 }, function(accessToken, refreshToken, profile, done){
   console.log("A")
     console.log("A : " + accessToken)
