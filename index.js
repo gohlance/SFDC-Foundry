@@ -52,9 +52,11 @@ function(request, response){
   console.log("******R : " + request + " Res : " + response)
 })
 .get('auth3','/auth3/login/return', (ctx)=>{
+  console.log("*** CTX *** " + ctx)
   return ctx.render('success')
 })
 
 app.use(router.routes()).use(router.allowedMethods)
+
 var port = process.env.PORT || 1234
 app.listen(port, ()=> console.log("Running on port 80"))
