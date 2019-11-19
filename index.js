@@ -5,9 +5,10 @@ const path = require('path')
 const render = require('koa-ejs')
 const koa_router = require('koa-router')
 const passport = require('./auth')
+const logger = require('koa-logger')
 const app = new Koa()
 
-let accesscode = '' || 'aPrxwwNuBlmuqjnefHLaFwt7x9qKnAO3G8HmHl.det4g0fz3NqxAfDtbmoQMt5IU_tQmVRlXGw=='
+global.accesscode = 'aPrxwwNuBlmuqjnefHLaFwt7x9qKnAO3G8HmHl.det4g0fz3NqxAfDtbmoQMt5IU_tQmVRlXGw=='
 
 app.use(passport.initialize());
 
@@ -40,4 +41,4 @@ app.use(router.routes()).use(router.allowedMethods)
 
 //port configuration
 var port = process.env.PORT || 1234
-app.listen(port, () => console.log("Running on port 80"))
+app.listen(port, () => console.log("Running on port " + port))

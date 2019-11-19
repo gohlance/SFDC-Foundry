@@ -1,5 +1,4 @@
-"use strict"
-
+const passport = require('../auth')
 module.exports = ({router}) => {
 router
   .get('koala', '/', (ctx) => {
