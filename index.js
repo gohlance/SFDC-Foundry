@@ -52,8 +52,10 @@ function(request, response){
   console.log("******R : " + request + " Res : " + response)
 })
 .get('auth3','/auth3/login/return', (ctx)=>{
-  console.log("*** CTX *** " + ctx)
-  return ctx.render('success')
+  var code = ctx.request.query["code"]
+  return ctx.render('success',{
+    code: code
+  })
 })
 
 app.use(router.routes()).use(router.allowedMethods)
