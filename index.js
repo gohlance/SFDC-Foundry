@@ -36,14 +36,7 @@ router
 .get('hello','/hello', (ctx) =>{
     ctx.body = "Hello"
 })
-.get('auth','/auth',passport.authenticate('salesforce',{ failureRedirect: '/auth/salesforce/callback' }),
-  function(request, response){
-    console.log("R : " + request + " Res : " + response)
-  } 
-)
-.get('auth2','/auth2', (ctx) => {
-  return ctx.render('index', {})
-})
+
 .get('auth3','/auth3', (ctx)=>{
   return ctx.render('index2')
 })
