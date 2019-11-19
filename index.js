@@ -1,59 +1,43 @@
 'use strict';
+
 const Koa = require('koa')
 const path = require('path')
 const render = require('koa-ejs')
 const koa_router = require('koa-router')
-
 const passport = require('./auth')
-
 const app = new Koa()
-const router = new koa_router()
-var port = process.env.PORT || 1234
 
 let accesscode = '' || 'aPrxwwNuBlmuqjnefHLaFwt7x9qKnAO3G8HmHl.det4g0fz3NqxAfDtbmoQMt5IU_tQmVRlXGw=='
 
 app.use(passport.initialize());
 
-app.use( async (ctx, next) => {
-    try {
-      await next()
-    } catch(err) {
-      console.log(err.status)
-      ctx.status = err.status || 500;
-      ctx.body = err.message;
-    }
-  })
+app.use(async (ctx, next) => {
+  try {
+    await next()
+  } catch (err) {
+    console.log(err.status)
+    ctx.status = err.status || 500;
+    ctx.body = err.message;
+  }
+})
 
 render(app, {
-    root: path.join(__dirname, 'views'),
-    layout: 'layout',
-    viewExt: 'html',
-    cache: false,
-    debug: true
-  })
-
-router
-.get('koala', '/', (ctx)=>{
-    ctx.body = "Welcome!"
-})
-.get('hello','/hello', (ctx) =>{
-    ctx.body = "Hello"
+  root: path.join(__dirname, 'views'),
+  layout: 'layout',
+  viewExt: 'html',
+  cache: false,
+  debug: true
 })
 
-.get('auth3','/auth3', (ctx)=>{
-  return ctx.render('index2')
-})
-.get('auth3', '/auth3/login', passport.authenticate('salesforce',{ failureRedirect: '/auth/salesforce/callback' }),
-function(request, response){
-  console.log("******R : " + request + " Res : " + response)
-})
-.get('auth3','/auth3/login/return', (ctx)=>{
-  accesscode = ctx.request.query["code"]
-  return ctx.render('success',{
-    code: accesscode
-  })
-})
+//log all events to the terminal
+app.use(logger());
 
+//router configuration
+const router = new koa_router()
+require('./routes/basic')({ router })
+require('./routes/sfdc')({router})
 app.use(router.routes()).use(router.allowedMethods)
 
-app.listen(port, ()=> console.log("Running on port 80"))
+//port configuration
+var port = process.env.PORT || 1234
+app.listen(port, () => console.log("Running on port 80"))
