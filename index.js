@@ -42,9 +42,7 @@ router
   } 
 )
 .get('auth2','/auth2', (ctx) => {
-  return ctx.render('index', {
-    
-  })
+  return ctx.render('index', {})
 })
 .get('auth3','/auth3', (ctx)=>{
   return ctx.render('index2')
@@ -53,9 +51,8 @@ router
 function(request, response){
   console.log("******R : " + request + " Res : " + response)
 })
-.get('auth3','/auth3/login/return',passport.authenticate('salesforce',{ failureRedirect: '/auth/salesforce/callback' }),
-function(request, response){
-  console.log("******R : " + request + " Res : " + response)
+.get('auth3','/auth3/login/return', (ctx)=>{
+  return ctx.render('success')
 })
 
 app.use(router.routes()).use(router.allowedMethods)
