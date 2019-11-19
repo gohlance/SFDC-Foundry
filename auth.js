@@ -8,8 +8,13 @@ passport.use(new Strategy({
     clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
     callbackURL: 'https://testingauth123.herokuapp.com/auth3/login/return'
 }, function(accessToken, refreshToken, profile, done){
-  console.log("A")
-    console.log("A : " + accessToken)
+   global.accesscode = accessToken
+   console.log("Update Accesscode : " + accessToken)
+   global.refreshToken = refreshToken
+   console.log("update refresh token  :" + refreshToken)
+   global.profile = profile
+   console.log("Update Profile : " + profile)
+   console.log(done)
 }))
 
 passport.serializeUser(function(user, done) {

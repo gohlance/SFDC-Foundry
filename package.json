@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js"
+        "start": "node index.js",
+        "start2": "nodemon index.js"
     },
     "author": "",
     "license": "ISC",
@@ -19,5 +20,8 @@
     },
     "engines": {
         "node": "13.1.x"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.4"
     }
 }

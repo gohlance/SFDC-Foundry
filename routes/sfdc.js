@@ -7,14 +7,31 @@ module.exports = ({
     router
 }) => {
 
-    router.get('/lance', (ctx, next) => {
-
-        axios.post('https://singaporeexchangelimited.my.salesforce.com' + '/services/data/v47.0/tooling/sobjects/')
+    router.get('lance','/lance', (ctx, next) => {
+       
+/*
+          axios.get('https://dog.ceo/api/breeds/list/all')
+          .then(response => {
+              console.log(response.data)
+          }).catch(error => {
+              console.log(error)
+          })
+*/
+          
+          console.log("Access Token : " +  global.accesscode)
+          var url = 'https://singaporeexchangelimited.my.salesforce.com/services/data/v47.0/tooling/sobjects/'
+          axios.get(url)
             .then(response => {
                 console.log(response.data)
             })
             .catch(error => {
-                console.log("Error : " + error)
-            })
+                console.log("Error  1: " + error)
+            }) 
+            
+
+        
+            return ctx.render('lance',{
+                content: "getBreeds"})
+             
     })
 }

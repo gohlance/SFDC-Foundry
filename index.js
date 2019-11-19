@@ -10,6 +10,7 @@ const app = new Koa()
 
 global.accesscode = 'aPrxwwNuBlmuqjnefHLaFwt7x9qKnAO3G8HmHl.det4g0fz3NqxAfDtbmoQMt5IU_tQmVRlXGw=='
 
+
 app.use(passport.initialize());
 
 app.use(async (ctx, next) => {
