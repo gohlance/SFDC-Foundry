@@ -57,7 +57,7 @@ router
     var conn = new jsforce.Connection({
       oauth2: oauth2
     })
-    var code = ctx.request.query
+    var code = ctx.request.query("code")
     console.log("**** - " + code);
     conn.authorize(code, function (err, userInfo) {
         if (err) {
