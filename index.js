@@ -50,14 +50,14 @@ var oauth2 = new jsforce.OAuth2({
 
 
 router
-.get('/oauth2/auth', function(request, response) {
-  Response.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }))
+.get('/oauth2/auth', (ctx) => {
+  ctx.response.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }))
 })
-.get('oauth', '/auth3/login/return', function(req, res){
+.get('oauth', '/auth3/login/return', (ctx) =>{
     var conn = new jsforce.Connection({
       oauth2: oauth2
     })
-    var code = Request.param('code')
+    var code = ctx.request.param('code')
     conn.authorize(code, function (err, userInfo) {
         if (err) {
           return console.error(err)
@@ -73,7 +73,7 @@ router
         global.orgId = conn.userInfo.orgId
         global.userinfo = conn.userInfo
 
-        res.send('success')
+        ctx.response.send('success')
       })
   })
 
