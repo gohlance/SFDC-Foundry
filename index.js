@@ -45,6 +45,7 @@ var oauth2 = new jsforce.OAuth2({
   clientSecret : '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
   redirectUri : 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
+const jsforce = require('jsforce')
 
 router
 .get('/oauth2/auth', function(request, response) {
