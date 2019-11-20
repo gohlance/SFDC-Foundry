@@ -82,13 +82,16 @@ router
     oauth2: oauth2
   })
   console.log("Authenticated, stating call")
-  conn.sobjects('Account').describe( function(err, res) {
-    console.log('Result : ' + res)
+  conn.sobject("Account").describe(function(err, meta) {
+    if (err) { return console.error(err); }
+    console.log('Label : ' + meta.label);
+    console.log('Num of Fields : ' + meta.fields.length);
+    // ...
   })
   conn.tooling.describeGlobal(function(err, res) {
     if (err) { return console.error(err); }
     console.log('Num of tooling objects : ' + res.sobjects.length);
-  });
+  })
 })
 
 app.use(router.routes()).use(router.allowedMethods)
