@@ -19,8 +19,10 @@ module.exports = ({
       .get('hello', '/hello', (ctx) => {
         ctx.body = "Hello"
       })
-
-      .get('oauth', '/oauth', function(req, res){
+      .get('/oauth2/auth', function(req, res) {
+        res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }))
+      })
+      .get('oauth', '/auth3/login/return', function(req, res){
           var conn = new jsforce.Connection({
             oauth2: oauth2
           })
@@ -54,7 +56,7 @@ module.exports = ({
           function (request, response) {
             console.log("******R : " + request + " Res : " + response)
           })
-        .get('auth3', '/auth3/login/return', (ctx) => {
+        .get('auth3', '/auth3/login/return1', (ctx) => {
           console.log(" **** I am here **** : " + ctx.request)
           console.log(" **** I am here **** : " + ctx.response)
 
