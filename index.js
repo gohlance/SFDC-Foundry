@@ -81,6 +81,10 @@ router
   var conn = new jsforce.Connection({
     oauth2: oauth2
   })
+  console.log("Authenticated, stating call")
+  conn.sobjects('Account').describe( function(err, res) {
+    console.log('Result : ' + res)
+  })
   conn.tooling.describeGlobal(function(err, res) {
     if (err) { return console.error(err); }
     console.log('Num of tooling objects : ' + res.sobjects.length);
