@@ -81,6 +81,7 @@ router
   var conn = new jsforce.Connection({
     oauth2: oauth2
   })
+  console.log("*** Conn : " + conn)
   console.log("Authenticated, stating call")
   conn.sobject("Account").describe(function(err, meta) {
     if (err) { return console.error(err); }
