@@ -51,7 +51,7 @@ var oauth2 = new jsforce.OAuth2({
 
 router
 .get('/oauth2/auth', (ctx) => {
-  ctx.response.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }))
+  ctx.response.redirect(oauth2.getAuthorizationUrl({ scope : 'api web' }))
 })
 .get('oauth', '/auth3/login/return', (ctx) =>{
     var conn = new jsforce.Connection({
