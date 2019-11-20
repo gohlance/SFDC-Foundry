@@ -8,8 +8,7 @@ const passport = require('./auth')
 const logger = require('koa-logger')
 const app = new Koa()
 
-global.accesscode = 'aPrxwwNuBlmuqjnefHLaFwt7x9qKnAO3G8HmHl.det4g0fz3NqxAfDtbmoQMt5IU_tQmVRlXGw=='
-
+global.accesscode = 'aPrxwwNuBlmuqjnefHLaFwt7x4QToW.8EBoiZC5us_rn3f1VKuLazY3VXHDSojvniM.hLYrw7w=='
 
 app.use(passport.initialize());
 

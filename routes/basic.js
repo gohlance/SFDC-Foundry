@@ -18,6 +18,9 @@ router
       console.log("******R : " + request + " Res : " + response)
     })
   .get('auth3', '/auth3/login/return', (ctx) => {
+    console.log(" **** I am here **** : " + ctx.request)
+    console.log(" **** I am here **** : " + ctx.response)
+   
     accesscode = ctx.request.query["code"]
     return ctx.render('success', {
       code: accesscode
