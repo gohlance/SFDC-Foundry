@@ -58,6 +58,7 @@ router
       oauth2: oauth2
     })
     var code = ctx.request.query
+    console.log("**** - " + code);
     conn.authorize(code, function (err, userInfo) {
         if (err) {
           return console.error(err)
