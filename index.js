@@ -64,15 +64,15 @@ router
           return console.error(err)
         }
         console.log("&&& : " + conn.accessToken)
-        console.log("&&& : " + conn.refreshToken)
+        //console.log("&&& : " + conn.refreshToken)
         console.log("&&& : " + conn.instanceUrl)
-        console.log("&&& : " + conn.userInfo.orgId)
+        //console.log("&&& : " + conn.userInfo.orgId)
 
         global.accesscode = conn.accessToken
-        global.refreshToken = conn.refreshToken
+        //global.refreshToken = conn.refreshToken
         global.profile = conn.instanceUrl
         global.orgId = conn.userInfo.orgId
-        global.userinfo = conn.userInfo
+        //global.userinfo = conn.userInfo
 
         //ctx.response.send('success')
       })
