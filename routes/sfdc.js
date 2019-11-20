@@ -19,7 +19,8 @@ module.exports = ({
 */
           
           console.log("Access Token : " +  global.accesscode)
-          var url = 'https://singaporeexchangelimited.salesforce.com/services/data/v47.0/tooling/sobjects/'
+          //var url = 'https://singaporeexchangelimited.salesforce.com/services/data/v47.0/tooling/sobjects/'
+          url = global.instanceUrl + "/services/data/v47.0/tooling/sobjects/"
           axios.get(url)
             .then(response => {
                 console.log(response.data)

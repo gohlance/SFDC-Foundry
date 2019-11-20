@@ -70,13 +70,22 @@ router
 
         global.accesscode = conn.accessToken
         //global.refreshToken = conn.refreshToken
-        global.profile = conn.instanceUrl
+        global.instanceUrl = conn.instanceUrl
         global.orgId = conn.userInfo.orgId
         //global.userinfo = conn.userInfo
 
-        //ctx.response.send('success')
+        ctx.response.send('success')
       })
   })
+.get('tooling', '/tooling', (ctx) => {
+  var conn = new jsforce.Connection({
+    oauth2: oauth2
+  })
+  conn.tooling.describeGlobal(function(err, res) {
+    if (err) { return console.error(err); }
+    console.log('Num of tooling objects : ' + res.sobjects.length);
+  });
+})
 
 app.use(router.routes()).use(router.allowedMethods)
 
