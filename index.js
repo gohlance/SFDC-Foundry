@@ -53,11 +53,11 @@ router
 .get('/oauth2/auth', (ctx) => {
   ctx.response.redirect(oauth2.getAuthorizationUrl({ scope : 'api web' }))
 })
-.get('oauth', '/auth3/login/return', (ctx) =>{
+.get('oauth', '/auth3/login/return', (ctx) =>{ 
     var conn = new jsforce.Connection({
       oauth2: oauth2
     })
-    var code = ctx.query('code')
+    var code = ctx.params('code')
     conn.authorize(code, function (err, userInfo) {
         if (err) {
           return console.error(err)
