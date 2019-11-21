@@ -79,7 +79,9 @@ router
   })
 .get('tooling', '/tooling', (ctx) => {
   var conn = new jsforce.Connection({
-    oauth2: oauth2
+    oauth2: oauth2,
+    instanceUrl: global.instanceUrl ,
+		accessToken: global.accesscode
   })
   console.log("*** Conn : " + conn)
   console.log("Authenticated, stating call")
