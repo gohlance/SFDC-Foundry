@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.min.js"></script>
@@ -16,6 +17,11 @@
                 </li>
                 <li><a href="/about">About Us</a></li>
                 <li><a href="/contact">Contact Us</a></li>
+                <%  if (!global.accesscode || !global.instanceUrl) { %>
+                    <li><a herf="/logout">Logout</a></li>
+                <% }else {%>
+                <li><a herf="/login">Login</a></li>
+                <% } %>
             </ul>
         </nav>
     </div>
@@ -23,4 +29,5 @@
         <%- body %>
     </div>
 </body>
+
 </html>
