@@ -1,4 +1,3 @@
-const render = require('koa-ejs')
 module.exports = ({
   router
 }) => {
@@ -6,10 +5,10 @@ module.exports = ({
     .get('home', '/', (ctx) => {
       return ctx.render('index')
     })
-    .get('about','/about', (ctx) => {
+    .get('about', '/about', (ctx) => {
       ctx.body = "About US..."
     })
-    .get('contact','/contact', (ctx) =>{
+    .get('contact', '/contact', (ctx) => {
       ctx.body = "Contact US...."
     })
 }
