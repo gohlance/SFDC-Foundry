@@ -85,4 +85,19 @@ module.exports = ({
                 console.log('Num of tooling objects : ' + res.sobjects.length);
             })
         })
+        .get('getApexPage','/getApexPage', (ctx) => {
+            var conn = new jsforce.Connection({
+                oauth2: oauth2,
+                instanceUrl: global.instanceUrl,
+                accessToken: global.accesscode
+            })
+
+            conn.tooling.sobject('ApexPage').describe(function (err, meta){
+                if (err){return console.error(err)}
+                console.log("label name : " + meta.label)
+                meta.fields.forEach(function(item){
+                    console.log(' * :' + item.fields);
+                })
+            })
+        })
 }
