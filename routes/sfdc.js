@@ -53,8 +53,8 @@ module.exports = ({
               });
         })
         .get('tooling', '/tooling', (ctx) => {
-            global.instanceUrl = "https://daikinsg2019.my.salesforce.com"
-            global.accesscode = "00D3c000000XSKS!AR8AQLihZ6AUn_7WL_82oSOdHf4LeX6tObb7OJZGm.DeGkTloiB3v9ihM5LXpYHdxMvTIzYivis6XnvpZ174N0zPoQAN6vqe"
+            //global.instanceUrl = "https://daikinsg2019.my.salesforce.com"
+            //global.accesscode = "00D3c000000XSKS!AR8AQLihZ6AUn_7WL_82oSOdHf4LeX6tObb7OJZGm.DeGkTloiB3v9ihM5LXpYHdxMvTIzYivis6XnvpZ174N0zPoQAN6vqe"
             console.log("*** Global : " + global.instanceUrl)
             console.log("*** Global : " + global.accesscode)
             if (!global.accesscode || !global.instanceUrl) {
