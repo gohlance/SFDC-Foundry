@@ -37,9 +37,11 @@ module.exports = ({
                 global.instanceUrl = conn.instanceUrl
                 global.orgId = conn.userInfo.orgId
                 //global.userinfo = conn.userInfo
-
-                //ctx.response.send('success')
             })
+
+            if (!global.accesscode || !global.instanceUrl) {
+                ctx.redirect('welcome')
+            }
         })
         .get('logout','/logout', (ctx) =>{
             conn.logout(function(err) {

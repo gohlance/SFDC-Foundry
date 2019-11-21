@@ -11,4 +11,7 @@ module.exports = ({
     .get('contact', '/contact', (ctx) => {
       ctx.body = "Contact US...."
     })
+    .get('welcome','/welcome,' (ctx) => {
+      return ctx.render('welcome')
+    })
 }
