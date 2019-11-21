@@ -83,7 +83,8 @@ router
     instanceUrl: global.instanceUrl ,
 		accessToken: global.accesscode
   })
-  console.log("*** Conn : " + conn)
+  console.log("*** Conn : " + conn.instanceUrl)
+  console.log("*** Conn : " + conn.accessToken)
   console.log("Authenticated, stating call")
   conn.sobject("Account").describe(function(err, meta) {
     if (err) { return console.error(err); }
