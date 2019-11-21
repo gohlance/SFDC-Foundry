@@ -18,9 +18,9 @@
                 <li><a href="/about">About Us</a></li>
                 <li><a href="/contact">Contact Us</a></li>
                 <%  if (!global.accesscode || !global.instanceUrl) { %>
-                    <li><a herf="/logout">Logout</a></li>
+                    <li><a herf="/logout">Login</a></li>
                 <% }else {%>
-                <li><a herf="/oauth2/auth">Login</a></li>
+                <li><a herf="/oauth2/auth">Logout</a></li>
                 <% } %>
             </ul>
         </nav>

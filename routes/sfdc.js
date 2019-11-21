@@ -19,6 +19,7 @@ module.exports = ({
                 scope: 'api web'
             }))
         })
+        //this path is set in the Connected App
         .get('oauth', '/auth3/login/return', (ctx) => {
             var conn = new jsforce.Connection({
                 oauth2: oauth2
