@@ -6,7 +6,7 @@ module.exports = ({
       if (!global.accesscode || !global.instanceUrl) {
         return ctx.render('index')
       }else{
-        ctx.redirect('welcome')
+        return ctx.render('welcome')
       }
     })
     .get('about', '/about', (ctx) => {
