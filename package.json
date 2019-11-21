@@ -5,12 +5,11 @@
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
-        "start2": "nodemon index.js"
+        "start dev": "node --inspect index.js"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.19.0",
         "jsforce": "^1.9.3",
         "koa": "^2.11.0",
         "koa-ejs": "^4.2.0",
