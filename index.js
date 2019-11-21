@@ -72,11 +72,12 @@ router
         global.orgId = conn.userInfo.orgId
         //global.userinfo = conn.userInfo
 
-        ctx.response.send('success')
+        //ctx.response.send('success')
       })
   })
 .get('tooling', '/tooling', (ctx) => {
-  console.log("testing : " + !global.accesscode)
+  console.log("*** Global : " + global.instanceUrl)
+  console.log("*** Global : " + global.accesscode)
   if (!global.accesscode || !global.instanceUrl){
     ctx.redirect('/oauth2/auth')
   }
@@ -85,6 +86,7 @@ router
     instanceUrl: global.instanceUrl ,
 		accessToken: global.accesscode
   })
+
   console.log("*** Conn : " + conn.instanceUrl)
   console.log("*** Conn : " + conn.accessToken)
   console.log("Authenticated, stating call")
