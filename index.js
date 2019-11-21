@@ -8,8 +8,6 @@ const passport = require('./auth')
 const logger = require('koa-logger')
 const app = new Koa()
 
-global.accesscode = 'aPrxwwNuBlmuqjnefHLaFwt7x4QToW.8EBoiZC5us_rn3f1VKuLazY3VXHDSojvniM.hLYrw7w=='
-
 app.use(passport.initialize());
 
 app.use(async (ctx, next) => {
@@ -78,6 +76,10 @@ router
       })
   })
 .get('tooling', '/tooling', (ctx) => {
+  if (global.accesscode || global.instanceUrl){
+    ctx.redirect('/oauth2/auth')
+  }
+
   var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl ,
