@@ -1,3 +1,4 @@
+const render = require('koa-ejs')
 module.exports = ({
   router
 }) => {
