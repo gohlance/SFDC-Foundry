@@ -68,6 +68,7 @@ module.exports = ({
                 if (err) {
                     return console.error(err);
                 }
+                console.log('meta : ' + meta)
                 console.log('Label : ' + meta.label);
                 console.log('Num of Fields : ' + meta.fields.length);
                 // ...
