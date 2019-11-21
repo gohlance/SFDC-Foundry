@@ -1,17 +1,18 @@
-
 <body>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jsforce/1.9.1/jsforce.min.js"></script>
-        <script>
-      jsforce.browser.init({
-        clientId: '3MVG9i1HRpGLXp.qKwbWJHwmeMLmgspmmKGeCEMgq7Kftsb56h8o4N8GUF75jKIXJ5jAIXVd.ILGr5kMlNIac',
-        redirectUri: 'https://login.salesforce.com/services/oauth2/success'
-      });
-      jsforce.browser.on('connect', function(conn) {
-        conn.query('SELECT Id, Name FROM Account', function(err, res) {
-          if (err) { return console.error(err); }
-          console.log(res);
-        });
-      });
-        </script>
-  <button onclick="javascript:jsforce.browser.login();">Login</button>
+  <div>
+    Welcome
+  </div>
+  <div>
+      <form action="/oauth2/auth" method="GET">
+    <table>
+      <tr><td>
+        Sign in now : 
+      </td>
+      <td>
+          <button type="submit">Sign in</button>
+      </td>
+    </tr>
+    </table>
+  </form>
+  </div>
 </body>
