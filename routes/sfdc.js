@@ -41,6 +41,12 @@ module.exports = ({
                 //ctx.response.send('success')
             })
         })
+        .get('logout','/logout', (ctx) =>{
+            conn.logout(function(err) {
+                if (err) { return console.error(err); }
+                // now the session has been expired.
+              });
+        })
         .get('tooling', '/tooling', (ctx) => {
             console.log("*** Global : " + global.instanceUrl)
             console.log("*** Global : " + global.accesscode)
