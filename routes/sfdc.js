@@ -43,7 +43,7 @@ module.exports = ({
             })
 
             if (!global.accesscode || !global.instanceUrl) {
-                ctx.redirect('welcome')
+                return ctx.render('welcome')
             }
         })
         .get('logout','/logout', (ctx) =>{
