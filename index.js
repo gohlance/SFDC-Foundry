@@ -76,10 +76,10 @@ router
       })
   })
 .get('tooling', '/tooling', (ctx) => {
-  if (global.accesscode || global.instanceUrl){
+  console.log("testing : " + !global.accesscode)
+  if (!global.accesscode || !global.instanceUrl){
     ctx.redirect('/oauth2/auth')
   }
-
   var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl ,
