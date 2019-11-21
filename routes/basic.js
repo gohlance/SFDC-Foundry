@@ -4,7 +4,7 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', (ctx) => {
-      ctx.render('index')
+      return ctx.render('index')
     })
     .get('about','/about', (ctx) => {
       ctx.body = "About US..."
