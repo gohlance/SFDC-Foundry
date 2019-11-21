@@ -3,7 +3,11 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', (ctx) => {
-      return ctx.render('index')
+      if (!global.accesscode || !global.instanceUrl) {
+        return ctx.render('index')
+      }else{
+        ctx.redirect('welcome')
+      }
     })
     .get('about', '/about', (ctx) => {
       ctx.body = "About US..."
