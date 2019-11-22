@@ -46,15 +46,17 @@ module.exports = ({
                 return ctx.render('welcome')
             }
         })
-        .get('logout','/logout', (ctx) =>{
-            conn.logout(function(err) {
-                if (err) { return console.error(err); }
+        .get('logout', '/logout', (ctx) => {
+            conn.logout(function (err) {
+                if (err) {
+                    return console.error(err);
+                }
                 // now the session has been expired.
-              });
+            });
         })
         .get('tooling', '/tooling', (ctx) => {
-            //global.instanceUrl = "https://daikinsg2019.my.salesforce.com"
-            //global.accesscode = "00D3c000000XSKS!AR8AQLihZ6AUn_7WL_82oSOdHf4LeX6tObb7OJZGm.DeGkTloiB3v9ihM5LXpYHdxMvTIzYivis6XnvpZ174N0zPoQAN6vqe"
+            global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+            global.accesscode = "00D46000001Uq6O!AQoAQIBvGth39aNHu.6q5Ygh0ZaTzvruMZOEWRuBqL1IaWnmNjXzeYUWbQNLdziJ2AwTlV5m50tizWJfoIZeAeqPU3UbjFkw"
             console.log("*** Global : " + global.instanceUrl)
             console.log("*** Global : " + global.accesscode)
             if (!global.accesscode || !global.instanceUrl) {
@@ -85,19 +87,87 @@ module.exports = ({
                 console.log('Num of tooling objects : ' + res.sobjects.length);
             })
         })
-        .get('getApexPage','/getApexPage', (ctx) => {
+        .get('getApexPage', '/getApexPage', (ctx) => {
+            global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+            global.accesscode = "00D46000001Uq6O!AQoAQIBvGth39aNHu.6q5Ygh0ZaTzvruMZOEWRuBqL1IaWnmNjXzeYUWbQNLdziJ2AwTlV5m50tizWJfoIZeAeqPU3UbjFkw"
             var conn = new jsforce.Connection({
                 oauth2: oauth2,
                 instanceUrl: global.instanceUrl,
-                accessToken: global.accesscode
+                accessToken: global.accesscode,
+                version: 47
             })
 
+            var types = [{
+                type: 'ApexTrigger',
+                folder: null
+            }]
+            conn.metadata.list(types, function (err, meta) {
+                if (err) {
+                    return console.error('err', err)
+                }
+                console.log(meta)
+            })
+            /*
+            var types = [{
+                type: 'CustomObject',
+                folder: null
+            }]
+            conn.metadata.list(types, function (err, meta) {
+                if (err) {
+                    return console.error('err', err)
+                }
+                console.log(meta)
+                console.log('metadata count: ' + metadata.length);
+                console.log('createdById: ' + meta.createdById);
+                console.log('createdByName: ' + meta.createdByName);
+                console.log('createdDate: ' + meta.createdDate);
+                console.log('fileName: ' + meta.fileName);
+                console.log('fullName: ' + meta.fullName);
+                console.log('id: ' + meta.id);
+                console.log('lastModifiedById: ' + meta.lastModifiedById);
+                console.log('lastModifiedByName: ' + meta.lastModifiedByName);
+                console.log('lastModifiedDate: ' + meta.lastModifiedDate);
+                console.log('manageableState: ' + meta.manageableState);
+                console.log('namespacePrefix: ' + meta.namespacePrefix);
+                console.log('type: ' + meta.type);
+            })*/
+
+            /*
+            //This give the information on the Objects
+            conn.describeGlobal(function (err,res){
+                if (err){return console.error(err)}
+                console.log('No of Objects ' + res)
+                var customObject =[]
+                var standardObject =[]
+                res.sobjects.forEach(function(sobject){
+                    if (sobject.custom){
+                        customObject.push(sobject)
+                    }else{
+                        standardObject.push(sobject)
+                    }
+                })
+                console.log("Standard object : " + standardObject.length)
+                console.log("Custom Object : " + customObject.length)
+            })*/
+            /*
+            //This get the fields in the Visualforce Page?
             conn.tooling.sobject('ApexPage').describe(function (err, meta){
                 if (err){return console.error(err)}
                 console.log("label name : " + meta.label)
+                var i = 1
                 meta.fields.forEach(function(item){
-                    console.log(' * :' + item.fields);
+                    console.log(' *' + i + ' :' + item.label)
+                    i++
                 })
             })
+            //This get the fields in the ApexTrigger
+            conn.tooling.describe('ApexTrigger', function(err, result){
+                if (err){return console.error(err)}
+                var i = 1
+                result.fields.forEach(function(item){
+                    console.log(i + ':' + item.label)
+                    i++
+                })
+            })*/
         })
 }
