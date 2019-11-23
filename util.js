@@ -94,6 +94,7 @@ function dofinally(conn) {
 
 
 module.exports = {
+    //Average Run: 3,637 ms to 4,000 ms
     getAllObjects : async function getAllObjects(conn) {
         return new Promise((resolve, reject) => {
     
@@ -117,5 +118,5 @@ module.exports = {
                 resolve([customObject, standardObject])
             })
         })
-    } //end of GetAllObjects
-}
+    }//end of method
+} 
