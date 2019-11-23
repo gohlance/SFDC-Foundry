@@ -89,7 +89,7 @@ module.exports = ({
                 console.log('Num of tooling objects : ' + res.sobjects.length);
             })
         })
-        .get('getApexPage', '/getApexPage', async (ctx) => {
+        .get('getAllObjects', '/getAllObjects', async (ctx) => {
             try {
                 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
                 global.accesscode = "00D46000001Uq6O!AQoAQGwJVgAqPmYKj.b3Gy1K7bg6Eh6Wl8JTEiC11in3xofGyxs53aSUmOuLoWZZKiRYABZyAXNSyv.iZbF6WVdW3n_Pzkwi"
@@ -102,9 +102,6 @@ module.exports = ({
 
                 var result = await something.getAllObjects(conn)
 
-                console.log(result.length)
-                console.log(result[0].length);
-                console.log(result[1].length)
                 return ctx.render('objects', {
                     standardObject: result[1],
                     customObject: result[0],
@@ -113,6 +110,25 @@ module.exports = ({
 
             } catch (err) {
                 console.log("Error: " + err)
+            }
+        })
+        .get('getAllApexTrigger','/getAllApexTrigger', async (ctx)=>{
+            try{
+                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                global.accesscode = "00D46000001Uq6O!AQoAQGwJVgAqPmYKj.b3Gy1K7bg6Eh6Wl8JTEiC11in3xofGyxs53aSUmOuLoWZZKiRYABZyAXNSyv.iZbF6WVdW3n_Pzkwi"
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                var something = require('../util')
+                var result = await something.getAllApexTrigger(conn)
+
+                return ctx.render('trigger',{
+                    trigger: result
+                })
+            }catch (err){
+                console.log("Error : " + err)
             }
         })
 }

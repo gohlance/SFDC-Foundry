@@ -81,15 +81,8 @@ function dofinally(conn) {
             i++
         })
     })
-    //This get the fields in the ApexTrigger
-    conn.tooling.describe('ApexTrigger', function(err, result){
-        if (err){return console.error(err)}
-        var i = 1
-        result.fields.forEach(function(item){
-            console.log(i + ':' + item.label)
-            i++
-        })
-    })*/
+    
+    */
 }
 
 
@@ -97,26 +90,38 @@ module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects : async function getAllObjects(conn) {
         return new Promise((resolve, reject) => {
-    
             var customObject = []
             var standardObject = []
             conn.describeGlobal(function (err, res) {
                 if (err) {
-                    return console.error(err)
+                    return console.log(err)
                 }
                 console.log('No of Objects ' + res.sobjects.length)
                 res.sobjects.forEach(function (sobject) {
                     if (sobject.custom) {
-    
                         customObject.push(sobject)
                     } else {
     
                         standardObject.push(sobject)
                     }
                 })
-                console.log("Done")
                 resolve([customObject, standardObject])
             })
         })
-    }//end of method
+    },//end of method
+    getAllApexTrigger: async function getAllApexTrigger(conn) {
+        return new Promise((resolve, reject) => {
+            var result = []
+            conn.tooling.describe('ApexTrigger', function(err, result){
+                if (err){return console.log(err)}
+                var i = 1
+                result.fields.forEach(function(item){
+                    //console.log(i + ':' + item.label)
+                    result.push(item.label)
+                    i++
+                })
+            })
+            resolve(result)
+        })
+    }
 } 
