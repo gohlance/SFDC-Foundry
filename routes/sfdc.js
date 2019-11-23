@@ -71,12 +71,12 @@ module.exports = ({
             console.log("*** Conn : " + conn.instanceUrl)
             console.log("*** Conn : " + conn.accessToken)
             console.log("Authenticated, stating call")
-          
+
             conn.sobject("Account").describe(function (err, meta) {
                 if (err) {
                     return console.error(err);
                 }
-                
+
                 console.log('meta : ' + meta)
                 console.log('Label : ' + meta.label);
                 console.log('Num of Fields : ' + meta.fields.length);
@@ -89,20 +89,30 @@ module.exports = ({
                 console.log('Num of tooling objects : ' + res.sobjects.length);
             })
         })
-        .get('getApexPage', '/getApexPage', (ctx) => {
-            global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-            global.accesscode = "00D46000001Uq6O!AQoAQIBvGth39aNHu.6q5Ygh0ZaTzvruMZOEWRuBqL1IaWnmNjXzeYUWbQNLdziJ2AwTlV5m50tizWJfoIZeAeqPU3UbjFkw"
-            var conn = new jsforce.Connection({
-                oauth2: oauth2,
-                instanceUrl: global.instanceUrl,
-                accessToken: global.accesscode
-            })
-            var something = require('../util')
-            
-            something.sObjectDescribe(conn,"Account")
-            
-            something.meta(conn)
+        .get('getApexPage', '/getApexPage', async (ctx) => {
+            try {
+                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                global.accesscode = "00D46000001Uq6O!AQoAQGwJVgAqPmYKj.b3Gy1K7bg6Eh6Wl8JTEiC11in3xofGyxs53aSUmOuLoWZZKiRYABZyAXNSyv.iZbF6WVdW3n_Pzkwi"
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                var something = require('../util')
 
-            
+                var result = await something.getAllFields(conn)
+
+                console.log(result.length)
+                console.log(result[0].length);
+                console.log(result[1].length)
+                return ctx.render('objects', {
+                    standardObject: result[1],
+                    customObject: result[0],
+                    totalObject: result[0].length + result[1].length
+                })
+
+            } catch (err) {
+                console.log("Error: " + err)
+            }
         })
 }

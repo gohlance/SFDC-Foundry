@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="col">
+        <div class="row"> Total Objects</div>
+        <div class="row"><%- totalObject%></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>Standard Objects ( <%-standardObject.length%> )</thead>
+                <% for(var i =0; i< standardObject.length; i ++){ %>
+                <tr>
+                    <td><%- standardObject[i].name%></td>
+                </tr>
+                <%}%>    
+            </table>
+        </div>
+        <div class="col">
+                <table class="table">
+                    <thead>Custom Objects ( <%-customObject.length%> )</thead>
+                    <% for(var i =0; i< customObject.length; i ++){ %>
+                <tr>
+                    <td><%- customObject[i].name%></td>
+                </tr>
+                <%}%>    
+                </table>
+        </div>
+    </div> 
+</div>
