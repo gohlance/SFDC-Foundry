@@ -1,27 +1,4 @@
-async function getAllFieldsInAllObject(conn) {
-    return new Promise((resolve, reject) => {
 
-        var customObject = []
-        var standardObject = []
-        conn.describeGlobal(function (err, res) {
-            if (err) {
-                return console.error(err)
-            }
-            console.log('No of Objects ' + res.sobjects.length)
-            res.sobjects.forEach(function (sobject) {
-                if (sobject.custom) {
-
-                    customObject.push(sobject)
-                } else {
-
-                    standardObject.push(sobject)
-                }
-            })
-            console.log("Done")
-            resolve([customObject, standardObject])
-        })
-    })
-}
 
 function sObjectDescribe(conn, sobjectname) {
     conn.sobject(sobjectname).describe(function (err, meta) {
@@ -117,7 +94,28 @@ function dofinally(conn) {
 
 
 module.exports = {
-    sObjectDescribe: sObjectDescribe,
-    meta: meta,
-    getAllFields: getAllFieldsInAllObject
+    getAllObjects : async function getAllObjects(conn) {
+        return new Promise((resolve, reject) => {
+    
+            var customObject = []
+            var standardObject = []
+            conn.describeGlobal(function (err, res) {
+                if (err) {
+                    return console.error(err)
+                }
+                console.log('No of Objects ' + res.sobjects.length)
+                res.sobjects.forEach(function (sobject) {
+                    if (sobject.custom) {
+    
+                        customObject.push(sobject)
+                    } else {
+    
+                        standardObject.push(sobject)
+                    }
+                })
+                console.log("Done")
+                resolve([customObject, standardObject])
+            })
+        })
+    } //end of GetAllObjects
 }

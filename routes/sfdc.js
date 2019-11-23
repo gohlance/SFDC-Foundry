@@ -100,7 +100,7 @@ module.exports = ({
                 })
                 var something = require('../util')
 
-                var result = await something.getAllFields(conn)
+                var result = await something.getAllObjects(conn)
 
                 console.log(result.length)
                 console.log(result[0].length);
