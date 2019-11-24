@@ -38,24 +38,6 @@ function dofinally(conn) {
             })*/
 
     /*
-    //This give the information on the Objects
-    conn.describeGlobal(function (err,res){
-        if (err){return console.error(err)}
-        console.log('No of Objects ' + res)
-        var customObject =[]
-        var standardObject =[]
-        res.sobjects.forEach(function(sobject){
-            if (sobject.custom){
-                customObject.push(sobject)
-            }else{
-                standardObject.push(sobject)
-            }
-        })
-        console.log("Standard object : " + standardObject.length)
-        console.log("Custom Object : " + customObject.length)
-    })*/
-
-    /*
     //This get the fields in the Visualforce Page?
     conn.tooling.sobject('ApexPage').describe(function (err, meta){
         if (err){return console.error(err)}
@@ -66,49 +48,13 @@ function dofinally(conn) {
             i++
         })
     })
-    
     */
 }
 
 
 module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
-    getAllObjects: async function getAllObjects(conn) {
-        try{
-            return new Promise((resolve, reject) => {
-                var customObject = []
-                var standardObject = []
-                var finalsetOfoBject = []
-                conn.describeGlobal(function (err, res) {
-                    if (err) {
-                        return console.log(err)
-                    }
-                    console.log('No of Objects ' + res.sobjects.length)
-                    /*
-                    res.sobjects.forEach(function (sobject) {
-                        if (sobject.custom && !sobject.deletable && !sobject.deprecatedAndHidden) {
-                           customObject.push(sobject)
-                           
-                        } else if (!sobject.custom && !sobject.deletable && !sobject.deprecatedAndHidden) {
-                            standardObject.push(sobject)
-                        }
-                    })
-                    */
-                    res.sobjects.forEach(function (sobject) {
-                        if (!sobject.deletable && !sobject.deprecatedAndHidden) {
-                            finalsetOfoBject.push(sobject)
-                        }
-                    })
-    
-                    //console.log('Count C : ' + customObject.length + "And Standard : " + standardObject.length)
-                    console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
-                    resolve(finalsetOfoBject)
-                })
-            }).then(result => sObjectDescribe(conn, result))
-        }catch(err){
-            console.log(err)
-        }
-    }, //end of method
+    getAllObjects: getAllObjects,
     getAllApexTrigger: async function getAllApexTrigger(conn) {
         return new Promise((resolve, reject) => {
             var result = []
@@ -128,6 +74,43 @@ module.exports = {
     }
 }
 
+async function getAllObjects(conn) {
+    try {
+        return new Promise((resolve, reject) => {
+            var customObject = []
+            var standardObject = []
+            var finalsetOfoBject = []
+            conn.describeGlobal(function (err, res) {
+                if (err) {
+                    return console.log(err)
+                }
+                console.log('No of Objects ' + res.sobjects.length)
+                /*
+                res.sobjects.forEach(function (sobject) {
+                    if (sobject.custom && !sobject.deletable && !sobject.deprecatedAndHidden) {
+                       customObject.push(sobject)
+                       
+                    } else if (!sobject.custom && !sobject.deletable && !sobject.deprecatedAndHidden) {
+                        standardObject.push(sobject)
+                    }
+                })
+                */
+                res.sobjects.forEach(function (sobject) {
+                    if (!sobject.deletable && !sobject.deprecatedAndHidden) {
+                        finalsetOfoBject.push(sobject)
+                    }
+                })
+
+                //console.log('Count C : ' + customObject.length + "And Standard : " + standardObject.length)
+                console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
+                resolve(finalsetOfoBject)
+            })
+        }).then(result => sObjectDescribe(conn, result))
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 async function sObjectDescribe(conn, result) {
     try {
         var i = 0;
@@ -140,7 +123,6 @@ async function sObjectDescribe(conn, result) {
             i++;
             return [item.name, some, item.custom, item.label]
         }))
-
         return [allObjectTotalFields]
     } catch (err) {
         console.log(err)

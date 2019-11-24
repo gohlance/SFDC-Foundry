@@ -12,7 +12,6 @@ var oauth2 = new jsforce.OAuth2({
 module.exports = ({
     router
 }) => {
-    
     router
         .get('/oauth2/auth', (ctx) => {
             ctx.response.redirect(oauth2.getAuthorizationUrl({
@@ -53,41 +52,6 @@ module.exports = ({
                 }
                 // now the session has been expired.
             });
-        })
-        .get('tooling', '/tooling', (ctx) => {
-            global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-            global.accesscode = "00D46000001Uq6O!AQoAQIBvGth39aNHu.6q5Ygh0ZaTzvruMZOEWRuBqL1IaWnmNjXzeYUWbQNLdziJ2AwTlV5m50tizWJfoIZeAeqPU3UbjFkw"
-            console.log("*** Global : " + global.instanceUrl)
-            console.log("*** Global : " + global.accesscode)
-            if (!global.accesscode || !global.instanceUrl) {
-                ctx.redirect('/oauth2/auth')
-            }
-            var conn = new jsforce.Connection({
-                oauth2: oauth2,
-                instanceUrl: global.instanceUrl,
-                accessToken: global.accesscode
-            })
-
-            console.log("*** Conn : " + conn.instanceUrl)
-            console.log("*** Conn : " + conn.accessToken)
-            console.log("Authenticated, stating call")
-
-            conn.sobject("Account").describe(function (err, meta) {
-                if (err) {
-                    return console.error(err);
-                }
-
-                console.log('meta : ' + meta)
-                console.log('Label : ' + meta.label);
-                console.log('Num of Fields : ' + meta.fields.length);
-                // ...
-            })
-            conn.tooling.describeGlobal(function (err, res) {
-                if (err) {
-                    return console.error(err);
-                }
-                console.log('Num of tooling objects : ' + res.sobjects.length);
-            })
         })
         .get('getAllObjects', '/getAllObjects', async (ctx) => {
             try {
