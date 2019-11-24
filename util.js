@@ -72,7 +72,6 @@ function dofinally(conn) {
 
 
 module.exports = {
-    sObjectDescribe: sObjectDescribe,
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects: async function getAllObjects(conn) {
         try{
@@ -139,7 +138,7 @@ async function sObjectDescribe(conn, result) {
             //For Debug
             //console.log("custom " + i + ": " + some)
             i++;
-            return [item.name, some, item.custom]
+            return [item.name, some, item.custom, item.label]
         }))
 
         return [allObjectTotalFields]
