@@ -1,3 +1,4 @@
+
 const jsforce = require('jsforce')
 
 var oauth2 = new jsforce.OAuth2({
@@ -8,11 +9,10 @@ var oauth2 = new jsforce.OAuth2({
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
 
-
-
 module.exports = ({
     router
 }) => {
+    
     router
         .get('/oauth2/auth', (ctx) => {
             ctx.response.redirect(oauth2.getAuthorizationUrl({
@@ -92,30 +92,29 @@ module.exports = ({
         .get('getAllObjects', '/getAllObjects', async (ctx) => {
             try {
                 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQGwJVgAqPmYKj.b3Gy1K7bg6Eh6Wl8JTEiC11in3xofGyxs53aSUmOuLoWZZKiRYABZyAXNSyv.iZbF6WVdW3n_Pzkwi"
+                global.accesscode = "00D46000001Uq6O!AQoAQNhUKyUBGhjoAaUWg4iq.rQ872yozgoKlp7EIGnxpRGCgmi2gRer5ATurU_uKEbgHS.CVcPbHv1u1UuwdjZ8hjKFEzdK"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
                 var something = require('../util')
-
                 var result = await something.getAllObjects(conn)
-
+                
+                console.log("%%% : " + result.length)
                 return ctx.render('objects', {
-                    standardObject: result[1],
-                    customObject: result[0],
-                    totalObject: result[0].length + result[1].length
+                    standardObject: result[0],
+                    totalObject: result[0].length
                 })
 
             } catch (err) {
-                console.log("Error: " + err)
+                console.log("Error: getAllObjects " + err)
             }
         })
         .get('getAllApexTrigger','/getAllApexTrigger', async (ctx)=>{
             try{
-                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQGwJVgAqPmYKj.b3Gy1K7bg6Eh6Wl8JTEiC11in3xofGyxs53aSUmOuLoWZZKiRYABZyAXNSyv.iZbF6WVdW3n_Pzkwi"
+                //global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                //global.accesscode = "00D46000001Uq6O!AQoAQMys5oB.HZ9s6WQWUCD13kyvGwqwKvfQZ04NfGYV54UJJyxpd_GweCh87B2fV9L3sx8v9FnjihYyYynz7RatnV.B0_wh"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
