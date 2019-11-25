@@ -48,23 +48,12 @@ function dofinally(conn) {
 module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects: getAllObjects,
-    getAllApexTrigger: async function getAllApexTrigger(conn) {
-        return new Promise((resolve, reject) => {
-            var result = []
-            conn.version = 47
-            var types = [{
-                type: 'ApexTrigger',
-                folder: null
-            }]
-           
-            conn.metadata.list(types, function (err, meta) {
-                if (err) {
-                    return console.error('err', err)
-                }
-                resolve(meta)
-            })
-        })
-    }
+    getAllApexTrigger: getAllApexTrigger,
+    getAllMeta, getAllMeta
+}
+
+async function getAllMeta(conn){
+
 }
 
 async function getAllObjects(conn) {
@@ -105,6 +94,8 @@ async function getAllObjects(conn) {
 }
 
 async function sObjectDescribe(conn, result) {
+
+    //TODO : this section can do child relationship
     try {
         var i = 0;
         var lessthan100fields = 0;
@@ -128,4 +119,22 @@ async function sObjectDescribe(conn, result) {
     } catch (err) {
         console.log(err)
     }
+}
+
+async function getAllApexTrigger(conn) {
+    return new Promise((resolve, reject) => {
+        var result = []
+        conn.version = 47
+        var types = [{
+            type: 'ApexTrigger',
+            folder: null
+        }]
+       
+        conn.metadata.list(types, function (err, meta) {
+            if (err) {
+                return console.error('err', err)
+            }
+            resolve(meta)
+        })
+    })
 }
