@@ -65,7 +65,7 @@ module.exports = ({
                 var something = require('../util')
                 var result = await something.getAllObjects(conn)
                 
-                console.log("%%% : " + result)
+                //console.log("%%% : " + result)
                 return ctx.render('objects', {
                     allObject: result.allObject,
                     totalObject: result.allObject,
@@ -79,13 +79,14 @@ module.exports = ({
         })
         .get('getAllApexTrigger','/getAllApexTrigger', async (ctx)=>{
             try{
-                //global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                //global.accesscode = "00D46000001Uq6O!AQoAQMys5oB.HZ9s6WQWUCD13kyvGwqwKvfQZ04NfGYV54UJJyxpd_GweCh87B2fV9L3sx8v9FnjihYyYynz7RatnV.B0_wh"
+                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                global.accesscode = "00D46000001Uq6O!AQoAQJs918ATMWvMEx.YQ_vkzvCKedeDjcCFvFFQHxH8FjyQgUrxVWHHv2vE2kt8F_eV2lutz1nz68Mt_h2V4ITYMF_lvkSG"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
+                
                 var something = require('../util')
                 var result = await something.getAllApexTrigger(conn)
 

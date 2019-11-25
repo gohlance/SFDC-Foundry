@@ -1,14 +1,7 @@
+
+
 function meta(conn) {
-    var types = [{
-        type: 'ApexTrigger',
-        folder: null
-    }]
-    conn.metadata.list(types, function (err, meta) {
-        if (err) {
-            return console.error('err', err)
-        }
-        console.log(meta)
-    })
+    
 }
 
 function dofinally(conn) {
@@ -58,18 +51,18 @@ module.exports = {
     getAllApexTrigger: async function getAllApexTrigger(conn) {
         return new Promise((resolve, reject) => {
             var result = []
-            conn.tooling.describe('ApexTrigger', function (err, result) {
+            conn.version = 47
+            var types = [{
+                type: 'ApexTrigger',
+                folder: null
+            }]
+           
+            conn.metadata.list(types, function (err, meta) {
                 if (err) {
-                    return console.log(err)
+                    return console.error('err', err)
                 }
-                var i = 1
-                result.fields.forEach(function (item) {
-                    //console.log(i + ':' + item.label)
-                    result.push(item.label)
-                    i++
-                })
+                resolve(meta)
             })
-            resolve(result)
         })
     }
 }
@@ -102,7 +95,7 @@ async function getAllObjects(conn) {
                 })
 
                 //console.log('Count C : ' + customObject.length + "And Standard : " + standardObject.length)
-                console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
+                //console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
                 resolve(finalsetOfoBject)
             })
         }).then(result => sObjectDescribe(conn, result))
