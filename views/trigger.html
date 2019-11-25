@@ -5,7 +5,7 @@
                             <thead>Triggers ( <%-trigger.length%> )</thead>
                             <% for(var i =0; i< trigger.length; i ++){ %>
                             <tr>
-                                <td><%- trigger[i].name%></td>
+                                <td><%- trigger[i].fullName%> (<%- trigger[i].manageableState%>) </td> <td><%- trigger[i].createdDate%></td>
                             </tr>
                             <%}%>    
                         </table>

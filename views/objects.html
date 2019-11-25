@@ -4,14 +4,20 @@
         <div class="row"><%- totalObject%></div>
     </div>
     <div class="row">
+        <table class="table">
+            <tr><td>More than 100 fields in a object : </td><td><%- morethan100%></td></tr>
+            <tr><td>Less than 100 fields in a object : </td><td><%- lessthan100%></td></tr>
+        </table>
+    </div>
+    <div class="row">
         <div class="col">
             <table class="table">
-                <thead>All Objects ( <%-standardObject.length%> )</thead>
-                <% for(var i =0; i< standardObject.length; i ++){ %>
+                <thead>All Objects ( <%-allObject.length%> )</thead>
+                <% for(var i =0; i< allObject.length; i ++){ %>
                 <tr>
-                    <td><%- standardObject[i][0]%> / <%-standardObject[i][3]%></td>
-                    <td> ( <%- standardObject[i][1]%> )</td>
-                    <td> <%- standardObject[i][2]%> </td>
+                    <td><%- allObject[i].Objectname%> / <%-allObject[i].Custom%></td>
+                    <td> ( <%- allObject[i].totalfields%> )</td>
+                    <td> <%- allObject[i].Label%> </td>
                 </tr>
                 <%}%>    
             </table>

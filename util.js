@@ -1,14 +1,7 @@
+
+
 function meta(conn) {
-    var types = [{
-        type: 'ApexTrigger',
-        folder: null
-    }]
-    conn.metadata.list(types, function (err, meta) {
-        if (err) {
-            return console.error('err', err)
-        }
-        console.log(meta)
-    })
+    
 }
 
 function dofinally(conn) {
@@ -55,23 +48,12 @@ function dofinally(conn) {
 module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects: getAllObjects,
-    getAllApexTrigger: async function getAllApexTrigger(conn) {
-        return new Promise((resolve, reject) => {
-            var result = []
-            conn.tooling.describe('ApexTrigger', function (err, result) {
-                if (err) {
-                    return console.log(err)
-                }
-                var i = 1
-                result.fields.forEach(function (item) {
-                    //console.log(i + ':' + item.label)
-                    result.push(item.label)
-                    i++
-                })
-            })
-            resolve(result)
-        })
-    }
+    getAllApexTrigger: getAllApexTrigger,
+    getAllMeta, getAllMeta
+}
+
+async function getAllMeta(conn){
+
 }
 
 async function getAllObjects(conn) {
@@ -102,7 +84,7 @@ async function getAllObjects(conn) {
                 })
 
                 //console.log('Count C : ' + customObject.length + "And Standard : " + standardObject.length)
-                console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
+                //console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
                 resolve(finalsetOfoBject)
             })
         }).then(result => sObjectDescribe(conn, result))
@@ -112,19 +94,47 @@ async function getAllObjects(conn) {
 }
 
 async function sObjectDescribe(conn, result) {
+
+    //TODO : this section can do child relationship
     try {
         var i = 0;
+        var lessthan100fields = 0;
+        var morethan100fields = 0;
         var allObjectTotalFields = await Promise.all(result.map(async (item) => {
-            var some = await conn.sobject(item.name).describe().then(response => {
+            var totalfields = await conn.sobject(item.name).describe().then(response => {
                 return response.fields.length
             })
             //For Debug
             //console.log("custom " + i + ": " + some)
-            i++;
-            return [item.name, some, item.custom, item.label]
+            
+            if (totalfields > 100){
+                morethan100fields++
+            }else{
+                lessthan100fields++
+            }
+            i++
+            return {Objectname: item.name, totalfields: totalfields, Custom: item.custom, Label: item.label}
         }))
-        return [allObjectTotalFields]
+        return {allObject: allObjectTotalFields, morethan100: morethan100fields, lessthan100: lessthan100fields}
     } catch (err) {
         console.log(err)
     }
+}
+
+async function getAllApexTrigger(conn) {
+    return new Promise((resolve, reject) => {
+        var result = []
+        conn.version = 47
+        var types = [{
+            type: 'ApexTrigger',
+            folder: null
+        }]
+       
+        conn.metadata.list(types, function (err, meta) {
+            if (err) {
+                return console.error('err', err)
+            }
+            resolve(meta)
+        })
+    })
 }
