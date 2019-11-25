@@ -114,16 +114,24 @@ async function getAllObjects(conn) {
 async function sObjectDescribe(conn, result) {
     try {
         var i = 0;
+        var lessthan100fields = 0;
+        var morethan100fields = 0;
         var allObjectTotalFields = await Promise.all(result.map(async (item) => {
-            var some = await conn.sobject(item.name).describe().then(response => {
+            var totalfields = await conn.sobject(item.name).describe().then(response => {
                 return response.fields.length
             })
             //For Debug
             //console.log("custom " + i + ": " + some)
-            i++;
-            return [item.name, some, item.custom, item.label]
+            
+            if (totalfields > 100){
+                morethan100fields++
+            }else{
+                lessthan100fields++
+            }
+            i++
+            return {Objectname: item.name, totalfields: totalfields, Custom: item.custom, Label: item.label}
         }))
-        return [allObjectTotalFields]
+        return {allObject: allObjectTotalFields, morethan100: morethan100fields, lessthan100: lessthan100fields}
     } catch (err) {
         console.log(err)
     }
