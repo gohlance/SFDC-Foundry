@@ -80,7 +80,7 @@ module.exports = ({
         .get('getAllApexTrigger','/getAllApexTrigger', async (ctx)=>{
             try{
                 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQJs918ATMWvMEx.YQ_vkzvCKedeDjcCFvFFQHxH8FjyQgUrxVWHHv2vE2kt8F_eV2lutz1nz68Mt_h2V4ITYMF_lvkSG"
+                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
@@ -88,11 +88,108 @@ module.exports = ({
                 })
                 
                 var something = require('../util')
-                var result = await something.getAllApexTrigger(conn)
+                var result = await something.getAllApex(conn, "ApexTrigger")
+console.log(result)
+                return ctx.render('trigger',{
+                    trigger: result.records,
+                    type: "ApexTrigger"
+                })
+            }catch (err){
+                console.log("Error : " + err)
+            }
+        })
+        .get('getAllApexPage','/getAllApexPage', async (ctx)=>{
+            try{
+                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                
+                var something = require('../util')
+                var result = await something.getAllApex(conn, "ApexPage")
 
                 return ctx.render('trigger',{
-                    trigger: result
+                    trigger: result.records,
+                    type: "ApexPage"
                 })
+            }catch (err){
+                console.log("Error : " + err)
+            }
+        })
+        .get('getAllApexPage','/getAllApexComponent', async (ctx)=>{
+            try{
+                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                
+                var something = require('../util')
+                var result = await something.getAllApex(conn, "ApexComponent")
+
+                return ctx.render('trigger',{
+                    trigger: result.records,
+                    type: "ApexComponent"
+                })
+            }catch (err){
+                console.log("Error : " + err)
+            }
+        })
+        .get('getAllApexPage','/getAllApexClass', async (ctx)=>{
+            try{
+                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                
+                var something = require('../util')
+                var result = await something.getAllApex(conn, "ApexClass")
+
+                return ctx.render('apex',{
+                    apex: result.records,
+                    type: "ApexClass"
+                })
+            }catch (err){
+                console.log("Error : " + err)
+            }
+        })
+        .get('getAllMeta','/getAllMeta', async (ctx) => {
+            try{
+                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                
+                var something = require('../util')
+                //var result = await something.getAllApexTrigger(conn)
+                
+//**may need to do query = tooling/query/?q=SELECT+Id+FROM+<<ObjectName>>+WHERE+NamespacePrefix=null*/
+
+//'ApexClass','ApexPage','ApexComponent','ApexTrigger'
+//Apex Trigger : ApexTrigger
+//EntityDefinitionId = Object Id
+/*
+conn.tooling.query("SELECT Id, Name, Status,EntityDefinitionId, MetaData FROM ApexTrigger GROUP BY TableEnumOrId").then(response => {
+    console.log(response)
+})*/
+//                conn.metadata.describe().then(response => {
+//                    console.log(response)
+//                })
+                
+                //return ctx.render('trigger',{
+                //    trigger: result
+                //})
             }catch (err){
                 console.log("Error : " + err)
             }
