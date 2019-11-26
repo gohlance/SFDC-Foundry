@@ -1,54 +1,9 @@
 
 
-function meta(conn) {
-    
-}
-
-function dofinally(conn) {
-    /*
-            var types = [{
-                type: 'CustomObject',
-                folder: null
-            }]
-            conn.metadata.list(types, function (err, meta) {
-                if (err) {
-                    return console.error('err', err)
-                }
-                console.log(meta)
-                console.log('metadata count: ' + metadata.length);
-                console.log('createdById: ' + meta.createdById);
-                console.log('createdByName: ' + meta.createdByName);
-                console.log('createdDate: ' + meta.createdDate);
-                console.log('fileName: ' + meta.fileName);
-                console.log('fullName: ' + meta.fullName);
-                console.log('id: ' + meta.id);
-                console.log('lastModifiedById: ' + meta.lastModifiedById);
-                console.log('lastModifiedByName: ' + meta.lastModifiedByName);
-                console.log('lastModifiedDate: ' + meta.lastModifiedDate);
-                console.log('manageableState: ' + meta.manageableState);
-                console.log('namespacePrefix: ' + meta.namespacePrefix);
-                console.log('type: ' + meta.type);
-            })*/
-
-    /*
-    //This get the fields in the Visualforce Page?
-    conn.tooling.sobject('ApexPage').describe(function (err, meta){
-        if (err){return console.error(err)}
-        console.log("label name : " + meta.label)
-        var i = 1
-        meta.fields.forEach(function(item){
-            console.log(' *' + i + ' :' + item.label)
-            i++
-        })
-    })
-    */
-}
-
-
 module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects: getAllObjects,
-    getAllApexTrigger: getAllApexTrigger,
+    getAllApex: getAllApex,
     getAllMeta, getAllMeta
 }
 
@@ -121,20 +76,24 @@ async function sObjectDescribe(conn, result) {
     }
 }
 
-async function getAllApexTrigger(conn) {
+async function getAllApex(conn, type) {
+    //TODO: Check what can ApexPage, ApexClass and ApexComponent return
     return new Promise((resolve, reject) => {
-        var result = []
-        conn.version = 47
-        var types = [{
-            type: 'ApexTrigger',
-            folder: null
-        }]
-       
-        conn.metadata.list(types, function (err, meta) {
-            if (err) {
-                return console.error('err', err)
-            }
-            resolve(meta)
+        var query = ""
+        if (type == "ApexTrigger"){
+            query = "SELECT Name, TableEnumOrId, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexTrigger"
+        }else if (type == "ApexPage"){
+            query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexPage"
+        }else if (type == "ApexClass"){
+            query = "SELECT Name, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexClass"
+        }else if (type == "ApexComponent"){
+            query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexComponent"
+        }
+        
+        conn.tooling.query(query, function(err,result){
+            if (err){console.log(err)}
+            console.log("A : " +result)
+            resolve(result)
         })
     })
 }
