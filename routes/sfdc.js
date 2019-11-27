@@ -101,10 +101,11 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 var something = require('../util')
-                var result// = await something.getAllObjects(conn)
+                var result = await something.getAllObjects(conn)
                 if (result == undefined){
                    result = await getObjectsInfoFromDB()
                 }else{
+                    //TODO: VERSION CONTROL when adding to database
                     saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["123",JSON.stringify(result)])
                 }
                 console.log("%%% : " + result)
