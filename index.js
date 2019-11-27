@@ -15,6 +15,8 @@ render(app, {
   cache: false,
   debug: true
 })
+var serve = require('koa-static');
+app.use(serve('./public'))
 
 //log all events to the terminal
 app.use(logger());
