@@ -4,23 +4,66 @@
         <div class="row"><%- totalObject%></div>
     </div>
     <div class="row">
-        <table class="table">
-            <tr><td>More than 100 fields in a object : </td><td><%- morethan100%></td></tr>
-            <tr><td>Less than 100 fields in a object : </td><td><%- lessthan100%></td></tr>
-        </table>
+       <div class="row">
+                <div class="col">
+                        More than 100 fields in a object : 
+                        <svg id="fillgauge1" width="97%" height="100"></svg>
+                        <%- morethan100%>
+                </div>
+                <div class="col">
+                        Less than 100 fields in a object : 
+                        <svg id="fillgauge2" width="97%" height="100"></svg>
+                        <%- lessthan100%>
+                </div>
+         </div>           
     </div>
     <div class="row">
         <div class="col">
             <table class="table">
                 <thead>All Objects ( <%-allObject.length%> )</thead>
+                <th>Object Name</th>
+                <th>Custom</th>
+                <th>Total Fields</th>
+                <th>Label</th>
+                <th>ChildRelationship</th>
+                <th>Record Types</th>
+                <th>Layout</th>
                 <% for(var i =0; i< allObject.length; i ++){ %>
                 <tr>
-                    <td><%- allObject[i].Objectname%> / <%-allObject[i].Custom%></td>
-                    <td> ( <%- allObject[i].totalfields%> )</td>
+                    <td><%- allObject[i].Objectname%></td>
+                    <td> <%-allObject[i].Custom%></td>
+                    <td> <%- allObject[i].totalfields%> </td>
                     <td> <%- allObject[i].Label%> </td>
+                    <td> <%- allObject[i].childRelationships%> </td>
+                    <td> <%- allObject[i].recordType%> </td>
+                    <td> <%- allObject[i].layout%> </td>
                 </tr>
                 <%}%>    
             </table>
         </div>
     </div> 
 </div>
+<script src="/liquidFillGauge.js"></script>
+<style>
+        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+</style>
+<script>
+        var gauge1 = loadLiquidFillGauge("fillgauge1", '<%= morethan100%>'/'<%=totalObject%>' );
+        var config1 = liquidFillGaugeDefaultSettings();
+        config1.circleColor = "#FF7777";
+        config1.textColor = "#FF4444";
+        config1.waveTextColor = "#FFAAAA";
+        config1.waveColor = "#FFDDDD";
+        config1.circleThickness = 0.2;
+        config1.textVertPosition = 0.2;
+        config1.waveAnimateTime = 1000;
+        var gauge2 = loadLiquidFillGauge("fillgauge2", '<%= lessthan100%>'/'<%=totalObject%>' );
+        var config2 = liquidFillGaugeDefaultSettings();
+        config1.circleColor = "#FF7777";
+        config1.textColor = "#FF4444";
+        config1.waveTextColor = "#FFAAAA";
+        config1.waveColor = "#FFDDDD";
+        config1.circleThickness = 0.2;
+        config1.textVertPosition = 0.2;
+        config1.waveAnimateTime = 1000;
+</script>

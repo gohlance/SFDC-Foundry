@@ -8,27 +8,30 @@ var oauth2 = new jsforce.OAuth2({
     clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
+//*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQBbs_0gn36Bp.QJxl4QwUwjOtPuSXdbdfLuW2bpEG1ozRrSgd43vqQwkx5LQefkeKYYlF2Zh.Sfl9qN.f4NvrsJwi8b5"
+global.accesscode = "00D46000001Uq6O!AQoAQHTXEXCAoy_VVkwOGu2zj1fGiWKdgGAdEsQEP_ub65x7.B.mR8UY7abQ1mprCjheLZGEukoyBX.4ynIVohPuUp22gozA"
 
 //PG SETUP
 const { Client } = require('pg')
 const client = new Client({
-    user: 'dbuser',
-    host: 'database.server.com',
-    database: 'mydb',
-    password: 'secretpassword',
-    port: 3211,
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Beaver',
+    password: 'P@ssw0rd1',
+    port: 5432,
   })
 
 async function saveToDataBase(query, result){
     client.connect()
     try{
         await client.query('BEGIN')
-        client.query(query, [result])
+        client.query(query, [result[0],result[1]])
+
         await client.query('COMMIT')
-    }catch (err){
+    }catch (Error){
         await client.query('ROLLBACK')
+        throw Error
         console.log("Database : " + err)
     }
 }
@@ -89,10 +92,10 @@ module.exports = ({
                 
                 console.log("%%% : " + result)
 
-                saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1)", result)
+                saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["123",JSON.stringify(result)])
                 return ctx.render('objects', {
                     allObject: result.allObject,
-                    totalObject: result.allObject,
+                    totalObject: result.allObject.length,
                     morethan100: result.morethan100,
                     lessthan100: result.lessthan100
                 })
@@ -176,6 +179,19 @@ module.exports = ({
             }catch (err){
                 console.log("Error : " + err)
             }
+        })
+        .get('testing','/testing', (ctx)=>{
+            client.connect()
+    try{
+        client.query('BEGIN')
+        var query = "INSERT INTO objects (orgid) VALUES ($1)"
+        client.query(query, ["123"])
+
+        client.query('COMMIT')
+    }catch (Error){
+        client.query('ROLLBACK')
+        console.log("Database : " + err)
+    }
         })
         .get('getAllMeta','/getAllMeta', async (ctx) => {
             try{
