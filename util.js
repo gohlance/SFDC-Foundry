@@ -1,5 +1,3 @@
-
-
 module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects: getAllObjects,
@@ -8,7 +6,6 @@ module.exports = {
 }
 
 async function getAllMeta(conn){
-
 }
 
 async function getAllObjects(conn) {
@@ -57,7 +54,7 @@ async function sObjectDescribe(conn, result) {
         var morethan100fields = 0;
         var allObjectTotalFields = await Promise.all(result.map(async (item) => {
             var totalfields = await conn.sobject(item.name).describe().then(response => {
-                return response.fields.length
+                return {totalfields: response.fields.length, layout: response.namedLayoutInfos.length, childRelatioship: response.childRelationships.length, recordType:response.recordTypeInfos.length}
             })
             //For Debug
             //console.log("custom " + i + ": " + some)
@@ -68,7 +65,7 @@ async function sObjectDescribe(conn, result) {
                 lessthan100fields++
             }
             i++
-            return {Objectname: item.name, totalfields: totalfields, Custom: item.custom, Label: item.label}
+            return {Objectname: item.name, totalfields: totalfields.totalfields, Custom: item.custom, Label: item.label, childRelationships: totalfields.childRelationships, recordType: totalfields.recordType, layout: totalfields.layout}
         }))
         return {allObject: allObjectTotalFields, morethan100: morethan100fields, lessthan100: lessthan100fields}
     } catch (err) {

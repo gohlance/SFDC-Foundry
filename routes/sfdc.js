@@ -1,6 +1,6 @@
 
+//JSFORCE SETUP
 const jsforce = require('jsforce')
-
 var oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
     // loginUrl : 'https://test.salesforce.com',
@@ -8,6 +8,30 @@ var oauth2 = new jsforce.OAuth2({
     clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQBbs_0gn36Bp.QJxl4QwUwjOtPuSXdbdfLuW2bpEG1ozRrSgd43vqQwkx5LQefkeKYYlF2Zh.Sfl9qN.f4NvrsJwi8b5"
+
+//PG SETUP
+const { Client } = require('pg')
+const client = new Client({
+    user: 'dbuser',
+    host: 'database.server.com',
+    database: 'mydb',
+    password: 'secretpassword',
+    port: 3211,
+  })
+
+async function saveToDataBase(query, result){
+    client.connect()
+    try{
+        await client.query('BEGIN')
+        client.query(query, [result])
+        await client.query('COMMIT')
+    }catch (err){
+        await client.query('ROLLBACK')
+        console.log("Database : " + err)
+    }
+}
 
 module.exports = ({
     router
@@ -55,8 +79,6 @@ module.exports = ({
         })
         .get('getAllObjects', '/getAllObjects', async (ctx) => {
             try {
-                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQJs918ATMWvMEx.YQ_vkzvCKedeDjcCFvFFQHxH8FjyQgUrxVWHHv2vE2kt8F_eV2lutz1nz68Mt_h2V4ITYMF_lvkSG"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
@@ -65,7 +87,9 @@ module.exports = ({
                 var something = require('../util')
                 var result = await something.getAllObjects(conn)
                 
-                //console.log("%%% : " + result)
+                console.log("%%% : " + result)
+
+                saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1)", result)
                 return ctx.render('objects', {
                     allObject: result.allObject,
                     totalObject: result.allObject,
@@ -79,8 +103,6 @@ module.exports = ({
         })
         .get('getAllApexTrigger','/getAllApexTrigger', async (ctx)=>{
             try{
-                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
@@ -89,7 +111,7 @@ module.exports = ({
                 
                 var something = require('../util')
                 var result = await something.getAllApex(conn, "ApexTrigger")
-console.log(result)
+
                 return ctx.render('trigger',{
                     trigger: result.records,
                     type: "ApexTrigger"
@@ -100,8 +122,6 @@ console.log(result)
         })
         .get('getAllApexPage','/getAllApexPage', async (ctx)=>{
             try{
-                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
@@ -121,8 +141,6 @@ console.log(result)
         })
         .get('getAllApexPage','/getAllApexComponent', async (ctx)=>{
             try{
-                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
@@ -142,8 +160,6 @@ console.log(result)
         })
         .get('getAllApexPage','/getAllApexClass', async (ctx)=>{
             try{
-                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
@@ -163,8 +179,6 @@ console.log(result)
         })
         .get('getAllMeta','/getAllMeta', async (ctx) => {
             try{
-                global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-                global.accesscode = "00D46000001Uq6O!AQoAQKl86AazVu5Da22qb4vEO9gunaizZ3Y.6FBsfbi1DPMEMnigcBopmF3xIj2Q0VYwRMZ0qVsevVplhfwfxR1gbcCU1vAU"
                 var conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
