@@ -29,10 +29,23 @@ async function saveToDataBase(query, result){
         client.query(query, [result[0],result[1]])
 
         await client.query('COMMIT')
+        await client.end()
     }catch (Error){
         await client.query('ROLLBACK')
         throw Error
         console.log("Database : " + err)
+    }
+    
+}
+async function getObjectsInfoFromDB() {
+    try{
+        client.connect()
+        var result
+        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: ['123']}
+        result = await client.query(query)
+        return result.rows[0].objectinfo
+    }catch (err){
+        throw err
     }
 }
 
@@ -88,11 +101,14 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 var something = require('../util')
-                var result = await something.getAllObjects(conn)
-                
+                var result// = await something.getAllObjects(conn)
+                if (result == undefined){
+                   result = await getObjectsInfoFromDB()
+                }else{
+                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["123",JSON.stringify(result)])
+                }
                 console.log("%%% : " + result)
 
-                saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["123",JSON.stringify(result)])
                 return ctx.render('objects', {
                     allObject: result.allObject,
                     totalObject: result.allObject.length,
