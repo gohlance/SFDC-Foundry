@@ -59,7 +59,7 @@ async function sObjectDescribe(conn, result) {
             //For Debug
             //console.log("custom " + i + ": " + some)
             
-            if (totalfields > 100){
+            if (totalfields.totalfields > 100){
                 morethan100fields++
             }else{
                 lessthan100fields++

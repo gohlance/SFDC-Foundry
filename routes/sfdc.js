@@ -101,7 +101,7 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 var something = require('../util')
-                var result = await something.getAllObjects(conn)
+                var result //= await something.getAllObjects(conn)
                 if (result == undefined){
                    result = await getObjectsInfoFromDB()
                 }else{
