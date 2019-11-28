@@ -100,7 +100,7 @@ module.exports = ({
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
-
+                var random =""
                 conn.describeGlobal
                 var something = require('../util')
                 var result //= await something.getAllObjects(conn)
