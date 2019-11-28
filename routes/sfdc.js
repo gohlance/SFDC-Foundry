@@ -9,8 +9,9 @@ var oauth2 = new jsforce.OAuth2({
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
 //*** Only for Development */
-global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQHTXEXCAoy_VVkwOGu2zj1fGiWKdgGAdEsQEP_ub65x7.B.mR8UY7abQ1mprCjheLZGEukoyBX.4ynIVohPuUp22gozA"
+//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+global.instanceUrl = "https://ap15.salesforce.com"
+global.accesscode = "00D2v000002A8hI!ARsAQJQEzbYWdHwV6N4KzM26IZOMN6pFTL4ExatNdLz5gaBvCUQx4yxTU4IIJGuH41oHzxQa6qMqmWJ_hozU3a1IJeRAK8Wl"
 
 //PG SETUP
 const { Client } = require('pg')
@@ -32,7 +33,6 @@ async function saveToDataBase(query, result){
         await client.end()
     }catch (Error){
         await client.query('ROLLBACK')
-        throw Error
         console.log("Database : " + err)
     }
     
@@ -41,11 +41,11 @@ async function getObjectsInfoFromDB() {
     try{
         client.connect()
         var result
-        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: ['123']}
+        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: ['1234']}
         result = await client.query(query)
-        return result.rows[0].objectinfo
+        return result.rows[0]["objectinfo"]
     }catch (err){
-        throw err
+        console.log("Error 1: " + err)
     }
 }
 
@@ -100,21 +100,23 @@ module.exports = ({
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
+
+                conn.describeGlobal
                 var something = require('../util')
                 var result //= await something.getAllObjects(conn)
                 if (result == undefined){
                    result = await getObjectsInfoFromDB()
                 }else{
                     //TODO: VERSION CONTROL when adding to database
-                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["123",JSON.stringify(result)])
+                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["1234",JSON.stringify(result)])
                 }
                 console.log("%%% : " + result)
 
                 return ctx.render('objects', {
-                    allObject: result.allObject,
-                    totalObject: result.allObject.length,
-                    morethan100: result.morethan100,
-                    lessthan100: result.lessthan100
+                    allObject: result["allObject"],
+                    totalObject: result["allObject"].length,
+                    moreObject: result.morethan100,
+                    lessObject: result.lessthan100
                 })
 
             } catch (err) {
