@@ -96,3 +96,13 @@ async function getAllApex(conn, type) {
         })
     })
 }
+
+async function getAllLayout(conn){
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function(err, result){
+            if (err){console.log(err)}
+            console.log("A: " + result)
+            resolve(result)
+        })
+    })
+}
