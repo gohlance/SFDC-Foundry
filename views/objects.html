@@ -1,7 +1,7 @@
-    <div class="row row mx-md-n5">
-       <div class="row">
+    <div class="row">
+       
                 <div class="col">
-                        <div class="card" style="width: 18rem;height:220px">
+                        <div class="card" style="width: 20rem;height:220px">
                                 <svg id="fillgauge1" width="97%" height="100" style="margin-top:2"></svg>
                                 <div class="card-body text-center">
                                   <h5 class="card-title"><%- moreObject %> </h5>
@@ -10,7 +10,7 @@
                         </div>
                 </div>
                 <div class="col">
-                        <div class="card" style="width: 18rem;height:220px">
+                        <div class="card" style="width: 20rem;height:220px">
                                 <svg id="fillgauge2" width="97%" height="100" style="margin-top:2"></svg>
                                 <div class="card-body text-center">
                                   <h5 class="card-title"><%- lessObject %></h5>
@@ -19,7 +19,7 @@
                         </div>
                 </div>
                 <div class="col">
-                        <div class="card" style="width: 18rem;height:220px">
+                        <div class="card" style="width: 20rem;height:220px">
                                 <div class="card-body text-center">
                                     <h2 class="card-title"><%- totalObject%></h2>
                                     <h5 class="card-title">Total Object(s)</h5>
@@ -29,13 +29,13 @@
                                   </a>
                         </div>
                 </div>
-         </div>           
+                
     </div>
     <div class="row">
     <div class="collapse" id="collapseExample">
         
         <div class="col">
-            <table data-toggle="table" id="dtObjects" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <table id="dtObjects" class="table table-striped table-bordered table-sm sortable" cellspacing="0" width="100%">
                 <thead> 
                 <th >Object Name</th>
                 <th >Custom</th>
@@ -63,8 +63,15 @@
     </div>
     </div> 
 <script src="/liquidFillGauge.js"></script>
+<script src="/sorttable.js"></script>
 <style>
         .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+        table.sortable thead {
+                background-color:#eee;
+                color:#666666;
+                font-weight: bold;
+                cursor: default;
+        }
 </style>
 <script>
         var morethan1001 = <%= moreObject %>;
