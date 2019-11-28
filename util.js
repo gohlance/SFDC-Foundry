@@ -29,15 +29,17 @@ async function getAllObjects(conn) {
                     }
                 })
                 */
+               //**** This condition is wrong */
+               /*
                 res.sobjects.forEach(function (sobject) {
                     if (!sobject.deletable && !sobject.deprecatedAndHidden) {
                         finalsetOfoBject.push(sobject)
                     }
                 })
-
+*/
                 //console.log('Count C : ' + customObject.length + "And Standard : " + standardObject.length)
                 //console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
-                resolve(finalsetOfoBject)
+                resolve(res.sobjects)
             })
         }).then(result => sObjectDescribe(conn, result))
     } catch (err) {
