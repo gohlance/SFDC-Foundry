@@ -100,7 +100,7 @@ module.exports = ({
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
-
+                var random =""
                 conn.describeGlobal
                 var something = require('../util')
                 var result //= await something.getAllObjects(conn)
@@ -134,8 +134,8 @@ module.exports = ({
                 var something = require('../util')
                 var result = await something.getAllApex(conn, "ApexTrigger")
 
-                return ctx.render('trigger',{
-                    trigger: result.records,
+                return ctx.render('apex',{
+                    apex: result.records,
                     type: "ApexTrigger"
                 })
             }catch (err){
@@ -153,8 +153,8 @@ module.exports = ({
                 var something = require('../util')
                 var result = await something.getAllApex(conn, "ApexPage")
 
-                return ctx.render('trigger',{
-                    trigger: result.records,
+                return ctx.render('apex',{
+                    apex: result.records,
                     type: "ApexPage"
                 })
             }catch (err){
@@ -172,8 +172,8 @@ module.exports = ({
                 var something = require('../util')
                 var result = await something.getAllApex(conn, "ApexComponent")
 
-                return ctx.render('trigger',{
-                    trigger: result.records,
+                return ctx.render('apex',{
+                    apex: result.records,
                     type: "ApexComponent"
                 })
             }catch (err){
@@ -199,19 +199,6 @@ module.exports = ({
                 console.log("Error : " + err)
             }
         })
-        .get('testing','/testing', (ctx)=>{
-            client.connect()
-    try{
-        client.query('BEGIN')
-        var query = "INSERT INTO objects (orgid) VALUES ($1)"
-        client.query(query, ["123"])
-
-        client.query('COMMIT')
-    }catch (Error){
-        client.query('ROLLBACK')
-        console.log("Database : " + err)
-    }
-        })
         .get('getAllMeta','/getAllMeta', async (ctx) => {
             try{
                 var conn = new jsforce.Connection({
@@ -221,6 +208,10 @@ module.exports = ({
                 })
                 
                 var something = require('../util')
+                conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function(err, result){
+                    if (err){console.log(err)}
+                    console.log("A: " + result)
+                })
                 //var result = await something.getAllApexTrigger(conn)
                 
 //**may need to do query = tooling/query/?q=SELECT+Id+FROM+<<ObjectName>>+WHERE+NamespacePrefix=null*/
