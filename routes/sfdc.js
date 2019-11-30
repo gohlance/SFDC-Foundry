@@ -1,7 +1,6 @@
 
 //JSFORCE SETUP
 const jsforce = require('jsforce')
-const pgdb =require('../pg-db')
 var sfdcmethods = require('../util')
 var oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
@@ -14,6 +13,48 @@ var oauth2 = new jsforce.OAuth2({
 //global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 global.instanceUrl = "https://ap15.salesforce.com"
 global.accesscode = "00D2v000002A8hI!ARsAQMnwRiRIEIhDV7NfJ6EmsZDSowVMQVzOyGA0qMGZLOdbJ09q1Ip88rqDOxikIB_YVjQWfMdOzSm7TNmIJ14GlNjMgyzs"
+
+
+//PG SETUP
+const { Client } = require('pg')
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Beaver',
+    password: 'P@ssw0rd1',
+    port: 5432,
+  })
+
+async function saveToDataBase(query, result){
+    client.connect()
+    try{
+        await client.query('BEGIN')
+        console.log("Trying to save the data")
+        client.query(query, [result[0],result[1]])
+
+        await client.query('COMMIT')
+        await client.end()
+    }catch (Error){
+        await client.query('ROLLBACK')
+        console.log("Database : " + err)
+    }
+    
+}
+
+
+async function getObjectsInfoFromDB() {
+    try{
+        client.connect()
+        
+        var result
+        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: ['567']}
+        result = await client.query(query)
+        await client.end()
+        return result.rows[0]["objectinfo"]
+    }catch (err){
+        console.log("Error 1: " + err)
+    }
+}
 
 module.exports = ({
     router
@@ -62,28 +103,6 @@ module.exports = ({
                 // now the session has been expired.
             });
         })
-        .get('getAllObjects2','/getAllObjects2', async (ctx) => {
-            try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-
-                var result //= await sfdcmethods.getAllObjects2(conn)
-                if (result == undefined){
-                    result = await pgdb.getObjectsInfoFromDB("56788")
-                    console.log("Hello")
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                   console.log("trying to save to database")
-                     saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["56788",JSON.stringify(result)])
-                 }
-            }catch (err){
-                console.log("Error [getAllObject2] : " + err)
-                throw err
-            }
-        })
         .get('getAllObjects', '/getAllObjects', async (ctx) => {
             try {
                 var conn = new jsforce.Connection({
@@ -93,12 +112,12 @@ module.exports = ({
                 })
                 
                 var something = require('../util')
-                var result = await something.getAllObjects(conn)
+                var result //= await something.getAllObjects(conn)
                 if (result == undefined){
-                   //result = await getObjectsInfoFromDB()
+                   result = await getObjectsInfoFromDB()
                 }else{
                     //TODO: VERSION CONTROL when adding to database
-                    //saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["567",JSON.stringify(result)])
+                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["567",JSON.stringify(result)])
                 }
                 console.log("%%% : " + result)
 

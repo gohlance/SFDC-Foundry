@@ -2,8 +2,8 @@ module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects: getAllObjects,
     getAllApex: getAllApex,
-    getAllMeta, getAllMeta,
-    getAllObjects2: getAllObjects2
+    getAllMeta, getAllMeta
+  
 }
 
 async function getAllMeta(conn){
@@ -72,44 +72,6 @@ async function sObjectDescribe(conn, result) {
             return {Objectname: item.name, totalfields: totalfields.totalfields, Custom: item.custom, Label: item.label, childRelationships: totalfields.childRelationships, recordType: totalfields.recordType, layout: totalfields.layout, createable: totalfields.createable, deletable:totalfields.deletable, undeletable:totalfields.undeletable}
         }))
         return {allObject: allObjectTotalFields, morethan100: morethan100fields, lessthan100: lessthan100fields}
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-async function getAllObjects2(conn) {
-    try {
-        return new Promise((resolve, reject) => {
-            conn.describeGlobal(function (err, res) {
-                if (err) {
-                    console.log("Error [getAllObjects2/describeGlobal] : " + err)
-                    throw err
-                }
-                console.log('No of Objects ' + res.sobjects.length)
-               
-                resolve(res.sobjects)
-            })
-        }).then(result => sObjectDescribe2(conn, result))
-    } catch (err) {
-        console.log("Error [getAllObjects2] : " + err)
-        throw err
-    }
-}
-
-async function sObjectDescribe2(conn, result) {
-
-    //TODO : this section can do child relationship
-    try {
-        var i = 0;
-        var lessthan100fields = 0;
-        var morethan100fields = 0;
-        var allInfoOfObjects = await Promise.all(result.map(async (item) => {
-            var objectDescribe = await conn.sobject(item.name).describe().then(response => {
-                return response
-            })
-            return {Object: item, ObjectDescription: objectDescribe}
-        }))
-        return {allInfoOfObjects}
     } catch (err) {
         console.log(err)
     }

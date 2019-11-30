@@ -44,6 +44,9 @@
                 <th >ChildRelationship</th>
                 <th >Record Types</th>
                 <th >Layout</th>
+                <th>createable</th>
+                <th>deletable</th>
+                <th>undeletable</th>
             </thead>
                 <tbody>
                 <% for(var i =0; i< allObject.length; i ++){ %>
@@ -55,6 +58,9 @@
                     <td> <%- allObject[i].childRelationships%> </td>
                     <td> <%- allObject[i].recordType%> </td>
                     <td> <%- allObject[i].layout%> </td>
+                    <td> <%- allObject[i].createable%> </td>
+                    <td> <%- allObject[i].deletable%> </td>
+                    <td> <%- allObject[i].undeletable%> </td>
                 </tr>
                 <%}%> 
                 </tbody>   
