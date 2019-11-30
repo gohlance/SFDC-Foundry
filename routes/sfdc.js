@@ -9,9 +9,9 @@ var oauth2 = new jsforce.OAuth2({
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
 //*** Only for Development */
-//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.instanceUrl = "https://ap15.salesforce.com"
-global.accesscode = "00D2v000002A8hI!ARsAQJQEzbYWdHwV6N4KzM26IZOMN6pFTL4ExatNdLz5gaBvCUQx4yxTU4IIJGuH41oHzxQa6qMqmWJ_hozU3a1IJeRAK8Wl"
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.instanceUrl = "https://ap15.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQB2Qiea4Koj2rzKTWtlv7bggp3Nkfh2O9FAwWCTWdOXNxcXfUbjqFHuUZIQczWxOlP861wZRy9kgzabF_YZ7BMdYwLWD"
 
 //PG SETUP
 const { Client } = require('pg')
@@ -27,6 +27,7 @@ async function saveToDataBase(query, result){
     client.connect()
     try{
         await client.query('BEGIN')
+        console.log("Trying to save the data")
         client.query(query, [result[0],result[1]])
 
         await client.query('COMMIT')
@@ -40,9 +41,11 @@ async function saveToDataBase(query, result){
 async function getObjectsInfoFromDB() {
     try{
         client.connect()
+        
         var result
-        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: ['1234']}
+        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: ['123']}
         result = await client.query(query)
+        await client.end()
         return result.rows[0]["objectinfo"]
     }catch (err){
         console.log("Error 1: " + err)
@@ -86,6 +89,9 @@ module.exports = ({
             }
         })
         .get('logout', '/logout', (ctx) => {
+            var conn = new jsforce.Connection({
+                oauth2: oauth2
+            })
             conn.logout(function (err) {
                 if (err) {
                     return console.error(err);
@@ -100,15 +106,14 @@ module.exports = ({
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
-                var random =""
-                conn.describeGlobal
+                
                 var something = require('../util')
-                var result //= await something.getAllObjects(conn)
+                var result = await something.getAllObjects(conn)
                 if (result == undefined){
-                   result = await getObjectsInfoFromDB()
+                   //result = await getObjectsInfoFromDB()
                 }else{
                     //TODO: VERSION CONTROL when adding to database
-                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["1234",JSON.stringify(result)])
+                    //saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["567",JSON.stringify(result)])
                 }
                 console.log("%%% : " + result)
 

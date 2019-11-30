@@ -1,0 +1,22 @@
+
+-- Drop table
+
+-- DROP TABLE public.meta;
+
+CREATE TABLE public.meta (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT meta_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.objects;
+
+CREATE TABLE public.objects (
+	id serial NOT NULL,
+	orgid text NULL,
+	objectinfo jsonb NULL,
+	CONSTRAINT objects_pkey PRIMARY KEY (id)
+);
