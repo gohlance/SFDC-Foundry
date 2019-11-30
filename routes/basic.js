@@ -3,6 +3,7 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', (ctx) => {
+      
       if (!global.accesscode || !global.instanceUrl) {
         return ctx.render('index')
       }else{

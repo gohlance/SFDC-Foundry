@@ -9,9 +9,9 @@ var oauth2 = new jsforce.OAuth2({
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
 //*** Only for Development */
-global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap15.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQB2Qiea4Koj2rzKTWtlv7bggp3Nkfh2O9FAwWCTWdOXNxcXfUbjqFHuUZIQczWxOlP861wZRy9kgzabF_YZ7BMdYwLWD"
+//global.accesscode = "00D46000001Uq6O!AQoAQB2Qiea4Koj2rzKTWtlv7bggp3Nkfh2O9FAwWCTWdOXNxcXfUbjqFHuUZIQczWxOlP861wZRy9kgzabF_YZ7BMdYwLWD"
 
 //PG SETUP
 const { Client } = require('pg')
