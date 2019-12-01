@@ -14,7 +14,6 @@ var oauth2 = new jsforce.OAuth2({
 global.instanceUrl = "https://ap15.salesforce.com"
 global.accesscode = "00D2v000002A8hI!ARsAQMnwRiRIEIhDV7NfJ6EmsZDSowVMQVzOyGA0qMGZLOdbJ09q1Ip88rqDOxikIB_YVjQWfMdOzSm7TNmIJ14GlNjMgyzs"
 
-
 //PG SETUP
 const { Client } = require('pg')
 const client = new Client({
@@ -41,13 +40,12 @@ async function saveToDataBase(query, result){
     
 }
 
-
 async function getObjectsInfoFromDB() {
     try{
         client.connect()
         
         var result
-        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: ['567']}
+        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: [global.orgId]}
         result = await client.query(query)
         await client.end()
         return result.rows[0]["objectinfo"]
@@ -82,10 +80,8 @@ module.exports = ({
                 //console.log("&&& : " + conn.userInfo.orgId)
 
                 global.accesscode = conn.accessToken
-                //global.refreshToken = conn.refreshToken
                 global.instanceUrl = conn.instanceUrl
                 global.orgId = conn.userInfo.orgId
-                //global.userinfo = conn.userInfo
             })
 
             if (!global.accesscode || !global.instanceUrl) {
@@ -111,13 +107,12 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 
-                var something = require('../util')
-                var result //= await something.getAllObjects(conn)
+                var result //= await sfdcmethods.getAllObjects(conn)
                 if (result == undefined){
                    result = await getObjectsInfoFromDB()
                 }else{
                     //TODO: VERSION CONTROL when adding to database
-                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["567",JSON.stringify(result)])
+                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
                 }
                 console.log("%%% : " + result)
 
@@ -129,7 +124,7 @@ module.exports = ({
                 })
 
             } catch (err) {
-                console.log("Error: getAllObjects " + err)
+                console.log("Error [getAllObjects] " + err)
             }
         })
         .get('getAllApexTrigger','/getAllApexTrigger', async (ctx)=>{
@@ -140,15 +135,14 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 
-                var something = require('../util')
-                var result = await something.getAllApex(conn, "ApexTrigger")
+                var result = await sfdcmethods.getAllApex(conn, "ApexTrigger")
 
                 return ctx.render('apex',{
                     apex: result.records,
                     type: "ApexTrigger"
                 })
             }catch (err){
-                console.log("Error : " + err)
+                console.log("Error [getAllApexTrigger]: " + err)
             }
         })
         .get('getAllApexPage','/getAllApexPage', async (ctx)=>{
@@ -159,15 +153,14 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 
-                var something = require('../util')
-                var result = await something.getAllApex(conn, "ApexPage")
+                var result = await sfdcmethods.getAllApex(conn, "ApexPage")
 
                 return ctx.render('apex',{
                     apex: result.records,
                     type: "ApexPage"
                 })
             }catch (err){
-                console.log("Error : " + err)
+                console.log("Error [getAllApexPage]: " + err)
             }
         })
         .get('getAllApexPage','/getAllApexComponent', async (ctx)=>{
@@ -177,16 +170,14 @@ module.exports = ({
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
-                
-                var something = require('../util')
-                var result = await something.getAllApex(conn, "ApexComponent")
+                var result = await sfdcmethods.getAllApex(conn, "ApexComponent")
 
                 return ctx.render('apex',{
                     apex: result.records,
                     type: "ApexComponent"
                 })
             }catch (err){
-                console.log("Error : " + err)
+                console.log("Error [getAllApexComponet]: " + err)
             }
         })
         .get('getAllApexPage','/getAllApexClass', async (ctx)=>{
@@ -197,15 +188,14 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 
-                var something = require('../util')
-                var result = await something.getAllApex(conn, "ApexClass")
+                var result = await sfdcmethods.getAllApex(conn, "ApexClass")
 
                 return ctx.render('apex',{
                     apex: result.records,
                     type: "ApexClass"
                 })
             }catch (err){
-                console.log("Error : " + err)
+                console.log("Error [getAllApexClass] : " + err)
             }
         })
         .get('getAllMeta','/getAllMeta', async (ctx) => {
@@ -216,31 +206,35 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 
-                var something = require('../util')
-                conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function(err, result){
-                    if (err){console.log(err)}
-                    console.log("A: " + result)
-                })
-                //var result = await something.getAllApexTrigger(conn)
+                var result = await sfdcmethods.getAllMeta(conn)
+                if (result == undefined){
+                    //result = await getObjectsInfoFromDB()
+                 }else{
+                     //TODO: VERSION CONTROL when adding to database
+                     saveToDataBase("INSERT INTO meta (orgid, layoutinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
+                 }
                 
-//**may need to do query = tooling/query/?q=SELECT+Id+FROM+<<ObjectName>>+WHERE+NamespacePrefix=null*/
-
-//'ApexClass','ApexPage','ApexComponent','ApexTrigger'
-//Apex Trigger : ApexTrigger
-//EntityDefinitionId = Object Id
-/*
-conn.tooling.query("SELECT Id, Name, Status,EntityDefinitionId, MetaData FROM ApexTrigger GROUP BY TableEnumOrId").then(response => {
-    console.log(response)
-})*/
-//                conn.metadata.describe().then(response => {
-//                    console.log(response)
-//                })
-                
-                //return ctx.render('trigger',{
-                //    trigger: result
-                //})
             }catch (err){
-                console.log("Error : " + err)
+                console.log("Error [getAllMeta]: " + err)
+            }
+        })
+        .get('getAllLayout','/getAllLayout', async (ctx)=>{
+            try{
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                var result =await sfdcmethods.getAllLayout(conn)
+
+                if (result == undefined){
+                    //result = await getObjectsInfoFromDB()
+                 }else{
+                     //TODO: VERSION CONTROL when adding to database
+                     saveToDataBase("INSERT INTO layouts (orgid, layoutinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
+                 }
+            }catch (err){
+                console.log("Error [getAllLayout]:" + err)
             }
         })
 }

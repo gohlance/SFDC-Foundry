@@ -1,50 +1,46 @@
+const jsforce = require('jsforce')
+var oauth2 = new jsforce.OAuth2({
+    // you can change loginUrl to connect to sandbox or prerelease env.
+    // loginUrl : 'https://test.salesforce.com',
+    clientId: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
+    clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
+    redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
+});
+
 module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
     getAllObjects: getAllObjects,
     getAllApex: getAllApex,
-    getAllMeta, getAllMeta
-  
+    getAllMeta: getAllMeta,
+    getAllLayout, getAllLayout
 }
 
 async function getAllMeta(conn){
+    try {
+        return new Promise((resolve, reject) => {
+            conn.metadata.describe().then(response => {
+                resolve(response)
+            })
+        })}catch (err){
+            console.log("Error [util/getAllMeta]: " + err)
+        }
 }
 
 async function getAllObjects(conn) {
     try {
         return new Promise((resolve, reject) => {
-            var customObject = []
-            var standardObject = []
-            var finalsetOfoBject = []
+           
             conn.describeGlobal(function (err, res) {
                 if (err) {
                     return console.log(err)
                 }
-                console.log('No of Objects ' + res.sobjects.length)
-                /*
-                res.sobjects.forEach(function (sobject) {
-                    if (sobject.custom && !sobject.deletable && !sobject.deprecatedAndHidden) {
-                       customObject.push(sobject)
-                       
-                    } else if (!sobject.custom && !sobject.deletable && !sobject.deprecatedAndHidden) {
-                        standardObject.push(sobject)
-                    }
-                })
-                */
-               //**** This condition is wrong */
-               /*
-                res.sobjects.forEach(function (sobject) {
-                    if (!sobject.deletable && !sobject.deprecatedAndHidden) {
-                        finalsetOfoBject.push(sobject)
-                    }
-                })
-*/
-                //console.log('Count C : ' + customObject.length + "And Standard : " + standardObject.length)
-                //console.log("Count  finalsetOfoBject: " + finalsetOfoBject.length)
+                console.log('[util/getAllObjects] No of Objects ' + res.sobjects.length)
+                
                 resolve(res.sobjects)
             })
         }).then(result => sObjectDescribe(conn, result))
     } catch (err) {
-        console.log(err)
+        console.log("[util/getAllObjects]" + err)
     }
 }
 
@@ -73,7 +69,7 @@ async function sObjectDescribe(conn, result) {
         }))
         return {allObject: allObjectTotalFields, morethan100: morethan100fields, lessthan100: lessthan100fields}
     } catch (err) {
-        console.log(err)
+        console.log("[util/sObjectDescribe]" + err)
     }
 }
 
@@ -93,18 +89,118 @@ async function getAllApex(conn, type) {
         
         conn.tooling.query(query, function(err,result){
             if (err){console.log(err)}
-            console.log("A : " +result)
+            console.log("[util/getAllApex] : " +result)
+            resolve(result)
+        })
+    })
+}
+//This section onwards is not tested
+async function getAllLayout(conn){
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT FullName,  Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function(err, result){
+            if (err){
+                console.log("Error [util/getAllLayout]: " + err)
+            }
+            console.log("[util/getAllLayout] : " + result)
             resolve(result)
         })
     })
 }
 
-async function getAllLayout(conn){
+async function getAllProfile(conn){
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function(err, result){
-            if (err){console.log(err)}
-            console.log("A: " + result)
+        conn.tooling.query("SELECT Description, FullName, Name FROM Profile", function(err, result){
+            if (err){
+                console.log("Error [util/getAllLayout]: " + err)
+            }
+            console.log("[util/getAllLayout] : " + result)
             resolve(result)
         })
     })
 }
+
+async function getAllProfile2Layout(conn){
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout", function(err, result){
+            if (err){
+                console.log("Error [util/getAllLayout]: " + err)
+            }
+            console.log("[util/getAllLayout] : " + result)
+            resolve(result)
+        })
+    })
+}
+
+async function getAllRecordType(conn){
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT BusinessProcessId, Description, Name, IsActive,ManageableState,SobjectType FROM RecordTYpe", function(err, result){
+            if (err){
+                console.log("Error [util/getAllRecordType] : " + err)
+            }
+            console.log("[util/getAllLayout] : " + result)
+            resolve(result)
+        })
+    })
+}
+
+//NOT Tested : May need to do after SOBJECTDESCRIBE.
+async function getAllValidationRules(conn){
+    return new Promise ((resolve, reject) =>{
+        conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,ValidationName FROM ValidationRule", function(err, result){
+            if (err){
+                console.log("Error [util/getAllValidationRules] : " + err)
+            }
+            console.log("[util/getAllValidationRules] : " + result)
+            resolve(result)
+        })
+    })
+}
+
+async function getAllWorkflowRules(conn){
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT ManageableState,Name,TableEnumOrId FROM WORKFLOWRULE", function(err, result){
+            if (err){
+                console.log("Error [util/getAllWorkflowRules] : " + err)
+            }
+            console.log("[util/getAllWorkflowRules] : "+ result)
+            resolve(result)
+        })
+    })
+}
+
+async function getAllBusinessProcess(conn){
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT Description,IsActive,ManageableState, Name, FROM BusinessProcess", function(err, result){
+            if (err){
+                console.log("Error [util/getAllWorkflowRules] : " + err)
+            }
+            console.log("[util/getAllBusinessProcess] : "+ result)
+            resolve(result)
+        })
+    })
+}
+
+async function getAllCustomApplication(conn){
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT Description,DeveloperName,FullName,IsNavAutoTempTabsDisabled,IsNavPersonalizationDisabled,ManageableState,NavType,UiType,UtilityBar FROM CustomApplication", function(err, result){
+            if (err){
+                console.log("Error [util/getAllWorkflowRules] : " + err)
+            }
+            console.log("[util/getAllCustomApplication] : "+ result)
+            resolve(result)
+        })
+    })
+}
+
+
+
+/**
+ * Get metadata for profiles and for layouts. The layouts metadata provides you a full list of page layouts across all objects, while the profile files contain the info on which page layout/record type combos the profile is associated with.
+
+Compare the profiles' assignments to page layouts to the list of page layouts. I did this using some scripting code which parsed through the xml files.
+ */
+
+ /**
+  * Objects - Triggers on Same Event
+  * Objects - Validation Rules Active
+  */

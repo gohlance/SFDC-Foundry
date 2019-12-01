@@ -1,13 +1,48 @@
 
 -- Drop table
 
--- DROP TABLE public.meta;
+-- DROP TABLE public.metas;
 
-CREATE TABLE public.meta (
+CREATE TABLE public.metas (
 	id serial NOT NULL,
 	orgid text NULL,
 	meta jsonb NULL,
-	CONSTRAINT meta_pkey PRIMARY KEY (id)
+	CONSTRAINT metas_pkey PRIMARY KEY (id)
+);
+
+
+-- Drop table
+
+-- DROP TABLE public.profileslayouts;
+
+CREATE TABLE public.profileslayouts (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT metas_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.profiles;
+
+CREATE TABLE public.profiles (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT metas_pkey PRIMARY KEY (id)
+);
+
+
+-- Drop table
+
+-- DROP TABLE public.layouts;
+
+CREATE TABLE public.layouts (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT layouts_pkey PRIMARY KEY (id)
 );
 
 -- Drop table
@@ -20,3 +55,59 @@ CREATE TABLE public.objects (
 	objectinfo jsonb NULL,
 	CONSTRAINT objects_pkey PRIMARY KEY (id)
 );
+
+-- Drop table
+
+-- DROP TABLE public.customApps;
+
+CREATE TABLE public.customApps (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT layouts_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.businessprocess;
+
+CREATE TABLE public.businessprocess (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT layouts_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.workflowrules;
+
+CREATE TABLE public.workflowrules (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT layouts_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.validationrules;
+
+CREATE TABLE public.validationrules (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT layouts_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.recordtypes;
+
+CREATE TABLE public.recordtypes (
+	id serial NOT NULL,
+	orgid text NULL,
+	meta jsonb NULL,
+	CONSTRAINT layouts_pkey PRIMARY KEY (id)
+);
+
