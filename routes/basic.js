@@ -3,7 +3,8 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', (ctx) => {
-      
+      console.log("Gloabl: " + global.accesscode)
+      console.log("Global :" + global.instanceUrl)
       if (!global.accesscode || !global.instanceUrl) {
         return ctx.render('index')
       }else{
