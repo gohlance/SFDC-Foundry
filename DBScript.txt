@@ -1,3 +1,7 @@
+psql -h localhost -p 5432 -U my_user -d my_database -f INSTALL_PGMEMENTO.sql
+
+psql -h localhost -p 5432 -U my_user -d my_database -f INIT.sql
+
 
 -- Drop table
 
