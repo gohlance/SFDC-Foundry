@@ -13,46 +13,20 @@ var oauth2 = new jsforce.OAuth2({
 //global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 global.instanceUrl = "https://ap15.salesforce.com"
 global.accesscode = "00D2v000002A8hI!ARsAQMnwRiRIEIhDV7NfJ6EmsZDSowVMQVzOyGA0qMGZLOdbJ09q1Ip88rqDOxikIB_YVjQWfMdOzSm7TNmIJ14GlNjMgyzs"
-
+//global.orgId = "1122019"
+global.orgId="567"
 //PG SETUP
-const { Client } = require('pg')
-const client = new Client({
+const Pool = require('pg-pool')
+const pgconfig = {
     user: 'postgres',
     host: 'localhost',
     database: 'Beaver',
     password: 'P@ssw0rd1',
     port: 5432,
-  })
-
-async function saveToDataBase(query, result){
-    client.connect()
-    try{
-        await client.query('BEGIN')
-        console.log("Trying to save the data")
-        client.query(query, [result[0],result[1]])
-
-        await client.query('COMMIT')
-        await client.end()
-    }catch (Error){
-        await client.query('ROLLBACK')
-        console.log("Database : " + err)
-    }
-    
+    max: 20, // set pool max size to 20
+    min: 4
 }
-
-async function getObjectsInfoFromDB() {
-    try{
-        client.connect()
-        
-        var result
-        const query = {name: 'fetch-data', text: 'SELECT objectinfo FROM objects WHERE orgid = $1', values: [global.orgId]}
-        result = await client.query(query)
-        await client.end()
-        return result.rows[0]["objectinfo"]
-    }catch (err){
-        console.log("Error 1: " + err)
-    }
-}
+const pool = new Pool(pgconfig)
 
 module.exports = ({
     router
@@ -75,10 +49,8 @@ module.exports = ({
                     return console.error(err)
                 }
                 console.log("&&& : " + conn.accessToken)
-                //console.log("&&& : " + conn.refreshToken)
                 console.log("&&& : " + conn.instanceUrl)
-                //console.log("&&& : " + conn.userInfo.orgId)
-
+                
                 global.accesscode = conn.accessToken
                 global.instanceUrl = conn.instanceUrl
                 global.orgId = conn.userInfo.orgId
@@ -109,18 +81,18 @@ module.exports = ({
                 
                 var result //= await sfdcmethods.getAllObjects(conn)
                 if (result == undefined){
-                   result = await getObjectsInfoFromDB()
+                   result = await pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
                 }else{
                     //TODO: VERSION CONTROL when adding to database
-                    saveToDataBase("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
+                   await pool.query("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
                 }
                 console.log("%%% : " + result)
 
                 return ctx.render('objects', {
-                    allObject: result["allObject"],
-                    totalObject: result["allObject"].length,
-                    moreObject: result.morethan100,
-                    lessObject: result.lessthan100
+                    allObject: result.rows[0]["objectinfo"]["allObject"],
+                    totalObject: result.rows[0]["objectinfo"]["allObject"].length,
+                    moreObject: result.rows[0]["objectinfo"].morethan100,
+                    lessObject: result.rows[0]["objectinfo"].lessthan100
                 })
 
             } catch (err) {
