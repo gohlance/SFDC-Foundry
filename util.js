@@ -43,7 +43,6 @@ async function getAllObjects(conn) {
         console.log("[util/getAllObjects]" + err)
     }
 }
-
 async function sObjectDescribe(conn, result) {
 
     //TODO : this section can do child relationship
@@ -51,13 +50,12 @@ async function sObjectDescribe(conn, result) {
         var i = 0;
         var lessthan100fields = 0;
         var morethan100fields = 0;
+       
         var allObjectTotalFields = await Promise.all(result.map(async (item) => {
-            
-            var totalfields = await conn.sobject(item.name).describe().then(response => {
+          
+            var totalfields = await conn.sobject(item.name).describe().then(async response => {
                 return {totalfields: response.fields.length, layout: response.namedLayoutInfos.length, childRelatioship: response.childRelationships.length, recordType:response.recordTypeInfos.length, createable: response.createable, deletable:response.deletable, undeletable:response.undeletable}
             })
-            //For Debug
-            //console.log("custom " + i + ": " + some)
             
             if (totalfields.totalfields > 100){
                 morethan100fields++

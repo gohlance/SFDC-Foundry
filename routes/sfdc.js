@@ -10,9 +10,9 @@ var oauth2 = new jsforce.OAuth2({
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
 //*** Only for Development */
-//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.instanceUrl = "https://ap15.salesforce.com"
-global.accesscode = "00D2v000002A8hI!ARsAQMnwRiRIEIhDV7NfJ6EmsZDSowVMQVzOyGA0qMGZLOdbJ09q1Ip88rqDOxikIB_YVjQWfMdOzSm7TNmIJ14GlNjMgyzs"
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.instanceUrl = "https://ap15.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQKPIpMvOWonQFEIDVgP.m8rNXlDlag1iHQqynIiZoD3bJSC3KESiC6HjRaEJk71gsciH4hzVmvWyi3M9ejklo5.crNCg"
 //global.orgId = "1122019"
 global.orgId="567"
 //PG SETUP
@@ -79,7 +79,7 @@ module.exports = ({
                     accessToken: global.accesscode
                 })
                 
-                var result //= await sfdcmethods.getAllObjects(conn)
+                var result = await sfdcmethods.getAllObjects(conn)
                 if (result == undefined){
                    result = await pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
                 }else{
@@ -108,7 +108,8 @@ module.exports = ({
                 })
                 
                 var result = await sfdcmethods.getAllApex(conn, "ApexTrigger")
-
+                
+                
                 return ctx.render('apex',{
                     apex: result.records,
                     type: "ApexTrigger"
@@ -180,10 +181,10 @@ module.exports = ({
                 
                 var result = await sfdcmethods.getAllMeta(conn)
                 if (result == undefined){
-                    //result = await getObjectsInfoFromDB()
+                    result = await pool.query("SELECT meta FROM metas WHERE orgid = $1",[global.orgId])
                  }else{
                      //TODO: VERSION CONTROL when adding to database
-                     saveToDataBase("INSERT INTO meta (orgid, layoutinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
+                     await pool.query("INSERT INTO metas (orgid, meta) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
                  }
                 
             }catch (err){
