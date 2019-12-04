@@ -12,30 +12,32 @@ module.exports = {
     getAllObjects: getAllObjects,
     getAllApex: getAllApex,
     getAllMeta: getAllMeta,
-    getAllLayout, getAllLayout
+    getAllLayout,
+    getAllLayout
 }
 
-async function getAllMeta(conn){
+async function getAllMeta(conn) {
     try {
         return new Promise((resolve, reject) => {
             conn.metadata.describe().then(response => {
                 resolve(response)
             })
-        })}catch (err){
-            console.log("Error [util/getAllMeta]: " + err)
-        }
+        })
+    } catch (err) {
+        console.log("Error [util/getAllMeta]: " + err)
+    }
 }
 
 async function getAllObjects(conn) {
     try {
         return new Promise((resolve, reject) => {
-           
+
             conn.describeGlobal(function (err, res) {
                 if (err) {
                     return console.log(err)
                 }
                 console.log('[util/getAllObjects] No of Objects ' + res.sobjects.length)
-                
+
                 resolve(res.sobjects)
             })
         }).then(result => sObjectDescribe(conn, result))
@@ -43,29 +45,93 @@ async function getAllObjects(conn) {
         console.log("[util/getAllObjects]" + err)
     }
 }
+
+
+
+
+
 async function sObjectDescribe(conn, result) {
 
     //TODO : this section can do child relationship
     try {
+
+        var PromiseThrottle = require('promise-throttle');
+
+        let RATE_PER_SECOND = 5; // 5 = 5 per second, 0.5 = 1 per every 2 seconds
+
+        var pto = new PromiseThrottle({
+            requestsPerSecond: RATE_PER_SECOND, // up to 1 request per second
+            promiseImplementation: Promise // the Promise library you are using
+        });
+
+        let timeStart = Date.now();
+        let NUMBER_OF_REQUESTS = result.length;
+        let promiseArray = [];
+        for (let i = 1; i <= NUMBER_OF_REQUESTS; i++) {
+            promiseArray.push(
+                pto
+                .add(conn.sobject(item.name).describe().then(async response => {
+                    return {
+                        totalfields: response.fields.length,
+                        layout: response.namedLayoutInfos.length,
+                        childRelatioship: response.childRelationships.length,
+                        recordType: response.recordTypeInfos.length,
+                        createable: response.createable,
+                        deletable: response.deletable,
+                        undeletable: response.undeletable
+                    }
+                })) 
+            );
+        }
+
+        Promise
+            .all(promiseArray)
+            .then(function (allResponsesArray) { // [1 .. 100]
+                console.log("All results: " + allResponsesArray);
+            });
+/*
         var i = 0;
         var lessthan100fields = 0;
         var morethan100fields = 0;
-       
+
         var allObjectTotalFields = await Promise.all(result.map(async (item) => {
-          
+
             var totalfields = await conn.sobject(item.name).describe().then(async response => {
-                return {totalfields: response.fields.length, layout: response.namedLayoutInfos.length, childRelatioship: response.childRelationships.length, recordType:response.recordTypeInfos.length, createable: response.createable, deletable:response.deletable, undeletable:response.undeletable}
+                return {
+                    totalfields: response.fields.length,
+                    layout: response.namedLayoutInfos.length,
+                    childRelatioship: response.childRelationships.length,
+                    recordType: response.recordTypeInfos.length,
+                    createable: response.createable,
+                    deletable: response.deletable,
+                    undeletable: response.undeletable
+                }
             })
-            
-            if (totalfields.totalfields > 100){
+
+            if (totalfields.totalfields > 100) {
                 morethan100fields++
-            }else{
+            } else {
                 lessthan100fields++
             }
             i++
-            return {Objectname: item.name, totalfields: totalfields.totalfields, Custom: item.custom, Label: item.label, childRelationships: totalfields.childRelationships, recordType: totalfields.recordType, layout: totalfields.layout, createable: totalfields.createable, deletable:totalfields.deletable, undeletable:totalfields.undeletable}
+            return {
+                Objectname: item.name,
+                totalfields: totalfields.totalfields,
+                Custom: item.custom,
+                Label: item.label,
+                childRelationships: totalfields.childRelationships,
+                recordType: totalfields.recordType,
+                layout: totalfields.layout,
+                createable: totalfields.createable,
+                deletable: totalfields.deletable,
+                undeletable: totalfields.undeletable
+            }
         }))
-        return {allObject: allObjectTotalFields, morethan100: morethan100fields, lessthan100: lessthan100fields}
+        return {
+            allObject: allObjectTotalFields,
+            morethan100: morethan100fields,
+            lessthan100: lessthan100fields
+        }*/
     } catch (err) {
         console.log("[util/sObjectDescribe]" + err)
     }
@@ -75,28 +141,30 @@ async function getAllApex(conn, type) {
     //TODO: Check what can ApexPage, ApexClass and ApexComponent return
     return new Promise((resolve, reject) => {
         var query = ""
-        if (type == "ApexTrigger"){
+        if (type == "ApexTrigger") {
             query = "SELECT Name, TableEnumOrId, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexTrigger"
-        }else if (type == "ApexPage"){
+        } else if (type == "ApexPage") {
             query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexPage"
-        }else if (type == "ApexClass"){
+        } else if (type == "ApexClass") {
             query = "SELECT Name, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexClass"
-        }else if (type == "ApexComponent"){
+        } else if (type == "ApexComponent") {
             query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexComponent"
         }
-        
-        conn.tooling.query(query, function(err,result){
-            if (err){console.log(err)}
-            console.log("[util/getAllApex] : " +result)
+
+        conn.tooling.query(query, function (err, result) {
+            if (err) {
+                console.log(err)
+            }
+            console.log("[util/getAllApex] : " + result)
             resolve(result)
         })
     })
 }
 //This section onwards is not tested
-async function getAllLayout(conn){
+async function getAllLayout(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT FullName,  Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function(err, result){
-            if (err){
+        conn.tooling.query("SELECT FullName,  Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllLayout]: " + err)
             }
             console.log("[util/getAllLayout] : " + result)
@@ -105,10 +173,10 @@ async function getAllLayout(conn){
     })
 }
 
-async function getAllProfile(conn){
+async function getAllProfile(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description, FullName, Name FROM Profile", function(err, result){
-            if (err){
+        conn.tooling.query("SELECT Description, FullName, Name FROM Profile", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllLayout]: " + err)
             }
             console.log("[util/getAllLayout] : " + result)
@@ -117,10 +185,10 @@ async function getAllProfile(conn){
     })
 }
 
-async function getAllProfile2Layout(conn){
+async function getAllProfile2Layout(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout", function(err, result){
-            if (err){
+        conn.tooling.query("SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllLayout]: " + err)
             }
             console.log("[util/getAllLayout] : " + result)
@@ -129,10 +197,10 @@ async function getAllProfile2Layout(conn){
     })
 }
 
-async function getAllRecordType(conn){
+async function getAllRecordType(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT BusinessProcessId, Description, Name, IsActive,ManageableState,SobjectType FROM RecordTYpe", function(err, result){
-            if (err){
+        conn.tooling.query("SELECT BusinessProcessId, Description, Name, IsActive,ManageableState,SobjectType FROM RecordTYpe", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllRecordType] : " + err)
             }
             console.log("[util/getAllLayout] : " + result)
@@ -142,10 +210,10 @@ async function getAllRecordType(conn){
 }
 
 //NOT Tested : May need to do after SOBJECTDESCRIBE.
-async function getAllValidationRules(conn){
-    return new Promise ((resolve, reject) =>{
-        conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,ValidationName FROM ValidationRule", function(err, result){
-            if (err){
+async function getAllValidationRules(conn) {
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,ValidationName FROM ValidationRule", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllValidationRules] : " + err)
             }
             console.log("[util/getAllValidationRules] : " + result)
@@ -154,37 +222,37 @@ async function getAllValidationRules(conn){
     })
 }
 
-async function getAllWorkflowRules(conn){
+async function getAllWorkflowRules(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT ManageableState,Name,TableEnumOrId FROM WORKFLOWRULE", function(err, result){
-            if (err){
+        conn.tooling.query("SELECT ManageableState,Name,TableEnumOrId FROM WORKFLOWRULE", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllWorkflowRules] : " + err)
             }
-            console.log("[util/getAllWorkflowRules] : "+ result)
+            console.log("[util/getAllWorkflowRules] : " + result)
             resolve(result)
         })
     })
 }
 
-async function getAllBusinessProcess(conn){
+async function getAllBusinessProcess(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description,IsActive,ManageableState, Name, FROM BusinessProcess", function(err, result){
-            if (err){
+        conn.tooling.query("SELECT Description,IsActive,ManageableState, Name, FROM BusinessProcess", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllWorkflowRules] : " + err)
             }
-            console.log("[util/getAllBusinessProcess] : "+ result)
+            console.log("[util/getAllBusinessProcess] : " + result)
             resolve(result)
         })
     })
 }
 
-async function getAllCustomApplication(conn){
+async function getAllCustomApplication(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description,DeveloperName,FullName,IsNavAutoTempTabsDisabled,IsNavPersonalizationDisabled,ManageableState,NavType,UiType,UtilityBar FROM CustomApplication", function(err, result){
-            if (err){
+        conn.tooling.query("SELECT Description,DeveloperName,FullName,IsNavAutoTempTabsDisabled,IsNavPersonalizationDisabled,ManageableState,NavType,UiType,UtilityBar FROM CustomApplication", function (err, result) {
+            if (err) {
                 console.log("Error [util/getAllWorkflowRules] : " + err)
             }
-            console.log("[util/getAllCustomApplication] : "+ result)
+            console.log("[util/getAllCustomApplication] : " + result)
             resolve(result)
         })
     })
@@ -198,7 +266,7 @@ async function getAllCustomApplication(conn){
 Compare the profiles' assignments to page layouts to the list of page layouts. I did this using some scripting code which parsed through the xml files.
  */
 
- /**
-  * Objects - Triggers on Same Event
-  * Objects - Validation Rules Active
-  */
+/**
+ * Objects - Triggers on Same Event
+ * Objects - Validation Rules Active
+ */

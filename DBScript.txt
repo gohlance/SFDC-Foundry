@@ -22,7 +22,7 @@ CREATE TABLE public.metas (
 CREATE TABLE public.profileslayouts (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	profileslayout jsonb NULL,
 	CONSTRAINT profileslayouts_pkey PRIMARY KEY (id)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE public.profileslayouts (
 CREATE TABLE public.profiles (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	profile jsonb NULL,
 	CONSTRAINT profiles_pkey PRIMARY KEY (id)
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE public.profiles (
 CREATE TABLE public.layouts (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	layout jsonb NULL,
 	CONSTRAINT layouts_pkey PRIMARY KEY (id)
 );
 
@@ -67,7 +67,7 @@ CREATE TABLE public.objects (
 CREATE TABLE public.customApps (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	customApp jsonb NULL,
 	CONSTRAINT customApps_pkey PRIMARY KEY (id)
 );
 
@@ -78,7 +78,7 @@ CREATE TABLE public.customApps (
 CREATE TABLE public.businessprocess (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	businessprocess jsonb NULL,
 	CONSTRAINT businessprocess_pkey PRIMARY KEY (id)
 );
 
@@ -89,7 +89,7 @@ CREATE TABLE public.businessprocess (
 CREATE TABLE public.workflowrules (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	workflowrule jsonb NULL,
 	CONSTRAINT workflowrules_pkey PRIMARY KEY (id)
 );
 
@@ -100,7 +100,7 @@ CREATE TABLE public.workflowrules (
 CREATE TABLE public.validationrules (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	validationrule jsonb NULL,
 	CONSTRAINT validationrules_pkey PRIMARY KEY (id)
 );
 
@@ -111,7 +111,7 @@ DROP TABLE public.recordtypes;
 CREATE TABLE public.recordtypes (
 	id serial NOT NULL,
 	orgid text NULL,
-	meta jsonb NULL,
+	recordtype jsonb NULL,
 	CONSTRAINT recordtypes_pkey PRIMARY KEY (id)
 );
 
