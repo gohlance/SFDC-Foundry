@@ -14,6 +14,50 @@ CREATE TABLE public.metas (
 	CONSTRAINT metas_pkey PRIMARY KEY (id)
 );
 
+-- Drop table
+
+-- DROP TABLE public.apextriggers;
+
+CREATE TABLE public.apextriggers (
+	id serial NOT NULL,
+	orgid text NULL,
+	apextrigger jsonb NULL,
+	CONSTRAINT apextriggers_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.apexpages;
+
+CREATE TABLE public.apexpages (
+	id serial NOT NULL,
+	orgid text NULL,
+	apexpage jsonb NULL,
+	CONSTRAINT apexpages_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.apexclass;
+
+CREATE TABLE public.apexclass (
+	id serial NOT NULL,
+	orgid text NULL,
+	apexclass jsonb NULL,
+	CONSTRAINT apexclass_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.apexcomponents;
+
+CREATE TABLE public.apexcomponents (
+	id serial NOT NULL,
+	orgid text NULL,
+	apexcomponent jsonb NULL,
+	CONSTRAINT apexcomponents_pkey PRIMARY KEY (id)
+);
+
 
 -- Drop table
 

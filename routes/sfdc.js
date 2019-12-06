@@ -153,6 +153,16 @@ module.exports = ({
                 console.log("Error [getAllApexComponet]: " + err)
             }
         })
+        .get('testing','/testing', async (ctx)=>{
+            var conn = new jsforce.Connection({
+                oauth2: oauth2,
+                instanceUrl: global.instanceUrl,
+                accessToken: global.accesscode
+            })
+            conn.describeGlobal().then(response => {
+                console.log(response)
+            })
+        })
         .get('getAllApexPage','/getAllApexClass', async (ctx)=>{
             try{
                 var conn = new jsforce.Connection({
