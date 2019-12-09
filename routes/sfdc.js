@@ -12,7 +12,7 @@ var oauth2 = new jsforce.OAuth2({
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap15.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQKPIpMvOWonQFEIDVgP.m8rNXlDlag1iHQqynIiZoD3bJSC3KESiC6HjRaEJk71gsciH4hzVmvWyi3M9ejklo5.crNCg"
+global.accesscode = "00D46000001Uq6O!AQoAQPZDvf5eZXiANp1DHY_b5vCMCNVANOkOPs6CE8F8nLkHtQus_VvZxlv2r0HtIvddr9DiCrc4a966iQ6O0sjA73c5XTYK"
 //global.orgId = "1122019"
 global.orgId="567"
 //PG SETUP
@@ -161,6 +161,45 @@ module.exports = ({
             })
             conn.describeGlobal().then(response => {
                 console.log(response)
+                await Promise.all(response.map(async (item) => {
+                    var totalfields = await conn.sobject(item.name).describe().then(async response => {
+                        /**
+                         * activateable: false, <---
+      createable: false,
+      custom: false,
+      customSetting: false,
+      deletable: false,
+      deprecatedAndHidden: false,
+      feedEnabled: false,
+      hasSubtypes: false,
+      isSubtype: false,
+      keyPrefix: null,
+      label: 'Note',
+      labelPlural: 'Notes',
+      layoutable: false,
+      mergeable: false,
+      mruEnabled: false,
+      name: 'AttachedContentNote',
+      queryable: false,
+      replicateable: false,
+      retrieveable: false,
+      searchable: false, <---
+      triggerable: false,  <----
+      undeletable: false,
+      updateable: false, <----
+      urls: [Object]
+                         */
+                        return {
+                            totalfields: response.fields.length,
+                            layout: response.namedLayoutInfos.length,
+                            childRelatioship: response.childRelationships.length,
+                            recordType: response.recordTypeInfos.length,
+                            createable: response.createable,
+                            deletable: response.deletable,
+                            undeletable: response.undeletable
+                        }
+                    })
+                })
             })
         })
         .get('getAllApexPage','/getAllApexClass', async (ctx)=>{
