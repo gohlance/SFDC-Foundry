@@ -28,10 +28,12 @@ async function getAllMeta(conn) {
     }
 }
 
+
+//33 seconds run time for 2050 objects
 async function getAllObjects(conn) {
     try {
+        
         return new Promise((resolve, reject) => {
-
             conn.describeGlobal(function (err, res) {
                 if (err) {
                     return console.log(err)
@@ -41,6 +43,7 @@ async function getAllObjects(conn) {
                 resolve(res.sobjects)
             })
         }).then(result => sObjectDescribe(conn, result))
+       
     } catch (err) {
         console.log("[util/getAllObjects]" + err)
     }
@@ -54,47 +57,14 @@ async function sObjectDescribe(conn, result) {
 
     //TODO : this section can do child relationship
     try {
-
-        var PromiseThrottle = require('promise-throttle');
-
-        let RATE_PER_SECOND = 5; // 5 = 5 per second, 0.5 = 1 per every 2 seconds
-
-        var pto = new PromiseThrottle({
-            requestsPerSecond: RATE_PER_SECOND, // up to 1 request per second
-            promiseImplementation: Promise // the Promise library you are using
-        });
-
-        let timeStart = Date.now();
-        let NUMBER_OF_REQUESTS = result.length;
-        let promiseArray = [];
-        for (let i = 1; i <= NUMBER_OF_REQUESTS; i++) {
-            promiseArray.push(
-                pto
-                .add(conn.sobject(item.name).describe().then(async response => {
-                    return {
-                        totalfields: response.fields.length,
-                        layout: response.namedLayoutInfos.length,
-                        childRelatioship: response.childRelationships.length,
-                        recordType: response.recordTypeInfos.length,
-                        createable: response.createable,
-                        deletable: response.deletable,
-                        undeletable: response.undeletable
-                    }
-                })) 
-            );
-        }
-
-        Promise
-            .all(promiseArray)
-            .then(function (allResponsesArray) { // [1 .. 100]
-                console.log("All results: " + allResponsesArray);
-            });
-/*
         var i = 0;
         var lessthan100fields = 0;
         var morethan100fields = 0;
-
-        var allObjectTotalFields = await Promise.all(result.map(async (item) => {
+        const pLimit = require('p-limit');
+        const limit = pLimit(100);
+       
+        var i = 1
+        var allObjectTotalFields = await Promise.all(result.map(async (item) => limit(async () => {
 
             var totalfields = await conn.sobject(item.name).describe().then(async response => {
                 return {
@@ -109,11 +79,13 @@ async function sObjectDescribe(conn, result) {
             })
 
             if (totalfields.totalfields > 100) {
+                
                 morethan100fields++
             } else {
+                
                 lessthan100fields++
             }
-            i++
+            
             return {
                 Objectname: item.name,
                 totalfields: totalfields.totalfields,
@@ -126,12 +98,13 @@ async function sObjectDescribe(conn, result) {
                 deletable: totalfields.deletable,
                 undeletable: totalfields.undeletable
             }
-        }))
+        })))
+
         return {
             allObject: allObjectTotalFields,
             morethan100: morethan100fields,
             lessthan100: lessthan100fields
-        }*/
+        }
     } catch (err) {
         console.log("[util/sObjectDescribe]" + err)
     }

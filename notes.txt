@@ -1,0 +1,26 @@
+ /**
+                         * activateable: false, <---
+      createable: false,
+      custom: false,
+      customSetting: false,
+      deletable: false,
+      deprecatedAndHidden: false,
+      feedEnabled: false,
+      hasSubtypes: false,
+      isSubtype: false,
+      keyPrefix: null,
+      label: 'Note',
+      labelPlural: 'Notes',
+      layoutable: false,
+      mergeable: false,
+      mruEnabled: false,
+      name: 'AttachedContentNote',
+      queryable: false,
+      replicateable: false,
+      retrieveable: false,
+      searchable: false, <---
+      triggerable: false,  <----
+      undeletable: false,
+      updateable: false, <----
+      urls: [Object]
+                         */
