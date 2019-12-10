@@ -5,7 +5,7 @@ psql -h localhost -p 5432 -U my_user -d my_database -f INIT.sql
 
 -- Drop table
 
--- DROP TABLE public.metas;
+DROP TABLE public.metas;
 
 CREATE TABLE public.metas (
 	id serial NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE public.metas (
 
 -- Drop table
 
--- DROP TABLE public.apextriggers;
+DROP TABLE public.apextriggers;
 
 CREATE TABLE public.apextriggers (
 	id serial NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE public.apextriggers (
 
 -- Drop table
 
--- DROP TABLE public.apexpages;
+DROP TABLE public.apexpages;
 
 CREATE TABLE public.apexpages (
 	id serial NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE public.apexpages (
 
 -- Drop table
 
--- DROP TABLE public.apexclass;
+DROP TABLE public.apexclass;
 
 CREATE TABLE public.apexclass (
 	id serial NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE public.apexclass (
 
 -- Drop table
 
--- DROP TABLE public.apexcomponents;
+DROP TABLE public.apexcomponents;
 
 CREATE TABLE public.apexcomponents (
 	id serial NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE public.apexcomponents (
 
 -- Drop table
 
--- DROP TABLE public.profileslayouts;
+DROP TABLE public.profileslayouts;
 
 CREATE TABLE public.profileslayouts (
 	id serial NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE public.profileslayouts (
 
 -- Drop table
 
--- DROP TABLE public.profiles;
+DROP TABLE public.profiles;
 
 CREATE TABLE public.profiles (
 	id serial NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE public.profiles (
 
 -- Drop table
 
--- DROP TABLE public.layouts;
+DROP TABLE public.layouts;
 
 CREATE TABLE public.layouts (
 	id serial NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE public.layouts (
 
 -- Drop table
 
--- DROP TABLE public.objects;
+DROP TABLE public.objects;
 
 CREATE TABLE public.objects (
 	id serial NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE public.objects (
 
 -- Drop table
 
--- DROP TABLE public.customApps;
+DROP TABLE public.customApps;
 
 CREATE TABLE public.customApps (
 	id serial NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE public.customApps (
 
 -- Drop table
 
--- DROP TABLE public.businessprocess;
+DROP TABLE public.businessprocess;
 
 CREATE TABLE public.businessprocess (
 	id serial NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE public.businessprocess (
 
 -- Drop table
 
--- DROP TABLE public.workflowrules;
+DROP TABLE public.workflowrules;
 
 CREATE TABLE public.workflowrules (
 	id serial NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE public.workflowrules (
 
 -- Drop table
 
--- DROP TABLE public.validationrules;
+DROP TABLE public.validationrules;
 
 CREATE TABLE public.validationrules (
 	id serial NOT NULL,

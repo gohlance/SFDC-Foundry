@@ -54,7 +54,6 @@ async function getAllObjects(conn) {
 
 
 async function sObjectDescribe(conn, result) {
-
     //TODO : this section can do child relationship
     try {
         var i = 0;
