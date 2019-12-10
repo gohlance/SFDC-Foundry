@@ -1,5 +1,3 @@
-
-//JSFORCE SETUP
 const jsforce = require('jsforce')
 var sfdcmethods = require('../util')
 var oauth2 = new jsforce.OAuth2({
@@ -160,8 +158,14 @@ module.exports = ({
                 accessToken: global.accesscode
             })
             
-            var result = await sfdcmethods.getAllObjects(conn)
-            console.log(result)
+            var result =await sfdcmethods.getAllLayout(conn)
+
+            if (result == undefined){
+                //result = await getObjectsInfoFromDB()
+             }else{
+                 //TODO: VERSION CONTROL when adding to database
+                 await pool.query("INSERT INTO layouts (orgid, layout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
+             }
         })
         .get('getAllApexPage','/getAllApexClass', async (ctx)=>{
             try{
@@ -214,7 +218,7 @@ module.exports = ({
                     //result = await getObjectsInfoFromDB()
                  }else{
                      //TODO: VERSION CONTROL when adding to database
-                     saveToDataBase("INSERT INTO layouts (orgid, layoutinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
+                     await pool.query("INSERT INTO layouts (orgid, layout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
                  }
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)

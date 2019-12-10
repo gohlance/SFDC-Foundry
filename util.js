@@ -135,7 +135,7 @@ async function getAllApex(conn, type) {
 //This section onwards is not tested
 async function getAllLayout(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT FullName,  Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function (err, result) {
+        conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function (err, result) {
             if (err) {
                 console.log("Error [util/getAllLayout]: " + err)
             }
@@ -147,7 +147,7 @@ async function getAllLayout(conn) {
 
 async function getAllProfile(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description, FullName, Name FROM Profile", function (err, result) {
+        conn.tooling.query("SELECT Description, Name FROM Profile", function (err, result) {
             if (err) {
                 console.log("Error [util/getAllLayout]: " + err)
             }
