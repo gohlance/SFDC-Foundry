@@ -13,6 +13,7 @@ module.exports = {
     getAllApex: getAllApex,
     getAllMeta: getAllMeta,
     getAllLayout,
+    getAllProfile,getAllRecordType,getAllProfile2Layout,getAllValidationRules,getAllWorkflowRules,getAllBusinessProcess,getAllCustomApplication
 }
 
 async function getAllMeta(conn) {
@@ -26,7 +27,6 @@ async function getAllMeta(conn) {
         console.log("Error [util/getAllMeta]: " + err)
     }
 }
-
 
 //33 seconds run time for 2050 objects
 async function getAllObjects(conn) {
@@ -47,10 +47,6 @@ async function getAllObjects(conn) {
         console.log("[util/getAllObjects]" + err)
     }
 }
-
-
-
-
 
 async function sObjectDescribe(conn, result) {
     //TODO : this section can do child relationship
@@ -131,7 +127,7 @@ async function getAllApex(conn, type) {
         })
     })
 }
-//This section onwards is not tested
+
 async function getAllLayout(conn) {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function (err, result) {
@@ -144,6 +140,7 @@ async function getAllLayout(conn) {
     })
 }
 
+//Average 1 seconds
 async function getAllProfile(conn) {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Description, Name FROM Profile", function (err, result) {
@@ -180,7 +177,7 @@ async function getAllRecordType(conn) {
     })
 }
 
-//NOT Tested : May need to do after SOBJECTDESCRIBE.
+//TODO : May need to do after SOBJECTDESCRIBE.
 async function getAllValidationRules(conn) {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,ValidationName FROM ValidationRule", function (err, result) {
@@ -207,7 +204,7 @@ async function getAllWorkflowRules(conn) {
 
 async function getAllBusinessProcess(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description,IsActive,ManageableState, Name, FROM BusinessProcess", function (err, result) {
+        conn.tooling.query("SELECT Description,IsActive,ManageableState, Name FROM BusinessProcess", function (err, result) {
             if (err) {
                 console.log("Error [util/getAllWorkflowRules] : " + err)
             }
@@ -219,7 +216,7 @@ async function getAllBusinessProcess(conn) {
 
 async function getAllCustomApplication(conn) {
     return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description,DeveloperName,FullName,IsNavAutoTempTabsDisabled,IsNavPersonalizationDisabled,ManageableState,NavType,UiType,UtilityBar FROM CustomApplication", function (err, result) {
+        conn.tooling.query("SELECT Description,DeveloperName,ManageableState,NavType,UiType FROM CustomApplication", function (err, result) {
             if (err) {
                 console.log("Error [util/getAllWorkflowRules] : " + err)
             }
