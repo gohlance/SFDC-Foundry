@@ -12,22 +12,34 @@
 </head>
 
 <body>
-    <div>
-        <nav class="navbar navbar-inverse" role="navigation" style="padding-left: 130px;">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="/">Home<span class="sr-only"></span></a>
-                </li>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="/contact">Contact Us</a></li>
-                <%  if (!global.accesscode || !global.instanceUrl) { %>
-                    <li><a herf="logout">Logout</a></li>
-                <% }else {%>
-                <li><a herf="/oauth2/auth">Login</a></li>
-                <% } %>
-            </ul>
-        </nav>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Branding</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                                <a class="nav-link" href="#">Home<span class="sr-only"></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                                <a class="nav-link" href="/about">Contact Us</a>
+                        </li>
+                        <%  if (!!global.accesscode || !!global.instanceUrl) { %>
+                            <li class="nav-item">
+                                    <a class="nav-link" href="logout">Logout</a>
+                            </li>
+                        <% }else {%>
+                            <li class="nav-item">
+                                    <a class="nav-link" href="/oauth2/auth">Login</a>
+                            </li>
+                        <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
     <div class="container">
         <%- body %>
     </div>
