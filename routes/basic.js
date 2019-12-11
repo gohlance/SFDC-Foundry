@@ -5,6 +5,7 @@ module.exports = ({
     .get('home', '/', (ctx) => {
       console.log("Gloabl: " + global.accesscode)
       console.log("Global :" + global.instanceUrl)
+      console.log("Rsult " + (!global.accesscode || !global.instanceUrl))
       if (!global.accesscode || !global.instanceUrl) {
         return ctx.render('index')
       }else{
