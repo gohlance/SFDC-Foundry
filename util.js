@@ -13,7 +13,93 @@ module.exports = {
     getAllApex: getAllApex,
     getAllMeta: getAllMeta,
     getAllLayout,
-    getAllProfile,getAllRecordType,getAllProfile2Layout,getAllValidationRules,getAllWorkflowRules,getAllBusinessProcess,getAllCustomApplication
+    getAllProfile,getAllRecordType,getAllProfile2Layout,getAllValidationRules,getAllWorkflowRules,getAllBusinessProcess,getAllCustomApplication,
+    letsGetEverything
+}
+
+async function letsGetEverything(conn, pool){
+    const step1 = new Promise(async (resolve)=>{
+        var result = getAllMeta(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO metas (orgid, meta) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 1 : " + error))
+    .finally(console.log("Step 1 done"))
+
+
+    const step2 = new Promise(async(resolve) =>{
+        var result = getAllLayout(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO layouts (orgid, layout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 2 : " + error))
+    .finally(console.log("Step 2 done"))
+
+    const step3 = new Promise(async(resolve) =>{
+        var result = getAllRecordType(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO recordtypes (orgid, recordtype) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 3 : " + error))
+    .finally(console.log("Step 3 done"))
+
+    const step4 = new Promise(async(resolve) =>{
+        var result = getAllProfile(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO profiles (orgid, profile) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 4 : " + error))
+    .finally(console.log("Step 4 done"))
+
+    const step5 = new Promise(async(resolve) =>{
+        var result = getAllProfile2Layout(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO profileslayouts (orgid, profileslayout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 5 : " + error))
+    .finally(console.log("Step 5 done"))
+
+    const step6 = new Promise(async(resolve) =>{
+        var result = getAllValidationRules(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO validationrules (orgid, validationrule) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 6 : " + error))
+    .finally(console.log("Step 6 done"))
+
+    const step7 = new Promise(async(resolve) =>{
+        var result = getAllWorkflowRules(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO workflowrules (orgid, workflowrule) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 7 : " + error))
+    .finally(console.log("Step 7 done"))
+
+    const step8 = new Promise(async(resolve) =>{
+        var result = getAllBusinessProcess(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO businessprocess (orgid, businessprocess) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 8 : " + error))
+    .finally(console.log("Step 8 done"))
+
+    const step9 = new Promise(async(resolve) =>{
+        var result = getAllCustomApplication(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO customapps (orgid, customapp) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 9 : " + error))
+    .finally(console.log("Step 9 done"))
+
+    const step10 = new Promise(async (resolve) =>{
+        var result = await getAllObjects(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 10 : " + error))
+    .finally(console.log("Step 10 done"))
+
+    Promise.all([step1, step2, step3, step4, step5, step6, step7, step8, step10])
 }
 
 async function getAllMeta(conn) {
@@ -145,9 +231,9 @@ async function getAllProfile(conn) {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Description, Name FROM Profile", function (err, result) {
             if (err) {
-                console.log("Error [util/getAllLayout]: " + err)
+                console.log("Error [util/getAllProfile]: " + err)
             }
-            console.log("[util/getAllLayout] : " + result)
+            console.log("[util/getAllProfile] : " + result)
             resolve(result)
         })
     })
@@ -157,9 +243,9 @@ async function getAllProfile2Layout(conn) {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout", function (err, result) {
             if (err) {
-                console.log("Error [util/getAllLayout]: " + err)
+                console.log("Error [util/getAllProfile2Layout]: " + err)
             }
-            console.log("[util/getAllLayout] : " + result)
+            console.log("[util/getAllProfile2Layout] : " + result)
             resolve(result)
         })
     })
@@ -171,7 +257,7 @@ async function getAllRecordType(conn) {
             if (err) {
                 console.log("Error [util/getAllRecordType] : " + err)
             }
-            console.log("[util/getAllLayout] : " + result)
+            console.log("[util/getAllRecordType] : " + result)
             resolve(result)
         })
     })
@@ -206,7 +292,7 @@ async function getAllBusinessProcess(conn) {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Description,IsActive,ManageableState, Name FROM BusinessProcess", function (err, result) {
             if (err) {
-                console.log("Error [util/getAllWorkflowRules] : " + err)
+                console.log("Error [util/getAllBusinessProcess] : " + err)
             }
             console.log("[util/getAllBusinessProcess] : " + result)
             resolve(result)
@@ -218,7 +304,7 @@ async function getAllCustomApplication(conn) {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Description,DeveloperName,ManageableState,NavType,UiType FROM CustomApplication", function (err, result) {
             if (err) {
-                console.log("Error [util/getAllWorkflowRules] : " + err)
+                console.log("Error [util/getAllCustomApplication] : " + err)
             }
             console.log("[util/getAllCustomApplication] : " + result)
             resolve(result)

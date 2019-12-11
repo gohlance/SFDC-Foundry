@@ -10,7 +10,7 @@ var oauth2 = new jsforce.OAuth2({
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap15.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQORJV9xLz2hG_BZHKe8ccVp0rzKan8vOFAWFUjpjGLPcFXFw7yT1lrx8VRX3xJkH1ank.EH8gTqHYjjhIAdrIyegzD7K"
+global.accesscode = "00D46000001Uq6O!AQoAQOVYIg2TivvXBm3p6hlV97OjH65n_qB7uFrU5bAqbSDDNBGL0HihgUPuN7fP1om.ss0T6IxABaBLj.HiI61fSH9ER8c6"
 //global.orgId = "1122019"
 global.orgId="567"
 //PG SETUP
@@ -357,5 +357,16 @@ module.exports = ({
             }catch (err){
                 console.log("Error [getAllCustomApplication]:" + err)
             }
+        })
+        .post('EVERYTHING','/EVERYTHING', async (ctx) =>{
+            try{
+                var conn = new jsforce.Connection({
+                    oauth2: oauth2,
+                    instanceUrl: global.instanceUrl,
+                    accessToken: global.accesscode
+                })
+                var result = await sfdcmethods.letsGetEverything(conn, pool)
+                console.log("This is result : " + result)
+            }catch (err) {console.log("Error [everything]:" + err)}
         })
 }
