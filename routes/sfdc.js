@@ -10,7 +10,7 @@ var oauth2 = new jsforce.OAuth2({
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap15.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQIsYzYLUb5e0m8pkJrxJYYjVieZiubhQ4sqDWA.ZaaeNcIEsuD16OSjT4CVLOUkmlHhcHT2BrHU82bH7HeBdyx2NPoOg"
+global.accesscode = "00D46000001Uq6O!AQoAQORJV9xLz2hG_BZHKe8ccVp0rzKan8vOFAWFUjpjGLPcFXFw7yT1lrx8VRX3xJkH1ank.EH8gTqHYjjhIAdrIyegzD7K"
 //global.orgId = "1122019"
 global.orgId="567"
 //PG SETUP
@@ -212,10 +212,10 @@ module.exports = ({
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
-                var result =await sfdcmethods.getAllLayout(conn)
+                var result = await sfdcmethods.getAllLayout(conn)
 
                 if (result == undefined){
-                    //result = await getObjectsInfoFromDB()
+                    result = await pool.query("SELECT layout FROM layouts WHERE orgid=$1",[global.orgId])
                  }else{
                      //TODO: VERSION CONTROL when adding to database
                      await pool.query("INSERT INTO layouts (orgid, layout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])

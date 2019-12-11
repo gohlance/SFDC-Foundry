@@ -13,7 +13,6 @@ module.exports = {
     getAllApex: getAllApex,
     getAllMeta: getAllMeta,
     getAllLayout,
-    getAllLayout
 }
 
 async function getAllMeta(conn) {
