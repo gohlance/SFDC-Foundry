@@ -71,19 +71,8 @@ module.exports = ({
         })
         .get('getAllObjects', '/getAllObjects', async (ctx) => {
             try {
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
+                var result = await pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
                 
-                var result = await sfdcmethods.getAllObjects(conn)
-                if (result == undefined){
-                   result = await pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
-                }else{
-                    //TODO: VERSION CONTROL when adding to database
-                   await pool.query("INSERT INTO objects(orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                }
                 console.log("%%% : " + result)
 
                 return ctx.render('objects', {
@@ -187,173 +176,66 @@ module.exports = ({
         })
         .get('getAllMeta','/getAllMeta', async (ctx) => {
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                
-                var result = await sfdcmethods.getAllMeta(conn)
-                if (result == undefined){
-                    result = await pool.query("SELECT meta FROM metas WHERE orgid = $1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO metas (orgid, meta) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
-                
+                var result = await pool.query("SELECT meta FROM metas WHERE orgid = $1",[global.orgId])   
             }catch (err){
                 console.log("Error [getAllMeta]: " + err)
             }
         })
         .get('getAllLayout','/getAllLayout', async (ctx)=>{
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                var result = await sfdcmethods.getAllLayout(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT layout FROM layouts WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO layouts (orgid, layout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+                var result = await pool.query("SELECT layout FROM layouts WHERE orgid=$1",[global.orgId]) 
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
         })
         .get('getAllProfile','/getProfile', async (ctx) => {
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode,
-                    version: 47
-                })
-                var result = await sfdcmethods.getAllProfile(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT profile FROM profiles WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO profiles (orgid, profile) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+                var result = await pool.query("SELECT profile FROM profiles WHERE orgid=$1",[global.orgId])
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
         })
         .get('getRecordTypes','/getRecordTypes', async (ctx) =>{
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                var result = await sfdcmethods.getAllRecordType(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO recordtypes (orgid, recordtype) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+                var result = await pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
         })
         .get('getAllProfile2Layout','/getAllProfile2Layout', async (ctx) =>{
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                var result = await sfdcmethods.getAllProfile2Layout(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT profileslayout FROM profileslayouts WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO profileslayouts (orgid, profileslayout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+                var result = await pool.query("SELECT profileslayout FROM profileslayouts WHERE orgid=$1",[global.orgId])  
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
         })
         .get('getAllValidationRules','/getAllValidationRules', async (ctx) =>{
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                var result = await sfdcmethods.getAllValidationRules(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT validationrule FROM validationrules WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO validationrules (orgid, validationrule) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+               var result = await pool.query("SELECT validationrule FROM validationrules WHERE orgid=$1",[global.orgId])
+               
             }catch (err){
                 console.log("Error [getAllValidationRules]:" + err)
             }
         })
         .get('getAllWorkflowRules','/getAllWorkflowRules', async (ctx) =>{
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                var result = await sfdcmethods.getAllWorkflowRules(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT workflowrule FROM workflowrules WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO workflowrules (orgid, workflowrule) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+                var result = await pool.query("SELECT workflowrule FROM workflowrules WHERE orgid=$1",[global.orgId])
+                 
             }catch (err){
                 console.log("Error [getAllWorkflowRules]:" + err)
             }
         })
         .get('getAllBusinessProcess','/getAllBusinessProcess', async (ctx) =>{
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                var result = await sfdcmethods.getAllBusinessProcess(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT businessprocess FROM businessprocess WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO businessprocess (orgid, businessprocess) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+               var result = await pool.query("SELECT businessprocess FROM businessprocess WHERE orgid=$1",[global.orgId])
             }catch (err){
                 console.log("Error [getAllBusinessProcess]:" + err)
             }
         })
         .get('getAllCustomApplication','/getAllCustomApplication', async (ctx) =>{
             try{
-                var conn = new jsforce.Connection({
-                    oauth2: oauth2,
-                    instanceUrl: global.instanceUrl,
-                    accessToken: global.accesscode
-                })
-                var result = await sfdcmethods.getAllCustomApplication(conn)
-
-                if (result == undefined){
-                    result = await pool.query("SELECT customapp FROM customapps WHERE orgid=$1",[global.orgId])
-                 }else{
-                     //TODO: VERSION CONTROL when adding to database
-                     await pool.query("INSERT INTO customapps (orgid, customapp) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)])
-                 }
+                var result = await pool.query("SELECT customapp FROM customapps WHERE orgid=$1",[global.orgId])
+                 
             }catch (err){
                 console.log("Error [getAllCustomApplication]:" + err)
             }
