@@ -184,6 +184,7 @@ module.exports = ({
         .get('getAllLayout','/getAllLayout', async (ctx)=>{
             try{
                 var result = await pool.query("SELECT layout FROM layouts WHERE orgid=$1",[global.orgId]) 
+                return ctx.render('generic', {object: result.rows[0]["layout"]["records"]})
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
