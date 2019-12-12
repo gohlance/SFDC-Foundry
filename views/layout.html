@@ -1,56 +1,69 @@
-
 <html>
 
 <head>
-    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-w+8Gqjk9Cuo6XH9HKHG5t5I1VR4YBNdPt/29vwgfZR485eoEJZ8rJRbm3TR32P6k" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
     <script src="https://d3js.org/d3.v5.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/sorttable.js"></script> 
+    <script src="/sorttable.js"></script>
 </head>
+<style>
+    #main-body {
+        padding-top: 40px;
+    }
+
+    @media screen and (max-width: 768px) {
+        #main-body {
+            padding-top: 0px;
+        }
+    }
+    table.sortable thead {
+            background-color: #eee;
+            color: #666666;
+            font-weight: bold;
+            cursor: default;
+        }
+</style>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Branding</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                                <a class="nav-link" href="#">Home<span class="sr-only"></span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/about">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                                <a class="nav-link" href="/about">Contact Us</a>
-                        </li>
-                        <%  if (!!global.accesscode || !!global.instanceUrl) { %>
-                            <li class="nav-item">
-                                    <a class="nav-link" href="logout">Logout</a>
-                            </li>
-                        <% }else {%>
-                            <li class="nav-item">
-                                    <a class="nav-link" href="/oauth2/auth">Login</a>
-                            </li>
-                        <% } %>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home<span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Contact Us</a>
+                    </li>
+                    <%  if (!!global.accesscode || !!global.instanceUrl) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout">Logout</a>
+                    </li>
+                    <% }else {%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/oauth2/auth">Login</a>
+                    </li>
+                    <% } %>
                 </ul>
             </div>
         </div>
     </nav>
-    
-    <div class="container">
+
+    <div class="container" id="main-body">
         <%- body %>
     </div>
-    <style>
-        table.sortable thead {
-                background-color:#eee;
-                color:#666666;
-                font-weight: bold;
-                cursor: default;
-        }
-    </style>
 </body>
-
 </html>
