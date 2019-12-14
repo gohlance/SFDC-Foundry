@@ -1,5 +1,5 @@
 <div class="container">
-   <div class="row">
+    <div class="row">
         <form action="/EVERYTHING" method="POST">
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">ROCK THE WORLD</button>
@@ -7,3 +7,45 @@
         </form>
     </div>
 </div>
+<div class="container">
+    <div class="col-md-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                    aria-controls="nav-home" aria-selected="true">Project Tab 1</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                    aria-controls="nav-profile" aria-selected="false">Project Tab 2</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                    aria-controls="nav-contact" aria-selected="false">Project Tab 3</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                hello
+            </div>
+            <div class="tab-pane fade show" id="nav-profile" role="tabpanel" aria-labelledby="nav-home-tab">
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".nav-item.nav-link").click(function () {
+            //console.log($(this).attr('id'));
+            if ($(this).attr('id') == "nav-profile-tab") {
+                $.ajax({
+                    type: 'GET',
+                    cache: false,
+                    url: '/getAllLayout',
+                    contentType: "text/html; charset=utf-8",
+                    success: function (data) {
+                       console.log("success");
+                       console.log(data);
+                       $(this).html(data);
+                    }
+                });
+            }
+        });
+    });
+</script>
