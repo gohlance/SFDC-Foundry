@@ -23,8 +23,11 @@
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                 hello
             </div>
+           
             <div class="tab-pane fade show" id="nav-profile" role="tabpanel" aria-labelledby="nav-home-tab">
-                
+                <%  if (typeof object != 'undefined') { %>
+                    <%- include generic.html %>
+                <% }%>
             </div>
         </div>
     </div>
@@ -33,16 +36,19 @@
     $(function () {
         $(".nav-item.nav-link").click(function () {
             //console.log($(this).attr('id'));
+            var temp = $(this).attr('id');
             if ($(this).attr('id') == "nav-profile-tab") {
                 $.ajax({
                     type: 'GET',
                     cache: false,
                     url: '/getAllLayout',
-                    contentType: "text/html; charset=utf-8",
+                    contentType: "application/json",
                     success: function (data) {
-                       console.log("success");
-                       console.log(data);
-                       $(this).html(data);
+                        console.log(typeof data);
+                          $("#nav-profile").load(" #nav-profile");
+                         console.log("done");
+                         $("#nav-profile").html(data);
+                      
                     }
                 });
             }

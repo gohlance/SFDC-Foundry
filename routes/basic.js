@@ -8,7 +8,7 @@ module.exports = ({
       if (!global.accesscode || !global.instanceUrl) {
         return ctx.render('index')
       }else{
-        return ctx.render('welcome')
+        return ctx.render('welcome',{object:""})
       }
     })
     .get('about', '/about', (ctx) => {
@@ -17,7 +17,5 @@ module.exports = ({
     .get('contact', '/contact', (ctx) => {
       ctx.body = "Contact US...."
     })
-    .get('welcome','/welcome', (ctx) => {
-      return ctx.render('welcome')
-    })
+    
 }
