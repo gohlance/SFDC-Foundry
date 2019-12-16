@@ -252,4 +252,7 @@ module.exports = ({
                 console.log("This is result : " + result)
             }catch (err) {console.log("Error [everything]:" + err)}
         })
+        .post('Everything2','/Everything2', async (ctx) => {
+            
+        })
 }

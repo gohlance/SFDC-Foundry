@@ -8,50 +8,100 @@
     </div>
 </div>
 <div class="container">
-    <div class="col-md-12">
-        <nav>
-            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-                    aria-controls="nav-home" aria-selected="true">Project Tab 1</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-                    aria-controls="nav-profile" aria-selected="false">Project Tab 2</a>
-                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
-                    aria-controls="nav-contact" aria-selected="false">Project Tab 3</a>
+    <div class="row">
+        <div class="card mt-10 my-2 mx-2" style="width: 100%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Salesforce Org Information
             </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                hello
-            </div>
-           
-            <div class="tab-pane fade show" id="nav-profile" role="tabpanel" aria-labelledby="nav-home-tab">
-                <%  if (typeof object != 'undefined') { %>
-                    <%- include generic.html %>
-                <% }%>
+            <div class="card-body">
+              <h5 class="card-title">Your Salesforce Org Information</h5>
+              <% if (!global.accesscode || !global.instanceUrl) { %>
+                <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
+                <button class="btn btn-primary" id="btnConnect" type="button" >
+                    Refresh
+                </button>
+              <% } else {%>
+                <p class="card-text">Instance Connected : <%- global.instanceUrl %></p>
+                <button class="btn btn-primary" id="btnRefresh" type="button" >
+                    Refresh
+                </button>
+                
+            <%}%>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="card mt-10 my-2 mx-2" style="width: 18rem;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Objects
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+
+          <div class="card mt-10 my-2 mx-2" style="width: 18rem;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Profile
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+
+          <div class="card mt-10 my-2 mx-2" style="width: 18rem;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Rules
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+    </div>
 </div>
 <script>
-    $(function () {
-        $(".nav-item.nav-link").click(function () {
+     $(function () {
+        $("#btnRefresh").click(function () {
             //console.log($(this).attr('id'));
-            var temp = $(this).attr('id');
-            if ($(this).attr('id') == "nav-profile-tab") {
-                $.ajax({
-                    type: 'GET',
-                    cache: false,
-                    url: '/getAllLayout',
-                    contentType: "application/json",
-                    success: function (data) {
-                        console.log(typeof data);
-                          $("#nav-profile").load(" #nav-profile");
-                         console.log("done");
-                         $("#nav-profile").html(data);
-                      
-                    }
-                });
-            }
+            $(this).prop("disabled", true);
+            $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                url: '/Everything2',
+                contentType: "application/json",
+                success: function (data) {
+                    console.log("Success");
+                },
+                complete: function (){
+                    $(this).prop("disabled", false);
+                    $(this).remove(".spinner-border.spinner-border-sm");
+                }
+            });    
         });
+        $("#btnConnect").click(function(){
+            $(this).prop("disabled", true);
+            $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            /oauth2/auth
+            $.ajax({
+                type: 'GET',
+                cache: false,
+                url: '/oauth2/auth',
+                contentType: "application/json",
+                success: function (data) {
+                    console.log("Success");
+                },
+                complete: function (){
+                    $(this).prop("disabled", false);
+                    $(this).remove(".spinner-border.spinner-border-sm");
+                }
+            });    
+        })
     });
 </script>
