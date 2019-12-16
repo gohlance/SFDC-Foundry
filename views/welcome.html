@@ -1,14 +1,5 @@
 <div class="container">
     <div class="row">
-        <form action="/EVERYTHING" method="POST">
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">ROCK THE WORLD</button>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 100%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Salesforce Org Information
@@ -31,41 +22,42 @@
         </div>
     </div>
     <div class="row">
-        <div class="card mt-10 my-2 mx-2" style="width: 18rem;">
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Objects
             </div>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="card-body">     
+              <h5 class="card-title"><%- result_objects %></h5>
+              <p class="card-text">Your total objects are <%- result_objects %> 😞.</p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
 
-          <div class="card mt-10 my-2 mx-2" style="width: 18rem;">
+          <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Profile
+                Total Profiles
             </div>
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <h5 class="card-title"><%- result_profiles %></h5>
+              <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+              <a href="#" class="btn btn-primary">See More Details</a>
             </div>
           </div>
 
-          <div class="card mt-10 my-2 mx-2" style="width: 18rem;">
+          <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Rules
+                Total Layouts
             </div>
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <h5 class="card-title"><%- result_layouts %></h5>
+              <p class="card-text">Your total profiles are <%- result_layouts %>.</p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
     </div>
 </div>
 <script>
+// NEED TO TEST THIS SECTION, need to deploy online
      $(function () {
         $("#btnRefresh").click(function () {
             //console.log($(this).attr('id'));

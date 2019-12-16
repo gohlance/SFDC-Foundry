@@ -15,16 +15,13 @@ global.accesscode = "00D46000001Uq6O!AQoAQOVYIg2TivvXBm3p6hlV97OjH65n_qB7uFrU5bA
 global.orgId="567"
 //PG SETUP
 const Pool = require('pg-pool')
-const pgconfig = {
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Beaver',
-    password: 'P@ssw0rd1',
-    port: 5432,
-    max: 20, // set pool max size to 20
-    min: 4
-}
-const pool = new Pool(pgconfig)
+const pool = new Pool({ user: 'postgres',
+                        host: 'localhost',
+                        database: 'Beaver',
+                        password: 'P@ssw0rd1',
+                        port: 5432,
+                        max: 20, // set pool max size to 20
+                        min: 4})
 
 module.exports = ({
     router
@@ -71,7 +68,7 @@ module.exports = ({
         })
         .get('getAllObjects', '/getAllObjects', async (ctx) => {
             try {
-                var result = await pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
+                const result = await pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
                 
                 console.log("%%% : " + result)
 
@@ -88,13 +85,13 @@ module.exports = ({
         })
         .get('getAllApexTrigger','/getAllApexTrigger', async (ctx)=>{
             try{
-                var conn = new jsforce.Connection({
+                const conn = new jsforce.Connection({
                     oauth2: oauth2,
                     instanceUrl: global.instanceUrl,
                     accessToken: global.accesscode
                 })
                 
-                var result = await sfdcmethods.getAllApex(conn, "ApexTrigger")
+                const result = await sfdcmethods.getAllApex(conn, "ApexTrigger")
                 
                 
                 return ctx.render('apex',{
@@ -141,13 +138,13 @@ module.exports = ({
             }
         })
         .get('testing','/testing', async (ctx)=>{
-            var conn = new jsforce.Connection({
+            const conn = new jsforce.Connection({
                 oauth2: oauth2,
                 instanceUrl: global.instanceUrl,
                 accessToken: global.accesscode
             })
             
-            var result =await sfdcmethods.getAllLayout(conn)
+            const result =await sfdcmethods.getAllLayout(conn)
 
             if (result == undefined){
                 //result = await getObjectsInfoFromDB()
@@ -176,14 +173,14 @@ module.exports = ({
         })
         .get('getAllMeta','/getAllMeta', async (ctx) => {
             try{
-                var result = await pool.query("SELECT meta FROM metas WHERE orgid = $1",[global.orgId])   
+                const result = await pool.query("SELECT meta FROM metas WHERE orgid = $1",[global.orgId])   
             }catch (err){
                 console.log("Error [getAllMeta]: " + err)
             }
         })
         .get('getAllLayout','/getAllLayout', async (ctx)=>{
             try{
-                var result = await pool.query("SELECT layout FROM layouts WHERE orgid=$1",[global.orgId]) 
+                const result = await pool.query("SELECT layout FROM layouts WHERE orgid=$1",[global.orgId]) 
                 return ctx.render('generic', {object: result.rows[0]["layout"]["records"]})
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
@@ -191,28 +188,28 @@ module.exports = ({
         })
         .get('getAllProfile','/getProfile', async (ctx) => {
             try{
-                var result = await pool.query("SELECT profile FROM profiles WHERE orgid=$1",[global.orgId])
+                const result = await pool.query("SELECT profile FROM profiles WHERE orgid=$1",[global.orgId])
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
         })
         .get('getRecordTypes','/getRecordTypes', async (ctx) =>{
             try{
-                var result = await pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
+                const result = await pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
         })
         .get('getAllProfile2Layout','/getAllProfile2Layout', async (ctx) =>{
             try{
-                var result = await pool.query("SELECT profileslayout FROM profileslayouts WHERE orgid=$1",[global.orgId])  
+                const result = await pool.query("SELECT profileslayout FROM profileslayouts WHERE orgid=$1",[global.orgId])  
             }catch (err){
                 console.log("Error [getAllLayout]:" + err)
             }
         })
         .get('getAllValidationRules','/getAllValidationRules', async (ctx) =>{
             try{
-               var result = await pool.query("SELECT validationrule FROM validationrules WHERE orgid=$1",[global.orgId])
+               const result = await pool.query("SELECT validationrule FROM validationrules WHERE orgid=$1",[global.orgId])
                
             }catch (err){
                 console.log("Error [getAllValidationRules]:" + err)
@@ -220,7 +217,7 @@ module.exports = ({
         })
         .get('getAllWorkflowRules','/getAllWorkflowRules', async (ctx) =>{
             try{
-                var result = await pool.query("SELECT workflowrule FROM workflowrules WHERE orgid=$1",[global.orgId])
+                const result = await pool.query("SELECT workflowrule FROM workflowrules WHERE orgid=$1",[global.orgId])
                  
             }catch (err){
                 console.log("Error [getAllWorkflowRules]:" + err)
@@ -228,14 +225,14 @@ module.exports = ({
         })
         .get('getAllBusinessProcess','/getAllBusinessProcess', async (ctx) =>{
             try{
-               var result = await pool.query("SELECT businessprocess FROM businessprocess WHERE orgid=$1",[global.orgId])
+               const result = await pool.query("SELECT businessprocess FROM businessprocess WHERE orgid=$1",[global.orgId])
             }catch (err){
                 console.log("Error [getAllBusinessProcess]:" + err)
             }
         })
         .get('getAllCustomApplication','/getAllCustomApplication', async (ctx) =>{
             try{
-                var result = await pool.query("SELECT customapp FROM customapps WHERE orgid=$1",[global.orgId])
+                const result = await pool.query("SELECT customapp FROM customapps WHERE orgid=$1",[global.orgId])
                  
             }catch (err){
                 console.log("Error [getAllCustomApplication]:" + err)
@@ -253,6 +250,6 @@ module.exports = ({
             }catch (err) {console.log("Error [everything]:" + err)}
         })
         .post('Everything2','/Everything2', async (ctx) => {
-            
+
         })
 }
