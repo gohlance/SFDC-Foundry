@@ -37,6 +37,9 @@ module.exports = ({
     .get('contact', '/contact', (ctx) => {
       ctx.body = "Contact US...."
     })
+    .get('payment','/payment', (ctx) => {
+      return ctx.render('payment')
+    })
     
 }
 
