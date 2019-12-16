@@ -19,7 +19,7 @@ module.exports = {
 
 async function letsGetEverything(conn, pool){
     const step1 = new Promise(async (resolve)=>{
-        var result = getAllMeta(conn)
+        const result = getAllMeta(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO metas (orgid, meta) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -28,7 +28,7 @@ async function letsGetEverything(conn, pool){
 
 
     const step2 = new Promise(async(resolve) =>{
-        var result = getAllLayout(conn)
+        const result = getAllLayout(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO layouts (orgid, layout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -36,7 +36,7 @@ async function letsGetEverything(conn, pool){
     .finally(console.log("Step 2 done"))
 
     const step3 = new Promise(async(resolve) =>{
-        var result = getAllRecordType(conn)
+        const result = getAllRecordType(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO recordtypes (orgid, recordtype) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -44,7 +44,7 @@ async function letsGetEverything(conn, pool){
     .finally(console.log("Step 3 done"))
 
     const step4 = new Promise(async(resolve) =>{
-        var result = getAllProfile(conn)
+        const result = getAllProfile(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO profiles (orgid, profile) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -52,7 +52,7 @@ async function letsGetEverything(conn, pool){
     .finally(console.log("Step 4 done"))
 
     const step5 = new Promise(async(resolve) =>{
-        var result = getAllProfile2Layout(conn)
+        const result = getAllProfile2Layout(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO profileslayouts (orgid, profileslayout) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -60,7 +60,7 @@ async function letsGetEverything(conn, pool){
     .finally(console.log("Step 5 done"))
 
     const step6 = new Promise(async(resolve) =>{
-        var result = getAllValidationRules(conn)
+        const result = getAllValidationRules(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO validationrules (orgid, validationrule) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -68,7 +68,7 @@ async function letsGetEverything(conn, pool){
     .finally(console.log("Step 6 done"))
 
     const step7 = new Promise(async(resolve) =>{
-        var result = getAllWorkflowRules(conn)
+        const result = getAllWorkflowRules(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO workflowrules (orgid, workflowrule) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -76,7 +76,7 @@ async function letsGetEverything(conn, pool){
     .finally(console.log("Step 7 done"))
 
     const step8 = new Promise(async(resolve) =>{
-        var result = getAllBusinessProcess(conn)
+        const result = getAllBusinessProcess(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO businessprocess (orgid, businessprocess) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
@@ -84,22 +84,54 @@ async function letsGetEverything(conn, pool){
     .finally(console.log("Step 8 done"))
 
     const step9 = new Promise(async(resolve) =>{
-        var result = getAllCustomApplication(conn)
+        const result = getAllCustomApplication(conn)
         resolve(result)
     })
     .then(result => pool.query("INSERT INTO customapps (orgid, customapp) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
     .catch(error => console.log("Step 9 : " + error))
     .finally(console.log("Step 9 done"))
 
-    const step10 = new Promise(async (resolve) =>{
-        var result = await getAllObjects(conn)
+    const step10 = new Promise(async (resolve)=>{
+        const result = await getAllApex(conn, "ApexTrigger");
         resolve(result)
     })
-    .then(result => pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .then(result => pool.query("INSERT INTO apextriggers (orgid, apextrigger) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
     .catch(error => console.log("Step 10 : " + error))
     .finally(console.log("Step 10 done"))
 
-    Promise.all([step1, step2, step3, step4, step5, step6, step7, step8, step10])
+    const step11 = new Promise(async (resolve)=>{
+        const result = await getAllApex(conn, "ApexPage");
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO apexpages (orgid, apexpage) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 11 : " + error))
+    .finally(console.log("Step 11 done"))
+
+    const step12 = new Promise(async (resolve)=>{
+        const result = await getAllApex(conn, "ApexClass");
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO apexclass (orgid, apexclass) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 12: " + error))
+    .finally(console.log("Step 12 done"))
+
+    const step13 = new Promise(async (resolve)=>{
+        const result = await getAllApex(conn, "ApexComponent");
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO apexcomponent (orgid, apexcomponent) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 12: " + error))
+    .finally(console.log("Step 12 done"))
+
+    const step14 = new Promise(async (resolve) =>{
+        const result = await getAllObjects(conn)
+        resolve(result)
+    })
+    .then(result => pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId,JSON.stringify(result)]))
+    .catch(error => console.log("Step 14 : " + error))
+    .finally(console.log("Step 14 done"))
+
+    Promise.all([step1, step2, step3, step4, step5, step6, step7, step8, step9, step10])
 }
 
 async function getAllMeta(conn) {
