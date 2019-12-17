@@ -9,9 +9,21 @@ oauth2 = new jsforce.OAuth2({
   clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
   redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
+
+//*** Only for Development */
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQP2ZbZFRrUuJs.iM37vtk63_5GB.8ejAR3.bTcoxErXzgKci3bgM8OJttbl3bmWXAGFAP7DdpbdtaIEbN7lEF6m5QUbb"
+global.orgId = "567"
+
+console.log("global : :" + global.instanceUrl)
+
 conn = new jsforce.Connection({
-  oauth2: oauth2
+  oauth2: oauth2,
+  instanceUrl: global.instanceUrl,
+  accessToken: global.accesscode
 })
+
+console.log("Prarent : " + conn.instanceUrl)
 
 module.exports = {
     //Average Run: 3,637 ms to 4,000 ms
@@ -35,15 +47,16 @@ async function letsGetEverything() {
  
         const worker = new Worker('./backgroundsvc.js', {workerData: {instance: global.instanceUrl, code: global.accesscode}} );
         console.log("B")
-        worker.on('message', (resolve) =>{
-          console.log("I am here " + resolve.shit);
+        worker.on('message', (result) =>{
+          console.log("I am here " + result.status);
+          resolve("Success")
         });
         worker.on('error', reject);
         worker.on('exit', (code) => {
           if (code !== 0)
             reject(new Error(`Worker stopped with exit code ${code}`));
         })
-        resolve(worker.resolve)
+        
       })
 
     //Promise.all([step1, step2, step3, step4, step5, step6, step7, step8, step9, step10, step11, step12, step13]).then(step14)
@@ -74,7 +87,7 @@ async function getAllObjects() {
 
                 resolve(res.sobjects)
             })
-        }).then(result => sObjectDescribe(conn, result))
+        }).then(result => sObjectDescribe(result))
         
     } catch (err) {
         console.log("[util/getAllObjects]" + err)
@@ -88,7 +101,7 @@ async function sObjectDescribe(result) {
         var lessthan100fields = 0;
         var morethan100fields = 0;
         const pLimit = require('p-limit');
-        const limit = pLimit(100);
+        const limit = pLimit(50);
 
         var i = 1
         var allObjectTotalFields = await Promise.all(result.map(async (item) => limit(async () => {

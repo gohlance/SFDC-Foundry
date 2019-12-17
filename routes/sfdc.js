@@ -182,12 +182,10 @@ module.exports = ({
             }
         })
         .post('everything', '/everything', async (ctx) => {
-
             try {
-            
                var result = await sfdcmethods.letsGetEverything()
-               console.log("WHAT?")
-               
+               console.log("WHAT? : "  + result)
+               return ctx.render('index')
             } catch (err) {
                 console.log("Error [everything]:" + err)
             }
