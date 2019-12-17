@@ -1,0 +1,159 @@
+const {
+    workerData,
+    parentPort
+} = require('worker_threads')
+
+const sfdcmethod = require('./sfdc-api')
+
+async function something() {
+
+    try {
+        console.log("I am starting in background")
+
+        const step1 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllMeta()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO metas (orgid, meta) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 1 : " + error))
+            .finally(console.log("Step 1 done"))
+
+
+        const step2 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllLayout()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO layouts (orgid, layout) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 2 : " + error))
+            .finally(console.log("Step 2 done"))
+
+        const step3 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllRecordType()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO recordtypes (orgid, recordtype) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 3 : " + error))
+            .finally(console.log("Step 3 done"))
+
+        const step4 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllProfile()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO profiles (orgid, profile) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 4 : " + error))
+            .finally(console.log("Step 4 done"))
+
+        const step5 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllProfile2Layout()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO profileslayouts (orgid, profileslayout) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 5 : " + error))
+            .finally(console.log("Step 5 done"))
+
+        const step6 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllValidationRules()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO validationrules (orgid, validationrule) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 6 : " + error))
+            .finally(console.log("Step 6 done"))
+
+        const step7 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllWorkflowRules()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO workflowrules (orgid, workflowrule) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 7 : " + error))
+            .finally(console.log("Step 7 done"))
+
+        const step8 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllApexgetAllBusinessProcess()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO businessprocess (orgid, businessprocess) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 8 : " + error))
+            .finally(console.log("Step 8 done"))
+
+        const step9 = new Promise(async (resolve) => {
+                const result = sfdcmethod.getAllCustomApplication()
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO customapps (orgid, customapp) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 9 : " + error))
+            .finally(console.log("Step 9 done"))
+
+        const step10 = new Promise(async (resolve) => {
+                const result = await sfdcmethod. getAllApex( "ApexTrigger");
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO apextriggers (orgid, apextrigger) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 10 : " + error))
+            .finally(console.log("Step 10 done"))
+
+        const step11 = new Promise(async (resolve) => {
+                const result = await sfdcmethod.getAllApex( "ApexPage");
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO apexpages (orgid, apexpage) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 11 : " + error))
+            .finally(console.log("Step 11 done"))
+
+        const step12 = new Promise(async (resolve) => {
+                const result = await sfdcmethod.getAllApex( "ApexClass");
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO apexclass (orgid, apexclass) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 12: " + error))
+            .finally(console.log("Step 12 done"))
+
+        const step13 = new Promise(async (resolve) => {
+                const result = await sfdcmethod.getAllApex( "ApexComponent");
+                resolve(result)
+            })
+            .then(result => global.pool.query("INSERT INTO apexcomponents (orgid, apexcomponent) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => console.log("Step 12: " + error))
+            .finally(console.log("Step 13 done"))
+
+        const step14 = new Promise(async (resolve) => {
+                try {
+                    console.log("starting step 14")
+                    const result = await sfdcmethod.getAllObjects()
+                    resolve(result)
+                } catch (error) {
+                    console.log("Error ** : " + error);
+                    throw new Error("will be caught");
+                }
+            })
+            .then(result => global.pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .catch(error => {
+                console.log("Step 14 : " + error);
+                throw new Error("will be caught");
+            })
+            .finally(() => {
+                parentPort.postMessage({
+                    data: workerData,
+                    status: 'Done'
+                })
+                console.log("Step 14 done")
+            })
+
+
+
+
+        parentPort.postMessage({
+            shit: "DONE***"
+        })
+
+        console.log("AB : " + s)
+
+    } catch (error) {
+
+        console.log(error)
+    }
+
+}
+
+console.log("I ma here!!!!")
+something()
+console.log("Tyring")

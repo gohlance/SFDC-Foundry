@@ -16,6 +16,9 @@
                 <button class="btn btn-primary" id="btnRefresh" type="button" >
                     Refresh
                 </button>
+                <form method="POST" action="/everything">
+                    <input type="submit" name="Try"></input>
+                </form>
                 
             <%}%>
             </div>
@@ -107,24 +110,25 @@
             //console.log($(this).attr('id'));
             $(this).prop("disabled", true);
             $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            
             $.ajax({
-                type: 'POST',
+                type: 'GET',
                 cache: false,
-                url: '/EVERYTHING',
+                url: '/everything',
                 contentType: "application/json",
                 success: function (data) {
                     console.log("Success");
+                    console.log(data);
                 },
                 complete: function (){
                     $(this).prop("disabled", false);
                     $(this).remove(".spinner-border.spinner-border-sm");
                 }
-            });    
+            }); 
         });
         $("#btnConnect").click(function(){
             $(this).prop("disabled", true);
             $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
-            /oauth2/auth
             $.ajax({
                 type: 'GET',
                 cache: false,
