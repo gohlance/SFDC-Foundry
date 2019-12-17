@@ -3,13 +3,10 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', async (ctx) => {
-      console.log("Gloabl: " + global.accesscode)
-      console.log("Global :" + global.instanceUrl)
-
+      
       if (!global.accesscode || !global.instanceUrl) {
         return ctx.render('index')
       }else{
-        console.log(display_Homepage_Profiles())
         return ctx.render('welcome',{
           result_objects: 0, 
           result_profiles: await display_Homepage_Profiles(), 
