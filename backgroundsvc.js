@@ -131,7 +131,12 @@ async function something() {
                     throw new Error("will be caught");
                 }
             })
-            .then(result => pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .then(result => {
+                if (result == null){
+                    console.log("NULLLLLLL")
+                }
+                pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)])
+            })
             .catch(error => {
                 console.log("Step 14 : " + error);
                 throw new Error("will be caught");
