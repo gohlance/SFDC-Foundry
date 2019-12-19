@@ -62,7 +62,6 @@ async function letsGetEverything() {
     } catch (error) {
         console.log("Error [sfdc-api/letsGetEverything] : " + error )
     }
-    
 }
 
 async function getAllMeta() {
@@ -86,7 +85,7 @@ async function getAllObjects() {
                     return console.log(err)
                 }
                 console.log('[sfdc-api/getAllObjects] No of Objects ' + res.sobjects.length)
-
+                pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(res)])
                 resolve(res.sobjects)
             })
         }).then(result => sObjectDescribe(result))

@@ -18,6 +18,9 @@ module.exports = ({
         })
       }
     })
+    .get('index','/index', (ctx) => {
+      return ctx.render('index')
+    })
     .get('about', '/about', (ctx) => {
       ctx.body = "About US..."
     })
