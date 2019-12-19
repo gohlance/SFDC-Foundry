@@ -181,11 +181,17 @@ module.exports = ({
                 console.log("Error [getAllCustomApplication]:" + err)
             }
         })
-        .post('everything', '/everything', async (ctx) => {
+        .post('everything', '/everything', (ctx) => {
             try {
-               var result = await sfdcmethods.letsGetEverything()
-               console.log("WHAT? : "  + result)
-               return ctx.render('index')
+               //var result = sfdcmethods.letsGetEverything()
+               //console.log("WHAT? : "  + result)
+               ctx.body = {
+                status: 'success',
+                message: 'hello, world!'
+              };
+              ctx.status=200
+              console.log(ctx.body)
+               //return ctx.render('welcome')
             } catch (err) {
                 console.log("Error [everything]:" + err)
             }
