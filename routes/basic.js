@@ -9,12 +9,12 @@ module.exports = ({
       }else{
         return ctx.render('welcome',{
           result_objects: 0, 
-          result_profiles: await display_Homepage_Profiles(), 
-          result_layouts: await display_Homepage_Layouts(),
+          result_profiles: 0, 
+          result_layouts: 0,
           result_ApexComponents: await something(),
           result_apexTriggers: await something(),
           result_apexPages: await something(),
-          result_recordTypes: await display_Homepage_RecordTypes()
+          result_recordTypes: 0
         })
       }
     })

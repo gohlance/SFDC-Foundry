@@ -1,10 +1,11 @@
 const {
     Worker
 } = require('worker_threads')
-//global Oauth setting
 
+//global Oauth setting
 const jsforce = require('jsforce')
-oauth2 = new jsforce.OAuth2({
+
+var oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
     // loginUrl : 'https://test.salesforce.com',
     clientId: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
@@ -13,11 +14,12 @@ oauth2 = new jsforce.OAuth2({
 });
 
 //*** Only for Development */
-global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQDtiWr1WAU596cz3HRsvDScMERtXioxI_O4r7rLBlnsCAAr86f_NjF7Os2_V1KYnovJ2as5l9mljtyWQ1s4AMCoRUsX1"
-global.orgId = "567"
+//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+global.instanceUrl = "https://ap16.salesforce.com"
+global.accesscode = "00D2w000001eEGX!AQ0AQKbArzsfXdIEipnj_Ywu.11537EHZ9TZDaqSknDyeGZCPKFjqicSzgPP_PsAZ7Y3yvNtnmqytBvEsR8VjxASGDfoEdNk"
+global.orgId = "888"
 
-conn = new jsforce.Connection({
+var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
     accessToken: global.accesscode
@@ -36,32 +38,12 @@ module.exports = {
     getAllWorkflowRules,
     getAllBusinessProcess,
     getAllCustomApplication,
-    letsGetEverything
-}
-
-async function letsGetEverything() {
-    try {
-        return new Promise((resolve, reject) => {
-            const worker = new Worker('./backgroundsvc.js', {
-                workerData: {
-                    instance: global.instanceUrl,
-                    code: global.accesscode
-                }
-            });
-            console.log("Worker Started")
-            worker.on('message', (message) => {
-                console.log("I am here " + message.status);
-                resolve("Success")
-            });
-            worker.on('error', reject);
-            worker.on('exit', (code) => {
-                if (code !== 0)
-                    reject(new Error(`Worker stopped with exit code ${code}`));
-            })
-        })
-    } catch (error) {
-        console.log("Error [sfdc-api/letsGetEverything] : " + error )
-    }
+    letsGetEverything,
+    getAllObjectOnce,
+    sObjectDescribe,
+    getAllCustomObjects,
+    testing,
+    newTry
 }
 
 async function getAllMeta() {
@@ -76,80 +58,24 @@ async function getAllMeta() {
     }
 }
 
-//33 seconds run time for 2050 objects
-async function getAllObjects() {
+async function getAllObjectOnce() {
     try {
         return new Promise((resolve, reject) => {
             conn.describeGlobal(function (err, res) {
                 if (err) {
                     return console.log(err)
                 }
-                console.log('[sfdc-api/getAllObjects] No of Objects ' + res.sobjects.length)
-                pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(res)])
+                console.log('[sfdc-api/getAllObjectsOnce] No of Objects ' + res.sobjects.length)
                 resolve(res.sobjects)
             })
-        }).then(result => sObjectDescribe(result))
+        })
 
     } catch (err) {
-        console.log("Error [sfdc-api/getAllObjects]" + err)
+        console.log("Error [sfdc-api/getAllObjectsOnce]" + err)
     }
 }
 
-async function sObjectDescribe(result) {
-    //TODO : this section can do child relationship
-    try {
-        var i = 0;
-        var lessthan100fields = 0;
-        var morethan100fields = 0;
-        const pLimit = require('p-limit');
-        const limit = pLimit(25);
 
-        var i = 1
-        var allObjectTotalFields = await Promise.all(result.map(async (item) => limit(async () => {
-
-            var totalfields = await conn.sobject(item.name).describe().then(async response => {
-                return {
-                    totalfields: response.fields.length,
-                    layout: response.namedLayoutInfos.length,
-                    childRelatioship: response.childRelationships.length,
-                    recordType: response.recordTypeInfos.length,
-                    createable: response.createable,
-                    deletable: response.deletable,
-                    undeletable: response.undeletable
-                }
-            })
-
-            if (totalfields.totalfields > 100) {
-
-                morethan100fields++
-            } else {
-
-                lessthan100fields++
-            }
-
-            return {
-                Objectname: item.name,
-                totalfields: totalfields.totalfields,
-                Custom: item.custom,
-                Label: item.label,
-                childRelationships: totalfields.childRelationships,
-                recordType: totalfields.recordType,
-                layout: totalfields.layout,
-                createable: totalfields.createable,
-                deletable: totalfields.deletable,
-                undeletable: totalfields.undeletable
-            }
-        })))
-
-        return {
-            allObject: allObjectTotalFields,
-            morethan100: morethan100fields,
-            lessthan100: lessthan100fields
-        }
-    } catch (err) {
-        console.log("Error [sfdc-api/sObjectDescribe]" + err)
-    }
-}
 
 async function getAllApex(type) {
     //TODO: Check what can ApexPage, ApexClass and ApexComponent return
@@ -236,7 +162,6 @@ async function getAllValidationRules() {
         })
     })
 }
-
 async function getAllWorkflowRules() {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT ManageableState,Name,TableEnumOrId FROM WORKFLOWRULE", function (err, result) {
@@ -273,6 +198,223 @@ async function getAllCustomApplication() {
     })
 }
 
+async function getAllSecruityRisk() {
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT RiskType, Setting, SettingGroup, OrgValue, StandardValue FROM SecurityHealthCheckRisks where RiskType=’HIGH_RISK’", function (err, result) {
+            if (err) {
+                console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
+            }
+            console.log("[sfdc-api/getAllCustomApplication] : " + result)
+            resolve(result)
+        })
+    })
+}
+
+async function getAllCustomObjects() {
+    return new Promise((resolve, reject) => {
+        conn.metadata.retrieve()
+        conn.tooling.query("SELECT CustomHelpId, Description, DeveloperName, ExternalName, ExternalRepository, Language, ManageableState,NamespacePrefix,SharingModel FROM CustomObject", function (err, result) {
+            if (err) {
+                console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
+            }
+            console.log("[sfdc-api/getAllCustomApplication] : " + result)
+            resolve(result)
+        })
+    })
+}
+
+async function letsGetEverything() {
+    try {
+        return new Promise((resolve, reject) => {
+            const worker = new Worker('./backgroundsvc.js', {
+                workerData: {
+                    instance: global.instanceUrl,
+                    code: global.accesscode
+                }
+            });
+            console.log("Worker Started")
+            worker.on('message', (message) => {
+                console.log("I am here " + message.status);
+                resolve("Success")
+            });
+            worker.on('error', reject);
+            worker.on('exit', (code) => {
+                if (code !== 0)
+                    reject(new Error(`Worker stopped with exit code ${code}`));
+            })
+        })
+    } catch (error) {
+        console.log("Error [sfdc-api/letsGetEverything] : " + error)
+    }
+}
+
+
+
+///THIS IS USING HTE METADATA API TO GET CUSTOM OBJECT> BUT I AM HAVIN ISSUE WITH PROMISE
+async function testing() {
+    var types = [{
+        type: 'CustomObject',
+        folder: null
+    }];
+    var names = []
+    //metadata[0].fullName
+    await conn.metadata.list(types, '45.0', function (err, metadata) {
+        //console.log("WTF")
+        if (err) {
+            return console.error('err', err);
+        }
+        metadata.forEach(item => {
+            names.push(item.fullName)
+        })
+    })
+    console.log("Starting")
+    console.log(names.length)
+    let newarr = await names.filter(a => !a.includes('SBQQ'))
+    //console.log(newarr);
+    var block_names = await chunkArrayInGroups(newarr, 10);
+    // console.log(block_names)
+    // var block_result = await readMetaData(block_names)
+    var blokc_result = []
+    console.log("Middel")
+    for (const a123 in block_names) {
+        console.log(block_names[a123]);  
+       
+        await conn.metadata.read('CustomObject', block_names[a123], function (err, metadata) {
+            try {
+                if (err) {
+                    console.error(err);
+                }
+                /**
+                for (var i = 0; i < metadata.length; i++) {
+                    var meta = metadata[i];
+                    let totalFields = 0
+                    console.log(meta.fullName);
+                    if (meta.fields != undefined) {
+                        if (meta.fields.length != undefined){
+                        totalFields = meta.fields.length}
+                    }
+                    blokc_result.push({
+                        fullname: meta.fullName,
+                        fieldscount: totalFields,
+                        sharingModel: meta.sharingModel
+                    })
+                } */
+               // console.log(JSON.stringify(metadata))
+                blokc_result.push(JSON.stringify(metadata))
+            } catch (error) {
+                throw error;
+            
+            }
+        });
+    }
+
+    console.log(blokc_result);
+    //console.log(block_result);
+    console.log("Ending***********************************************");
+
+}
+
+
+//33 seconds run time for 2050 objects
+async function getAllObjects() {
+    try {
+        return new Promise((resolve, reject) => {
+            conn.describeGlobal(function (err, res) {
+                if (err) {
+                    return console.log(err)
+                }
+                console.log('[sfdc-api/getAllObjects] No of Objects ' + res.sobjects.length)
+                //pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(res)])
+                resolve(res.sobjects)
+            })
+        })
+
+    } catch (err) {
+        console.log("Error [sfdc-api/getAllObjects]" + err)
+    }
+}
+
+function newTry(result){
+    console.log("LANCE GOH : " + JSON.stringify(result));
+    console.log(result.rows[0].id)
+}
+
+async function sObjectDescribe(result) {
+    console.log(result);
+    //TODO : this section can do child relationship
+    try {
+        setTimeout(async function () {
+            console.log("I am sleeping for 1 min before calling again")
+            var i = 0;
+            var lessthan100fields = 0;
+            var morethan100fields = 0;
+            const pLimit = require('p-limit');
+            const limit = pLimit(100);
+
+            var i = 1
+            var allObjectTotalFields = await Promise.all(result.map(async (item) => limit(async () => {
+                var totalfields = await conn.sobject(item.name).describe().then(async response => {
+                    return {
+                        totalfields: response.fields.length,
+                        layout: response.namedLayoutInfos.length,
+                        childRelatioship: response.childRelationships.length,
+                        recordType: response.recordTypeInfos.length,
+                        createable: response.createable,
+                        deletable: response.deletable,
+                        undeletable: response.undeletable
+                    }
+                })
+
+                if (totalfields.totalfields > 100) {
+
+                    morethan100fields++
+                } else {
+
+                    lessthan100fields++
+                }
+
+                return {
+                    Objectname: item.name,
+                    totalfields: totalfields.totalfields,
+                    Custom: item.custom,
+                    Label: item.label,
+                    childRelationships: totalfields.childRelationships,
+                    recordType: totalfields.recordType,
+                    layout: totalfields.layout,
+                    createable: totalfields.createable,
+                    deletable: totalfields.deletable,
+                    undeletable: totalfields.undeletable
+                }
+            })))
+
+            return {
+                allObject: allObjectTotalFields,
+                morethan100: morethan100fields,
+                lessthan100: lessthan100fields
+            }
+        }, 10000); //setTimeOut
+    } catch (err) {
+        console.log("Error [sfdc-api/sObjectDescribe]" + err)
+    }
+}
+
+//PRIVATE
+function chunkArrayInGroups(arr, size) {
+    return new Promise((resolve, reject) => {
+        var myArray = [];
+        var tempArry = arr
+        for (var i = 0; i < tempArry.length; i++) {
+            if (tempArry[i].includes('SBQQ')) {
+                tempArry.splice(i, 1);
+            }
+        }
+
+        for (var i = 0; i < tempArry.length; i += size) {
+            myArray.push(tempArry.slice(i, i + size));
+        }
+        resolve(myArray)
+    });
+}
 
 
 /**

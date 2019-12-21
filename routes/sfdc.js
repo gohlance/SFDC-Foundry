@@ -1,7 +1,27 @@
 const sfdcmethods = require('../sfdc-api')
 const {
-    Worker, isMainThread, parentPort, workerData
-  } = require('worker_threads');
+    Worker,
+    isMainThread,
+    parentPort,
+    workerData
+} = require('worker_threads');
+
+const jsforce = require('jsforce')
+
+oauth2 = new jsforce.OAuth2({
+    // you can change loginUrl to connect to sandbox or prerelease env.
+    // loginUrl : 'https://test.salesforce.com',
+    clientId: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
+    clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
+    redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
+});
+
+
+conn = new jsforce.Connection({
+    oauth2: oauth2,
+    instanceUrl: global.instanceUrl,
+    accessToken: global.accesscode
+})
 
 
 module.exports = ({
@@ -14,10 +34,10 @@ module.exports = ({
             }))
         })
         .get('oauth', '/auth3/login/return', (ctx) => {
-           
             var code = ctx.request.query["code"]
-            console.log("**** - " + code);
-            global.conn.authorize(code, function (err, userInfo) {
+            console.log("**** - " + code)
+
+            conn.authorize(code, function (err, userInfo) {
                 if (err) {
                     return console.error(err)
                 }
@@ -33,167 +53,33 @@ module.exports = ({
             }
         })
         .get('logout', '/logout', (ctx) => {
-            global.conn.logout(function (err) {
+            conn.logout(function (err) {
                 if (err) {
                     return console.error(err);
                 }
                 // now the session has been expired.
             });
         })
-        .get('getAllObjects', '/getAllObjects', async (ctx) => {
-            try {
-                const result = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1', [global.orgId])
-
-                console.log("%%% : " + result)
-
-                return ctx.render('objects', {
-                    allObject: result.rows[0]["objectinfo"]["allObject"],
-                    totalObject: result.rows[0]["objectinfo"]["allObject"].length,
-                    moreObject: result.rows[0]["objectinfo"].morethan100,
-                    lessObject: result.rows[0]["objectinfo"].lessthan100
-                })
-
-            } catch (err) {
-                console.log("Error [getAllObjects] " + err)
-            }
-        })
-        .get('getAllApexTrigger', '/getAllApexTrigger', async (ctx) => {
-            try {
-                
-
-                const result = await sfdcmethods.getAllApex("ApexTrigger")
-
-
-                return ctx.render('apex', {
-                    apex: result.records,
-                    type: "ApexTrigger"
-                })
-            } catch (err) {
-                console.log("Error [getAllApexTrigger]: " + err)
-            }
-        })
-        .get('getAllApexPage', '/getAllApexPage', async (ctx) => {
-            try {
-                var result = await sfdcmethods.getAllApex( "ApexPage")
-
-                return ctx.render('apex', {
-                    apex: result.records,
-                    type: "ApexPage"
-                })
-            } catch (err) {
-                console.log("Error [getAllApexPage]: " + err)
-            }
-        })
-        .get('getAllApexPage', '/getAllApexComponent', async (ctx) => {
-            try {
-               
-                var result = await sfdcmethods.getAllApex("ApexComponent")
-
-                return ctx.render('apex', {
-                    apex: result.records,
-                    type: "ApexComponent"
-                })
-            } catch (err) {
-                console.log("Error [getAllApexComponet]: " + err)
-            }
-        })
-
-        .get('getAllApexPage', '/getAllApexClass', async (ctx) => {
-            try {
-              
-
-                var result = await sfdcmethods.getAllApex( "ApexClass")
-
-                return ctx.render('apex', {
-                    apex: result.records,
-                    type: "ApexClass"
-                })
-            } catch (err) {
-                console.log("Error [getAllApexClass] : " + err)
-            }
-        })
-        .get('getAllMeta', '/getAllMeta', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT meta FROM metas WHERE orgid = $1", [global.orgId])
-            } catch (err) {
-                console.log("Error [getAllMeta]: " + err)
-            }
-        })
-        .get('getAllLayout', '/getAllLayout', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT layout FROM layouts WHERE orgid=$1", [global.orgId])
-                return ctx.render('generic', {
-                    object: result.rows[0]["layout"]["records"]
-                })
-            } catch (err) {
-                console.log("Error [getAllLayout]:" + err)
-            }
-        })
-        .get('getAllProfile', '/getProfile', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT profile FROM profiles WHERE orgid=$1", [global.orgId])
-            } catch (err) {
-                console.log("Error [getAllLayout]:" + err)
-            }
-        })
-        .get('getRecordTypes', '/getRecordTypes', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1", [global.orgId])
-            } catch (err) {
-                console.log("Error [getAllLayout]:" + err)
-            }
-        })
-        .get('getAllProfile2Layout', '/getAllProfile2Layout', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT profileslayout FROM profileslayouts WHERE orgid=$1", [global.orgId])
-            } catch (err) {
-                console.log("Error [getAllLayout]:" + err)
-            }
-        })
-        .get('getAllValidationRules', '/getAllValidationRules', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT validationrule FROM validationrules WHERE orgid=$1", [global.orgId])
-
-            } catch (err) {
-                console.log("Error [getAllValidationRules]:" + err)
-            }
-        })
-        .get('getAllWorkflowRules', '/getAllWorkflowRules', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT workflowrule FROM workflowrules WHERE orgid=$1", [global.orgId])
-
-            } catch (err) {
-                console.log("Error [getAllWorkflowRules]:" + err)
-            }
-        })
-        .get('getAllBusinessProcess', '/getAllBusinessProcess', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT businessprocess FROM businessprocess WHERE orgid=$1", [global.orgId])
-            } catch (err) {
-                console.log("Error [getAllBusinessProcess]:" + err)
-            }
-        })
-        .get('getAllCustomApplication', '/getAllCustomApplication', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT customapp FROM customapps WHERE orgid=$1", [global.orgId])
-
-            } catch (err) {
-                console.log("Error [getAllCustomApplication]:" + err)
-            }
-        })
+        
         .post('everything', '/everything', (ctx) => {
             try {
-               //var result = sfdcmethods.letsGetEverything()
-               //console.log("WHAT? : "  + result)
-               ctx.body = {
-                status: 'success',
-                message: 'hello, world!'
-              };
-              ctx.status=200
-              console.log(ctx.body)
-               //return ctx.render('welcome')
+                var result = sfdcmethods.letsGetEverything()
+                console.log("WHAT? : " + result)
+                //ctx.body = {
+                // status: 'success',
+                // message: 'hello, world!'
+                //};
             } catch (err) {
                 console.log("Error [everything]:" + err)
             }
         })
+        .get('testing', '/testing', async (ctx) => {
+            
+                const somethinv = await global.pool.query("SELECT * FROM objects WHERE ID = 20")
+             
+                let somet = 1
+                let asd = 2
+               
+        })
+
 }

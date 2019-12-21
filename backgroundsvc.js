@@ -14,7 +14,8 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 })
-async function something() {
+
+async function start_background_call() {
     try {
         console.log("background starting")
         const step1 = new Promise(async (resolve) => {
@@ -124,23 +125,15 @@ async function something() {
         const step14 = new Promise(async (resolve) => {
                 try {
                     console.log("starting step 14")
-                    const result = await sfdcmethod.getAllObjects()
+                    const result = await sfdcmethod.getAllObjectOnce()
                     resolve(result)
                 } catch (error) {
                     console.log("Error ** : " + error);
                     throw new Error("will be caught");
                 }
-            })
-            .then(result => {
-                if (result == null){
-                    console.log("NULLLLLLL")
-                }
-                pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)])
-            })
-            .catch(error => {
-                console.log("Step 14 : " + error);
-                throw new Error("will be caught");
-            })
+            }).then(result => pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["900990", JSON.stringify(result)]))
+            .then(result => sfdcmethod.newTry(result))
+            .catch(error => console.log("Step 14: " + error))
             .finally(() => {
                 parentPort.postMessage({
                     fileName: "Done",
@@ -149,12 +142,8 @@ async function something() {
                 console.log("Step 14 done")
             })
     } catch (error) {
-
         console.log("Error [backgroundsvc.js] : " + error)
     }
-
 }
 
-console.log("I ma here!!!!")
-something()
-console.log("Tyring")
+start_background_call()

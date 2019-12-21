@@ -1,0 +1,12 @@
+- Disable Refresh / Get Information button on the Welcome Page after 1 call. Not sure how to do it.
+- Individual views to see more information.
+- Payment Page.
+
+Issue
+- Currently the limit seems to be over 2000 objects.
+- i am doing a save now of describeObject before getting more information.
+-getAllObjects resolve null
+
+Roadmap
+- PDF Report -> need to design this.
+- 
