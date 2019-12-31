@@ -5,6 +5,7 @@ const {
 //global Oauth setting
 const jsforce = require('jsforce')
 
+const _ = require('lodash')
 var oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
     // loginUrl : 'https://test.salesforce.com',
@@ -13,11 +14,22 @@ var oauth2 = new jsforce.OAuth2({
     redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
 });
 
+const Pool = require('pg-pool')
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Beaver',
+    password: 'P@ssw0rd1',
+    port: 5432,
+    max: 20, // set pool max size to 20
+    min: 4
+})
+
 //*** Only for Development */
-//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D2w000001eEGX!AQ0AQKbArzsfXdIEipnj_Ywu.11537EHZ9TZDaqSknDyeGZCPKFjqicSzgPP_PsAZ7Y3yvNtnmqytBvEsR8VjxASGDfoEdNk"
-global.orgId = "888"
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.instanceUrl = "https://ap16.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQOFBTOffV42FvoQj_gZAXGWyccQdfuRboy3K394ge5yegRX3yys2yKLhHyjk48Jbju7V2MfofwxvIH5cwhGH1LBBn.WJ"
+global.orgId = "999"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
@@ -43,7 +55,8 @@ module.exports = {
     sObjectDescribe,
     getAllCustomObjects,
     testing,
-    newTry
+    newTry,
+    filter_BeforeCallingAPI
 }
 
 async function getAllMeta() {
@@ -337,22 +350,55 @@ async function getAllObjects() {
 function newTry(result){
     console.log("LANCE GOH : " + JSON.stringify(result));
     console.log(result.rows[0].id)
+
+///USE THIS URL INSTEAD!!!!
+    //https://ap16.salesforce.com/services/data/v42.0/sobjects/Account/describe
+}
+
+function filter_BeforeCallingAPI (result){
+    console.log("Hello")
+    console.log("result : " + result.length)
+    var custom_is_false = _.filter(result, function (o){
+        if (o.custom == false)
+        return o
+    })
+    console.log ("*******************")
+    console.log(custom_is_false.length)
+
+    var layoutable_is_true = _.filter(custom_is_false, function (i){
+        if (i.layoutable ==  true){
+            return i
+        }
+    })
+
+    console.log(layoutable_is_true.length)
+
+    var createable_is_true = _.filter(layoutable_is_true, function(i){
+        if (i.createable == true){
+            return i
+        }
+    })
+
+    console.log(createable_is_true.length)
+
+    return createable_is_true
+
 }
 
 async function sObjectDescribe(result) {
-    console.log(result);
+    console.log(result.length)
+    var result2 = filter_BeforeCallingAPI(result)
+    //console.log(result);
     //TODO : this section can do child relationship
     try {
-        setTimeout(async function () {
-            console.log("I am sleeping for 1 min before calling again")
             var i = 0;
             var lessthan100fields = 0;
             var morethan100fields = 0;
             const pLimit = require('p-limit');
             const limit = pLimit(100);
-
+            console.log("I am here sobjectDescribe")
             var i = 1
-            var allObjectTotalFields = await Promise.all(result.map(async (item) => limit(async () => {
+            var allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
                 var totalfields = await conn.sobject(item.name).describe().then(async response => {
                     return {
                         totalfields: response.fields.length,
@@ -386,13 +432,15 @@ async function sObjectDescribe(result) {
                     undeletable: totalfields.undeletable
                 }
             })))
-
-            return {
+            var jsonResult = {
                 allObject: allObjectTotalFields,
                 morethan100: morethan100fields,
                 lessthan100: lessthan100fields
             }
-        }, 10000); //setTimeOut
+            console.log("Inserting")
+            pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",["8888",JSON.stringify(jsonResult)])
+           console.log("Done!!")
+       
     } catch (err) {
         console.log("Error [sfdc-api/sObjectDescribe]" + err)
     }

@@ -6,6 +6,7 @@ const {
     workerData
 } = require('worker_threads');
 
+
 const jsforce = require('jsforce')
 
 oauth2 = new jsforce.OAuth2({
@@ -60,7 +61,7 @@ module.exports = ({
                 // now the session has been expired.
             });
         })
-        
+
         .post('everything', '/everything', (ctx) => {
             try {
                 var result = sfdcmethods.letsGetEverything()
@@ -74,12 +75,58 @@ module.exports = ({
             }
         })
         .get('testing', '/testing', async (ctx) => {
+
+            const result = await global.pool.query("SELECT objectinfo FROM objects WHERE ID = 21")
+
+            console.log("************************")
+
+            var custom_is_false = _.filter(result.rows[0].objectinfo, function (o){
+                if (o.custom == false)
+                return o
+            })
+
+            console.log(custom_is_false.length)
+
+            var layoutable_is_true = _.filter(custom_is_false, function (i){
+                if (i.layoutable ==  true){
+                    return i
+                }
+            })
+
+            console.log(layoutable_is_true.length)
+
+            var createable_is_true = _.filter(layoutable_is_true, function(i){
+                if (i.createable == true){
+                    return i
+                }
+            })
+
+            console.log(createable_is_true.length)
+            /**
             
-                const somethinv = await global.pool.query("SELECT * FROM objects WHERE ID = 20")
-             
-                let somet = 1
-                let asd = 2
-               
+
+            var updateable_is_false = _.map(custom_is_false, function(e){
+                if (e.updateable ==  false)
+                return e
+            })
+
+            var createable_is_false = _.filter(custom_is_false, function(f){
+                if (f.createable ==  false)
+                return f
+            })
+
+            
+           
+            console.log(updateable_is_false.length)
+            console.log(result.rows[0].objectinfo.length)
+            
+            console.log(createable_is_false.length)
+         */
+            return ctx.render('generic', {
+                object: createable_is_true
+            })
+
+
         })
 
 }

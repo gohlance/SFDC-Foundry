@@ -131,8 +131,12 @@ async function start_background_call() {
                     console.log("Error ** : " + error);
                     throw new Error("will be caught");
                 }
-            }).then(result => pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["900990", JSON.stringify(result)]))
-            .then(result => sfdcmethod.newTry(result))
+            }).then(result => {
+                 console.log("Starting SobjectDescribe")
+                 pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["900990", JSON.stringify(result)])
+                 var ten  = sfdcmethod.sObjectDescribe(result)  
+                 
+            })
             .catch(error => console.log("Step 14: " + error))
             .finally(() => {
                 parentPort.postMessage({
@@ -140,7 +144,7 @@ async function start_background_call() {
                     status: 'Done'
                 })
                 console.log("Step 14 done")
-            })
+            }) 
     } catch (error) {
         console.log("Error [backgroundsvc.js] : " + error)
     }
