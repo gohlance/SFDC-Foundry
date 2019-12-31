@@ -87,4 +87,35 @@ module.exports = ({
                 console.log("Error [everything]:" + err)
             }
         })
+        //***** TESTING */
+        .get('getA', '/getA', async (ctx) => {
+            try {
+                const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '8888'")
+        
+                return ctx.render('generic', {
+                    object: result
+                })
+            }catch (error){
+                console.log(error)
+            }
+        })
+        //This section show the totalfields
+        .get('getB', '/getB', async (ctx) => {
+            try {
+                const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '999'")
+        
+                return ctx.render('generic', {
+                    object: result
+                })
+            }catch (error){console.log(error)}
+        })
+        .get('getC', '/getC', async (ctx) => {
+            try {
+                const result = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
+        
+                return ctx.render('generic', {
+                    object: result
+                })
+            }catch (error){console.log(error)}
+        })
 }

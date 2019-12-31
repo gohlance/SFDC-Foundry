@@ -53,8 +53,7 @@ module.exports = {
     letsGetEverything,
     getAllObjectOnce,
     sObjectDescribe,
-    getAllCustomObjects,
-    filter_BeforeCallingAPI
+    getAllCustomObjects
 }
 
 async function getAllMeta() {
@@ -278,35 +277,7 @@ async function getAllObjects() {
     }
 }
 
-function filter_BeforeCallingAPI (result){
-    console.log("Hello")
-    console.log("result : " + result.length)
-    var custom_is_false = _.filter(result, function (o){
-        if (o.custom == false)
-        return o
-    })
-    console.log ("*******************")
-    console.log(custom_is_false.length)
 
-    var layoutable_is_true = _.filter(custom_is_false, function (i){
-        if (i.layoutable ==  true){
-            return i
-        }
-    })
-
-    console.log(layoutable_is_true.length)
-
-    var createable_is_true = _.filter(layoutable_is_true, function(i){
-        if (i.createable == true){
-            return i
-        }
-    })
-
-    console.log(createable_is_true.length)
-
-    return createable_is_true
-
-}
 
 async function sObjectDescribe(result) {
     console.log(result.length)
@@ -387,6 +358,39 @@ function chunkArrayInGroups(arr, size) {
     });
 }
 
+function filter_BeforeCallingAPI (result){
+    console.log("result : " + result.length)
+    var custom_is_false = _.filter(result, function (o){
+        if (o.custom == false)
+        return o
+    })
+    console.log ("*******************")
+    console.log(custom_is_false.length)
+
+    var layoutable_is_true = _.filter(custom_is_false, function (i){
+        if (i.layoutable ==  true){
+            return i
+        }
+    })
+
+    console.log(layoutable_is_true.length)
+
+    var createable_is_true = _.filter(layoutable_is_true, function(i){
+        if (i.createable == true){
+            return i
+        }
+    })
+
+    console.log(createable_is_true.length)
+
+    return createable_is_true
+}
+
+async function filter_RecordTypesBy (sobjectname){
+    let result = await global.pool.query("select elem from public.recordtypes, lateral jsonb_array_elements(recordtype ->'records') elem where elem @> '{\"SobjectType\":\"$1\"}' and orgid = $2;", [sobjectname,global.orgId])
+  //result.rows[0].elem
+    return result
+  }
 
 /**
  * Get metadata for profiles and for layouts. The layouts metadata provides you a full list of page layouts across all objects, while the profile files contain the info on which page layout/record type combos the profile is associated with.

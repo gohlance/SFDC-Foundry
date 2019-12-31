@@ -33,8 +33,9 @@ module.exports = ({
     
 }
 
-//private methods
 
+
+//private methods
 async function display_Homepage_Objects(){
   const result_object = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
   if (result_object.rows[0]["objectinfo"] != null){

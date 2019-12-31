@@ -134,7 +134,7 @@ async function start_background_call() {
             }).then(result => {
                  console.log("Starting SobjectDescribe")
                  //Need to save this in another table! 
-                 asdasd.asdasd
+                 asdasd.asdasd #TODO
                  //pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["900990", JSON.stringify(result)])
                  sfdcmethod.sObjectDescribe(result)  
                  
