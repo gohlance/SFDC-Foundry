@@ -1,68 +1,58 @@
     <div class="row">
-       
-                <div class="col">
-                        <div class="card" style="width: 20rem;height:220px">
-                                <svg id="fillgauge1" width="97%" height="100" style="margin-top:2"></svg>
-                                <div class="card-body text-center">
-                                  <h5 class="card-title"><%- moreObject %> </h5>
-                                  <p class="card-text">More than 100 custom fields in the objects.</p>
-                                </div>
-                        </div>
-                </div>
-                <div class="col">
-                        <div class="card" style="width: 20rem;height:220px">
-                                <svg id="fillgauge2" width="97%" height="100" style="margin-top:2"></svg>
-                                <div class="card-body text-center">
-                                  <h5 class="card-title"><%- lessObject %></h5>
-                                  <p class="card-text">Less than 100 custom fields in the objects.</p>
-                                </div>
-                        </div>
-                </div>
-                <div class="col">
-                        <div class="card" style="width: 20rem;height:220px">
-                                <div class="card-body text-center">
-                                    <h2 class="card-title"><%- totalObject%></h2>
-                                    <h5 class="card-title">Total Object(s)</h5>
-                                </div>
-                                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                        Show Table
-                                  </a>
-                        </div>
-                </div>
-                
+
+            <div class="card" style="width: 30%;height:220px">
+                    <svg id="fillgauge1" width="97%" height="100" style="margin-top:2"></svg>
+                    <div class="card-body text-center">
+                            <h5 class="card-title"><%- moreObject %> </h5>
+                            <p class="card-text">More than 100 custom fields in the objects.</p>
+                    </div>
+            </div>
+            <div class="card" style="width: 30%;height:220px">
+                    <svg id="fillgauge2" width="97%" height="100" style="margin-top:2"></svg>
+                    <div class="card-body text-center">
+                            <h5 class="card-title"><%- lessObject %></h5>
+                            <p class="card-text">Less than 100 custom fields in the objects.</p>
+                    </div>
+            </div>
+            <div class="card" style="width: 30%;height:220px">
+                    <div class="card-body text-center">
+                            <h2 class="card-title"><%- totalObject%></h2>
+                            <h5 class="card-title">Total Object(s)</h5>
+                    </div>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
+                            aria-expanded="false" aria-controls="collapseExample">
+                            Show Table
+                    </a>
+            </div>
+    </div>
+
     </div>
     <div class="row">
-    <div class="collapse" id="collapseExample">
-        
-        <div class="col">
-            <table id="dtObjects" class="table table-striped table-bordered table-sm sortable" cellspacing="0" width="100%">
-                <thead> 
-                <th >Object Name</th>
-                <th >Custom</th>
-                <th >Total Fields</th>
-                <th >Label</th>
-                <th >ChildRelationship</th>
-                <th >Record Types</th>
-                <th >Layout</th>
-                <th>createable</th>
-                <th>deletable</th>
-                <th>undeletable</th>
-            </thead>
-                <tbody>
-                <% for(var i =0; i< allObject.length; i ++){ %>
-                <tr>
-                    <td><%- allObject[i].Objectname%></td>
-                    <td> <%-allObject[i].Custom%></td>
-                    <td> <%- allObject[i].totalfields%> </td>
-                    <td> <%- allObject[i].Label%> </td>
-                    <td> <%- allObject[i].childRelationships%> </td>
-                    <td> <%- allObject[i].recordType%> </td>
-                    <td> <%- allObject[i].layout%> </td>
-                    <td> <%- allObject[i].createable%> </td>
-                    <td> <%- allObject[i].deletable%> </td>
-                    <td> <%- allObject[i].undeletable%> </td>
-                </tr>
-                <%}%> 
+            <div class="collapse" id="collapseExample">
+                    <div class="col">
+                            <table id="dtObjects" class="table table-striped table-bordered table-sm sortable"
+                                    cellspacing="0" width="100%">
+                                    <thead>
+                                            <th>Object Name</th>
+                                            <th>Custom</th>
+                                            <th>Total Fields</th>
+                                            <th>Label</th>
+                                            <th>ChildRelationship</th>
+                                            <th>Record Types</th>
+                                            <th>Layout</th>
+                                    </thead>
+                                    <tbody>
+                                            <% for(var i =0; i< allObject.length; i ++){ %>
+                                            <tr>
+                                                    <td><%- allObject[i].Objectname%></td>
+                                                    <td> <%-allObject[i].Custom%></td>
+                                                    <td> <%- allObject[i].totalfields%> </td>
+                                                    <td> <%- allObject[i].Label%> </td>
+                                                    <td> <%- allObject[i].childRelationships%> </td>
+                                                    <td> <%- allObject[i].recordType%> </td>
+                                                    <td> <%- allObject[i].layout%></td>
+                                            </tr>
+                                            <%}%> 
                 </tbody>   
             </table>
         </div>
@@ -75,6 +65,8 @@
 </style>
 <script>
         var morethan1001 = <%= moreObject %>;
-        var gauge1 = loadLiquidFillGauge("fillgauge1", <%- moreObject %> / <%- totalObject %> *100 );
-        var gauge2 = loadLiquidFillGauge("fillgauge2", <%- lessObject %> / <%- totalObject %> *100);
-</script>
+                                            var gauge1 = loadLiquidFillGauge("fillgauge1", <%- moreObject %> /
+                                            <%- totalObject %> *100 );
+                                            var gauge2 = loadLiquidFillGauge("fillgauge2", <%- lessObject %> /
+                                            <%- totalObject %> *100);
+                                            </script>

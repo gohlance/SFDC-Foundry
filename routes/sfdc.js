@@ -61,7 +61,20 @@ module.exports = ({
                 // now the session has been expired.
             });
         })
-
+        .get('showObjects','/showObject', async (ctx)=>{
+            try {
+                var result =  await  global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
+               
+                return ctx.render('objects', {
+                    allObject: result.rows[0]["objectinfo"]["allObject"],
+                    totalObject: result.rows[0]["objectinfo"]["allObject"].length,
+                    moreObject: result.rows[0]["objectinfo"].morethan100,
+                    lessObject: result.rows[0]["objectinfo"].lessthan100
+                })
+            } catch (err) {
+                console.log("Error [getAllObjects] " + err)
+            }
+        })
         .post('everything', '/everything', (ctx) => {
             try {
                 var result = sfdcmethods.letsGetEverything()
