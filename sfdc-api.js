@@ -54,8 +54,6 @@ module.exports = {
     getAllObjectOnce,
     sObjectDescribe,
     getAllCustomObjects,
-    testing,
-    newTry,
     filter_BeforeCallingAPI
 }
 
@@ -261,73 +259,6 @@ async function letsGetEverything() {
     }
 }
 
-
-
-///THIS IS USING HTE METADATA API TO GET CUSTOM OBJECT> BUT I AM HAVIN ISSUE WITH PROMISE
-async function testing() {
-    var types = [{
-        type: 'CustomObject',
-        folder: null
-    }];
-    var names = []
-    //metadata[0].fullName
-    await conn.metadata.list(types, '45.0', function (err, metadata) {
-        //console.log("WTF")
-        if (err) {
-            return console.error('err', err);
-        }
-        metadata.forEach(item => {
-            names.push(item.fullName)
-        })
-    })
-    console.log("Starting")
-    console.log(names.length)
-    let newarr = await names.filter(a => !a.includes('SBQQ'))
-    //console.log(newarr);
-    var block_names = await chunkArrayInGroups(newarr, 10);
-    // console.log(block_names)
-    // var block_result = await readMetaData(block_names)
-    var blokc_result = []
-    console.log("Middel")
-    for (const a123 in block_names) {
-        console.log(block_names[a123]);  
-       
-        await conn.metadata.read('CustomObject', block_names[a123], function (err, metadata) {
-            try {
-                if (err) {
-                    console.error(err);
-                }
-                /**
-                for (var i = 0; i < metadata.length; i++) {
-                    var meta = metadata[i];
-                    let totalFields = 0
-                    console.log(meta.fullName);
-                    if (meta.fields != undefined) {
-                        if (meta.fields.length != undefined){
-                        totalFields = meta.fields.length}
-                    }
-                    blokc_result.push({
-                        fullname: meta.fullName,
-                        fieldscount: totalFields,
-                        sharingModel: meta.sharingModel
-                    })
-                } */
-               // console.log(JSON.stringify(metadata))
-                blokc_result.push(JSON.stringify(metadata))
-            } catch (error) {
-                throw error;
-            
-            }
-        });
-    }
-
-    console.log(blokc_result);
-    //console.log(block_result);
-    console.log("Ending***********************************************");
-
-}
-
-
 //33 seconds run time for 2050 objects
 async function getAllObjects() {
     try {
@@ -345,14 +276,6 @@ async function getAllObjects() {
     } catch (err) {
         console.log("Error [sfdc-api/getAllObjects]" + err)
     }
-}
-
-function newTry(result){
-    console.log("LANCE GOH : " + JSON.stringify(result));
-    console.log(result.rows[0].id)
-
-///USE THIS URL INSTEAD!!!!
-    //https://ap16.salesforce.com/services/data/v42.0/sobjects/Account/describe
 }
 
 function filter_BeforeCallingAPI (result){

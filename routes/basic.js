@@ -8,13 +8,13 @@ module.exports = ({
         return ctx.render('index')
       }else{
         return ctx.render('welcome',{
-          result_objects: 0, 
-          result_profiles: 0, 
-          result_layouts: 0,
-          result_ApexComponents: await something(),
-          result_apexTriggers: await something(),
-          result_apexPages: await something(),
-          result_recordTypes: 0
+          result_objects: await display_Homepage_Objects(), 
+          result_profiles: await display_Homepage_Profiles(), 
+          result_layouts: await display_Homepage_Layouts(),
+          result_ApexComponents: await display_Homepage_ApexComponents(),
+          result_apexTriggers: await display_Homepage_ApexTrigger(),
+          result_apexPages: await display_Homepage_ApexPages(),
+          result_recordTypes: await display_Homepage_RecordTypes()
         })
       }
     })
@@ -33,11 +33,12 @@ module.exports = ({
     
 }
 
+//private methods
+
 async function display_Homepage_Objects(){
   const result_object = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
-  console.log("Here : " + result_object);
   if (result_object.rows[0]["objectinfo"] != null){
-   return return_Object = result_object.rows[0]["objectinfo"]["allObject"].length
+    return return_Object = result_object.rows[0]["objectinfo"]["allObject"].length
   }else{
    return return_Object = 0
   }
@@ -46,31 +47,53 @@ async function display_Homepage_Profiles(){
   const result_profile = await global.pool.query("SELECT profile FROM profiles WHERE orgid=$1",[global.orgId])
 
   if (result_profile.rows[0]["profile"].size > 0 ){
-   return return_Object = result_profile.rows[0]["profile"].size
+   return result_profile.rows[0]["profile"].size
   }else{
-    return return_Object = 0
+    return 0 
   }
 }
 async function display_Homepage_Layouts(){
   const result_profile =  await global.pool.query("SELECT layout FROM layouts WHERE orgid=$1",[global.orgId]) 
 
   if (result_profile.rows[0]["layout"].size > 0 ){
-    return return_Object = result_profile.rows[0]["layout"].size
+    return result_profile.rows[0]["layout"].size
   }else{
-    return return_Object = 0
+    return 0
   }
 }
-
 async function display_Homepage_RecordTypes(){
   const result_profile =  await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
  
   if (result_profile.rows[0]["recordtype"].size > 0 ){
-    return return_Object = result_profile.rows[0]["recordtype"].size
+    return result_profile.rows[0]["recordtype"].size
   }else{
-    return return_Object = 0
+    return 0
   }
 }
-
-async function something(){
-  return 0;
+async function display_Homepage_ApexComponents(){
+  const result_apexcomponent =  await global.pool.query("SELECT apexcomponent FROM apexcomponents WHERE orgid=$1",[global.orgId])
+ 
+  if (result_apexcomponent.rows[0]["apexcomponent"].size > 0 ){
+    return result_apexcomponent.rows[0]["apexcomponent"].size
+  }else{
+    return 0
+  }
+}
+async function display_Homepage_ApexTrigger(){
+  const result_apextrigger =  await global.pool.query("SELECT apextrigger FROM apextriggers WHERE orgid=$1",[global.orgId])
+ 
+  if (result_apextrigger.rows[0]["apextrigger"].size > 0 ){
+    return result_apextrigger.rows[0]["apextrigger"].size
+  }else{
+    return 0
+  }
+}
+async function display_Homepage_ApexPages(){
+  const result_apexpages =  await global.pool.query("SELECT apexpage FROM apexpages WHERE orgid=$1",[global.orgId])
+ 
+  if (result_apexpages.rows[0]["apexpage"].size > 0 ){
+    return result_apexpages.rows[0]["apexpage"].size
+  }else{
+    return 0
+  }
 }
