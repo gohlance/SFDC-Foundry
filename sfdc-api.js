@@ -28,7 +28,7 @@ const pool = new Pool({
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQOFBTOffV42FvoQj_gZAXGWyccQdfuRboy3K394ge5yegRX3yys2yKLhHyjk48Jbju7V2MfofwxvIH5cwhGH1LBBn.WJ"
+global.accesscode = "00D46000001Uq6O!AQoAQNwIKS8DVEM9hB2XB6BoT16Cn.5VJ9Kh04btvlsK_JfgmFEeUYQGI9Dr2O9Y5sHp9LTTXK9hGMa1rVNqgFv3etgfwZdY"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -331,9 +331,9 @@ async function sObjectDescribe(result) {
                 morethan100: morethan100fields,
                 lessthan100: lessthan100fields
             }
-            console.log("Inserting")
+            console.log("[SobjectDescribe - Inserting Record Operation]")
             pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(jsonResult)])
-           console.log("Done!!")
+           console.log("[SobjectDescribe - Inserting Completed]")
        
     } catch (err) {
         console.log("Error [sfdc-api/sObjectDescribe]" + err)
@@ -388,7 +388,7 @@ function filter_BeforeCallingAPI (result){
 
 async function filter_RecordTypesBy (sobjectname){
     let result = await global.pool.query("select elem from public.recordtypes, lateral jsonb_array_elements(recordtype ->'records') elem where elem @> '{\"SobjectType\":\"$1\"}' and orgid = $2;", [sobjectname,global.orgId])
-  //result.rows[0].elem
+    //result.rows[0].elem
     return result
   }
 
