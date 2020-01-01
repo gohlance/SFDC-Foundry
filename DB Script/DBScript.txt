@@ -27,6 +27,18 @@ CREATE TABLE public.apextriggers (
 
 -- Drop table
 
+DROP TABLE public.sobjectdesribe;
+
+CREATE TABLE public.sobjectdesribe (
+	id serial NOT NULL,
+	orgid text NULL,
+	sobjectdesribe jsonb NULL,
+	CONSTRAINT sobjectdesribe_pkey PRIMARY KEY (id)
+);
+
+
+-- Drop table
+
 DROP TABLE public.apexpages;
 
 CREATE TABLE public.apexpages (

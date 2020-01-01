@@ -332,7 +332,7 @@ async function sObjectDescribe(result) {
                 lessthan100: lessthan100fields
             }
             console.log("Inserting")
-            pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",["8888",JSON.stringify(jsonResult)])
+            pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(jsonResult)])
            console.log("Done!!")
        
     } catch (err) {
