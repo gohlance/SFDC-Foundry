@@ -133,9 +133,8 @@ async function start_background_call() {
                 }
             }).then(result => {
                  console.log("Starting SobjectDescribe")
-                 pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", ["900990", JSON.stringify(result)])
-                 var ten  = sfdcmethod.sObjectDescribe(result)  
-                 
+                 pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)])
+                 sfdcmethod.sObjectDescribe(result)  
             })
             .catch(error => console.log("Step 14: " + error))
             .finally(() => {

@@ -28,7 +28,7 @@ const pool = new Pool({
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQOFBTOffV42FvoQj_gZAXGWyccQdfuRboy3K394ge5yegRX3yys2yKLhHyjk48Jbju7V2MfofwxvIH5cwhGH1LBBn.WJ"
+global.accesscode = "00D46000001Uq6O!AQoAQNwIKS8DVEM9hB2XB6BoT16Cn.5VJ9Kh04btvlsK_JfgmFEeUYQGI9Dr2O9Y5sHp9LTTXK9hGMa1rVNqgFv3etgfwZdY"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -53,10 +53,7 @@ module.exports = {
     letsGetEverything,
     getAllObjectOnce,
     sObjectDescribe,
-    getAllCustomObjects,
-    testing,
-    newTry,
-    filter_BeforeCallingAPI
+    getAllCustomObjects
 }
 
 async function getAllMeta() {
@@ -261,73 +258,6 @@ async function letsGetEverything() {
     }
 }
 
-
-
-///THIS IS USING HTE METADATA API TO GET CUSTOM OBJECT> BUT I AM HAVIN ISSUE WITH PROMISE
-async function testing() {
-    var types = [{
-        type: 'CustomObject',
-        folder: null
-    }];
-    var names = []
-    //metadata[0].fullName
-    await conn.metadata.list(types, '45.0', function (err, metadata) {
-        //console.log("WTF")
-        if (err) {
-            return console.error('err', err);
-        }
-        metadata.forEach(item => {
-            names.push(item.fullName)
-        })
-    })
-    console.log("Starting")
-    console.log(names.length)
-    let newarr = await names.filter(a => !a.includes('SBQQ'))
-    //console.log(newarr);
-    var block_names = await chunkArrayInGroups(newarr, 10);
-    // console.log(block_names)
-    // var block_result = await readMetaData(block_names)
-    var blokc_result = []
-    console.log("Middel")
-    for (const a123 in block_names) {
-        console.log(block_names[a123]);  
-       
-        await conn.metadata.read('CustomObject', block_names[a123], function (err, metadata) {
-            try {
-                if (err) {
-                    console.error(err);
-                }
-                /**
-                for (var i = 0; i < metadata.length; i++) {
-                    var meta = metadata[i];
-                    let totalFields = 0
-                    console.log(meta.fullName);
-                    if (meta.fields != undefined) {
-                        if (meta.fields.length != undefined){
-                        totalFields = meta.fields.length}
-                    }
-                    blokc_result.push({
-                        fullname: meta.fullName,
-                        fieldscount: totalFields,
-                        sharingModel: meta.sharingModel
-                    })
-                } */
-               // console.log(JSON.stringify(metadata))
-                blokc_result.push(JSON.stringify(metadata))
-            } catch (error) {
-                throw error;
-            
-            }
-        });
-    }
-
-    console.log(blokc_result);
-    //console.log(block_result);
-    console.log("Ending***********************************************");
-
-}
-
-
 //33 seconds run time for 2050 objects
 async function getAllObjects() {
     try {
@@ -347,43 +277,7 @@ async function getAllObjects() {
     }
 }
 
-function newTry(result){
-    console.log("LANCE GOH : " + JSON.stringify(result));
-    console.log(result.rows[0].id)
 
-///USE THIS URL INSTEAD!!!!
-    //https://ap16.salesforce.com/services/data/v42.0/sobjects/Account/describe
-}
-
-function filter_BeforeCallingAPI (result){
-    console.log("Hello")
-    console.log("result : " + result.length)
-    var custom_is_false = _.filter(result, function (o){
-        if (o.custom == false)
-        return o
-    })
-    console.log ("*******************")
-    console.log(custom_is_false.length)
-
-    var layoutable_is_true = _.filter(custom_is_false, function (i){
-        if (i.layoutable ==  true){
-            return i
-        }
-    })
-
-    console.log(layoutable_is_true.length)
-
-    var createable_is_true = _.filter(layoutable_is_true, function(i){
-        if (i.createable == true){
-            return i
-        }
-    })
-
-    console.log(createable_is_true.length)
-
-    return createable_is_true
-
-}
 
 async function sObjectDescribe(result) {
     console.log(result.length)
@@ -437,9 +331,9 @@ async function sObjectDescribe(result) {
                 morethan100: morethan100fields,
                 lessthan100: lessthan100fields
             }
-            console.log("Inserting")
-            pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",["8888",JSON.stringify(jsonResult)])
-           console.log("Done!!")
+            console.log("[SobjectDescribe - Inserting Record Operation]")
+            pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(jsonResult)])
+           console.log("[SobjectDescribe - Inserting Completed]")
        
     } catch (err) {
         console.log("Error [sfdc-api/sObjectDescribe]" + err)
@@ -464,6 +358,39 @@ function chunkArrayInGroups(arr, size) {
     });
 }
 
+function filter_BeforeCallingAPI (result){
+    console.log("result : " + result.length)
+    var custom_is_false = _.filter(result, function (o){
+        if (o.custom == false)
+        return o
+    })
+    console.log ("*******************")
+    console.log(custom_is_false.length)
+
+    var layoutable_is_true = _.filter(custom_is_false, function (i){
+        if (i.layoutable ==  true){
+            return i
+        }
+    })
+
+    console.log(layoutable_is_true.length)
+
+    var createable_is_true = _.filter(layoutable_is_true, function(i){
+        if (i.createable == true){
+            return i
+        }
+    })
+
+    console.log(createable_is_true.length)
+
+    return createable_is_true
+}
+
+async function filter_RecordTypesBy (sobjectname){
+    let result = await global.pool.query("select elem from public.recordtypes, lateral jsonb_array_elements(recordtype ->'records') elem where elem @> '{\"SobjectType\":\"$1\"}' and orgid = $2;", [sobjectname,global.orgId])
+    //result.rows[0].elem
+    return result
+  }
 
 /**
  * Get metadata for profiles and for layouts. The layouts metadata provides you a full list of page layouts across all objects, while the profile files contain the info on which page layout/record type combos the profile is associated with.

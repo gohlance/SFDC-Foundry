@@ -61,7 +61,20 @@ module.exports = ({
                 // now the session has been expired.
             });
         })
-
+        .get('showObjects','/showObject', async (ctx)=>{
+            try {
+                var result =  await  global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
+               
+                return ctx.render('objects', {
+                    allObject: result.rows[0]["objectinfo"]["allObject"],
+                    totalObject: result.rows[0]["objectinfo"]["allObject"].length,
+                    moreObject: result.rows[0]["objectinfo"].morethan100,
+                    lessObject: result.rows[0]["objectinfo"].lessthan100
+                })
+            } catch (err) {
+                console.log("Error [getAllObjects] " + err)
+            }
+        })
         .post('everything', '/everything', (ctx) => {
             try {
                 var result = sfdcmethods.letsGetEverything()
@@ -74,59 +87,35 @@ module.exports = ({
                 console.log("Error [everything]:" + err)
             }
         })
-        .get('testing', '/testing', async (ctx) => {
-
-            const result = await global.pool.query("SELECT objectinfo FROM objects WHERE ID = 21")
-
-            console.log("************************")
-
-            var custom_is_false = _.filter(result.rows[0].objectinfo, function (o){
-                if (o.custom == false)
-                return o
-            })
-
-            console.log(custom_is_false.length)
-
-            var layoutable_is_true = _.filter(custom_is_false, function (i){
-                if (i.layoutable ==  true){
-                    return i
-                }
-            })
-
-            console.log(layoutable_is_true.length)
-
-            var createable_is_true = _.filter(layoutable_is_true, function(i){
-                if (i.createable == true){
-                    return i
-                }
-            })
-
-            console.log(createable_is_true.length)
-            /**
-            
-
-            var updateable_is_false = _.map(custom_is_false, function(e){
-                if (e.updateable ==  false)
-                return e
-            })
-
-            var createable_is_false = _.filter(custom_is_false, function(f){
-                if (f.createable ==  false)
-                return f
-            })
-
-            
-           
-            console.log(updateable_is_false.length)
-            console.log(result.rows[0].objectinfo.length)
-            
-            console.log(createable_is_false.length)
-         */
-            return ctx.render('generic', {
-                object: createable_is_true
-            })
-
-
+        //***** TESTING */
+        .get('getA', '/getA', async (ctx) => {
+            try {
+                const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '8888'")
+        
+                return ctx.render('generic', {
+                    object: result
+                })
+            }catch (error){
+                console.log(error)
+            }
         })
-
+        //This section show the totalfields
+        .get('getB', '/getB', async (ctx) => {
+            try {
+                const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '999'")
+        
+                return ctx.render('generic', {
+                    object: result
+                })
+            }catch (error){console.log(error)}
+        })
+        .get('getC', '/getC', async (ctx) => {
+            try {
+                const result = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
+        
+                return ctx.render('generic', {
+                    object: result
+                })
+            }catch (error){console.log(error)}
+        })
 }

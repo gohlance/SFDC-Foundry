@@ -9,17 +9,13 @@
               <% if (!global.accesscode || !global.instanceUrl) { %>
                 <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
                 <button class="btn btn-primary" id="btnConnect" type="button" >
-                    Refresh
+                    Connect
                 </button>
               <% } else {%>
                 <p class="card-text">Instance Connected : <%- global.instanceUrl %></p>
                 <button class="btn btn-primary" id="btnRefresh" type="button" >
                     Refresh
                 </button>
-                <form method="POST" action="/everything">
-                    <input type="submit" id="btnSubmit" class="btn btn-primary"></input>
-                </form>
-                
             <%}%>
             </div>
         </div>
@@ -31,8 +27,8 @@
             </div>
             <div class="card-body">     
               <h5 class="card-title"><%- result_objects %></h5>
-              <p class="card-text">Your total objects are <%- result_objects %> 😞.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <p class="card-text">Your total objects are <%- result_objects %>.</p>
+              <a href="/showObject" class="btn btn-primary">Dive In</a>
             </div>
         </div>
 
@@ -53,7 +49,7 @@
             </div>
             <div class="card-body">
               <h5 class="card-title"><%- result_layouts %></h5>
-              <p class="card-text">Your total profiles are <%- result_layouts %>.</p>
+              <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
@@ -118,8 +114,8 @@
                 contentType: "application/json",
                 dataType: "text",
                 success: function (data) {
-                    //console.log("Success");
-                    //console.log(data);
+                    console.log("Success");
+                    console.log(data);
                 },
                 complete: function (response, status){
                     btn.removeAttr("disabled");
