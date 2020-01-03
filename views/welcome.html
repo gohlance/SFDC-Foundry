@@ -99,9 +99,39 @@
         </div>
     </div>
 </div>
+
+<div class="modal" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance... </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
+           
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" id="btnConnect2" type="button" >
+                Connect
+            </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
 // NEED TO TEST THIS SECTION, need to deploy online
+var orgid = (typeof "<%= global.orgid %>" !== 'undefined' && "<%= global.orgid %>") || 0;
+if (orgid == 0){
+     $('#myModal').modal('show'); 
+}
+
      $(function () {
+      
         $("#btnRefresh").click(function () {
             //console.log($(this).attr('id'));
             $(this).prop("disabled", true);
@@ -124,9 +154,11 @@
                 }
             }); 
         });
-        $("#btnConnect").click(function(){
+        $("#btnConnect, #btnConnect2").click(function(){
+            console.log("Hello");
             $(this).prop("disabled", true);
             $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            var btn = $(this);
             $.ajax({
                 type: 'GET',
                 cache: false,
@@ -136,9 +168,9 @@
                     console.log("Success");
                 },
                 complete: function (){
-                    $(this).removeAttr('disabled').spinner();
-                    $(this).remove(".spinner-border.spinner-border-sm");
-                    
+                    btn.removeAttr("disabled");
+                    btn.remove(".spinner-border.spinner-border-sm");
+                    btn.html('Connect');
                 }
             });    
         })
