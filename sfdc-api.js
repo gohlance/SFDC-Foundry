@@ -392,6 +392,11 @@ async function filter_RecordTypesBy (sobjectname){
     return result
   }
 
+async function selectAll_RecordTypesByOrder(){
+    let result = await global.pool.query("select elem-> 'Name' as name, elem -> 'SobjectType' as objectType, elem->'IsActive' as active, elem->'Description' as description, elem -> 'BusinessProcessId' as businessprocessid from public.recordtypes, lateral jsonb_array_elements(recordtype -> 'records') elem where orgid = $1 order by 2",[global.orgId])
+    return result
+}
+
 /**
  * Get metadata for profiles and for layouts. The layouts metadata provides you a full list of page layouts across all objects, while the profile files contain the info on which page layout/record type combos the profile is associated with.
 
