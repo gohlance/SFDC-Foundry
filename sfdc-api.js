@@ -53,7 +53,8 @@ module.exports = {
     letsGetEverything,
     getAllObjectOnce,
     sObjectDescribe,
-    getAllCustomObjects
+    getAllCustomObjects,
+    selectAll_RecordTypesByOrder
 }
 
 async function getAllMeta() {

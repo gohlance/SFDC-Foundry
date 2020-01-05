@@ -72,19 +72,28 @@ module.exports = ({
                     lessObject: result.rows[0]["objectinfo"].lessthan100
                 })
             } catch (err) {
-                console.log("Error [getAllObjects] " + err)
+                console.error("Error [getAllObjects] " + err)
             }
         })
-        .post('everything', '/everything', (ctx) => {
+        .post('everything', '/everything', async (ctx) => {
             try {
-                var result = sfdcmethods.letsGetEverything()
-                console.log("WHAT? : " + result)
+                var result = await sfdcmethods.letsGetEverything()
                 //ctx.body = {
                 // status: 'success',
                 // message: 'hello, world!'
                 //};
             } catch (err) {
-                console.log("Error [everything]:" + err)
+                console.error("Error [everything]:" + err)
+            }
+        })
+        .get('showRecordType','/showRecordType', async (ctx) => {
+            try {
+                var result = await sfdcmethods.selectAll_RecordTypesByOrder()
+                return ctx.render('recordType',{
+                    recordType: result.rows
+                })
+            } catch (error) {
+                console.error("Error [showRecordType]: " + error)
             }
         })
         //***** TESTING */
@@ -96,7 +105,7 @@ module.exports = ({
                     object: result
                 })
             }catch (error){
-                console.log(error)
+                console.error(error)
             }
         })
         //This section show the totalfields
@@ -107,7 +116,7 @@ module.exports = ({
                 return ctx.render('generic', {
                     object: result
                 })
-            }catch (error){console.log(error)}
+            }catch (error){console.error(error)}
         })
         .get('getC', '/getC', async (ctx) => {
             try {
@@ -116,6 +125,6 @@ module.exports = ({
                 return ctx.render('generic', {
                     object: result
                 })
-            }catch (error){console.log(error)}
+            }catch (error){console.error(error)}
         })
 }
