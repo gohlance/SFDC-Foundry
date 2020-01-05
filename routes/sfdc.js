@@ -88,12 +88,22 @@ module.exports = ({
         })
         .get('showRecordType','/showRecordType', async (ctx) => {
             try {
-                var result = await sfdcmethods.selectAll_RecordTypesByOrder()
-                return ctx.render('recordType',{
+                const result = await sfdcmethods.selectAll_RecordTypesByOrder()
+                return ctx.render('show_recordType',{
                     recordType: result.rows
                 })
             } catch (error) {
                 console.error("Error [showRecordType]: " + error)
+            }
+        })
+        .get('showProfiles','/showProfiles', async (ctx) => {
+            try {
+                const result =  await sfdcmethods.selectAll_ProfilesByOrder()
+                return ctx.render('show_profiles',{
+                    profiles: result.rows
+                })
+            } catch (error) {
+                console.error("Error [showProfiles]: " + error)
             }
         })
         //***** TESTING */
