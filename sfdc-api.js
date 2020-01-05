@@ -53,7 +53,9 @@ module.exports = {
     letsGetEverything,
     getAllObjectOnce,
     sObjectDescribe,
-    getAllCustomObjects
+    getAllCustomObjects,
+    selectAll_RecordTypesByOrder,
+    selectAll_ProfilesByOrder
 }
 
 async function getAllMeta() {
@@ -340,6 +342,16 @@ async function sObjectDescribe(result) {
     }
 }
 
+async function selectAll_RecordTypesByOrder(){
+    let result = await global.pool.query("select elem-> 'Name' as name, elem -> 'SobjectType' as objectType, elem->'IsActive' as active, elem->'Description' as description, elem -> 'BusinessProcessId' as businessprocessid from public.recordtypes, lateral jsonb_array_elements(recordtype -> 'records') elem where orgid = $1 order by 2",[global.orgId])
+    return result
+}
+
+async function selectAll_ProfilesByOrder() {
+    let result = await global.pool.query("select elem->'Name' as name, elem->'Description' as description  from public.profiles, lateral jsonb_array_elements(profile -> 'records') elem WHERE orgid = $1",[global.orgId])
+    return result
+}
+
 //PRIVATE
 function chunkArrayInGroups(arr, size) {
     return new Promise((resolve, reject) => {
@@ -391,6 +403,8 @@ async function filter_RecordTypesBy (sobjectname){
     //result.rows[0].elem
     return result
   }
+
+
 
 /**
  * Get metadata for profiles and for layouts. The layouts metadata provides you a full list of page layouts across all objects, while the profile files contain the info on which page layout/record type combos the profile is associated with.

@@ -72,19 +72,38 @@ module.exports = ({
                     lessObject: result.rows[0]["objectinfo"].lessthan100
                 })
             } catch (err) {
-                console.log("Error [getAllObjects] " + err)
+                console.error("Error [getAllObjects] " + err)
             }
         })
-        .post('everything', '/everything', (ctx) => {
+        .post('everything', '/everything', async (ctx) => {
             try {
-                var result = sfdcmethods.letsGetEverything()
-                console.log("WHAT? : " + result)
+                var result = await sfdcmethods.letsGetEverything()
                 //ctx.body = {
                 // status: 'success',
                 // message: 'hello, world!'
                 //};
             } catch (err) {
-                console.log("Error [everything]:" + err)
+                console.error("Error [everything]:" + err)
+            }
+        })
+        .get('showRecordType','/showRecordType', async (ctx) => {
+            try {
+                const result = await sfdcmethods.selectAll_RecordTypesByOrder()
+                return ctx.render('show_recordType',{
+                    recordType: result.rows
+                })
+            } catch (error) {
+                console.error("Error [showRecordType]: " + error)
+            }
+        })
+        .get('showProfiles','/showProfiles', async (ctx) => {
+            try {
+                const result =  await sfdcmethods.selectAll_ProfilesByOrder()
+                return ctx.render('show_profiles',{
+                    profiles: result.rows
+                })
+            } catch (error) {
+                console.error("Error [showProfiles]: " + error)
             }
         })
         //***** TESTING */
@@ -96,7 +115,7 @@ module.exports = ({
                     object: result
                 })
             }catch (error){
-                console.log(error)
+                console.error(error)
             }
         })
         //This section show the totalfields
@@ -107,7 +126,7 @@ module.exports = ({
                 return ctx.render('generic', {
                     object: result
                 })
-            }catch (error){console.log(error)}
+            }catch (error){console.error(error)}
         })
         .get('getC', '/getC', async (ctx) => {
             try {
@@ -116,6 +135,6 @@ module.exports = ({
                 return ctx.render('generic', {
                     object: result
                 })
-            }catch (error){console.log(error)}
+            }catch (error){console.error(error)}
         })
 }
