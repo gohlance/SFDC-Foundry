@@ -171,3 +171,13 @@ CREATE TABLE public.recordtypes (
 	CONSTRAINT recordtypes_pkey PRIMARY KEY (id)
 );
 
+-- FUNCTIONS -- 
+
+CREATE OR REPLACE FUNCTION public.profilesid_function(orgid text)
+ RETURNS TABLE(profileid text)
+ LANGUAGE sql
+AS $function$
+   select replace(substring(cast(elem -> 'attributes'-> 'url' as text) from '([^\/]*$)'), '"','')
+from public.profiles, lateral jsonb_array_elements(profile -> 'records') elem where orgid = $1;
+$function$
+;
