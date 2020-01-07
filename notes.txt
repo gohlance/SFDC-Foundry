@@ -1,0 +1,47 @@
+1. are there users in the profile?
+2. record types active vs not active
+3. records created for particular record type -> select count() from account 
+    - Have to be objects level
+
+    async function testing_recordsquery(){
+   // let result =  conn.query("select count() from account where recordtype = 'Account'")
+    conn.query("SELECT count() FROM Account where recordtypeid = '012460000011jC3AAI'", function(err, result) {
+        if (err) { return console.error(err); }
+        console.log("total : " + result.totalSize);
+        console.log("fetched : " + result.records.length);
+      });
+    //console.log(result);
+}
+
+For point 3, need background svc for this.
+
+4. License Usage
+5. Org type - find org type
+https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_limits.htm
+
+6. Apex Pages 
+- When it was last modified
+
+SELECT Name, LastModifiedDate FROM ApexTrigger order by Lastmodifieddate desc
+
+SELECT Name, LastModifiedDate FROM ApexClass order by Lastmodifieddate desc
+
+async function testing_getApexPageByLastModified(){
+    conn.query("SELECT Name, LastModifiedDate FROM ApexPage order by Lastmodifieddate desc", function (err, result){
+        if (err) { return console.error(err); }
+        console.log(result);
+        console.log("fetched : " + result.records.length);
+    });
+}
+
+
+
+
+
+My solution was to use metadata files for profiles.
+
+Get access to Salesforce metadata. You can do this using the metadata API directly, or indirectly through pulling metadata files via an IDE like Eclipse or MavensMate
+
+Get metadata for profiles and for layouts. The layouts metadata provides you a full list of page layouts across all objects, while the profile files contain the info on which page layout/record type combos the profile is associated with.
+
+Compare the profiles' assignments to page layouts to the list of page layouts. I did this using some scripting code which parsed through the xml files.

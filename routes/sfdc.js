@@ -137,4 +137,11 @@ module.exports = ({
                 })
             }catch (error){console.error(error)}
         })
+        .get('getD','/getD', async (ctx) => {
+            try {
+                const result = sfdcmethods.testing_getApexPageByLastModified()
+            } catch (error) {
+                
+            }
+        })
 }
