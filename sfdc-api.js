@@ -28,7 +28,7 @@ const pool = new Pool({
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQNwIKS8DVEM9hB2XB6BoT16Cn.5VJ9Kh04btvlsK_JfgmFEeUYQGI9Dr2O9Y5sHp9LTTXK9hGMa1rVNqgFv3etgfwZdY"
+global.accesscode = "00D46000001Uq6O!AQoAQOpsPMaJfc86b3SBnQOVsndxkOBxCXnirVy4uTq1PGgnUW1dnK8j_WuYcWDxeq1nFTpQm4.YFoES2GoQe1cgQrKwSTn6"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -55,7 +55,8 @@ module.exports = {
     sObjectDescribe,
     getAllCustomObjects,
     selectAll_RecordTypesByOrder,
-    selectAll_ProfilesByOrder
+    selectAll_ProfilesByOrder,
+    testing_recordsquery,testing_getApexPageByLastModified
 }
 
 async function getAllMeta() {
@@ -352,6 +353,23 @@ async function selectAll_ProfilesByOrder() {
     return result
 }
 
+async function testing_recordsquery(){
+   // let result =  conn.query("select count() from account where recordtype = 'Account'")
+    conn.query("SELECT count() FROM Account where recordtypeid = '012460000011jC3AAI'", function(err, result) {
+        if (err) { return console.error(err); }
+        console.log("total : " + result.totalSize);
+        console.log("fetched : " + result.records.length);
+      });
+    //console.log(result);
+}
+
+async function testing_getApexPageByLastModified(){
+    conn.query("SELECT Name, LastModifiedDate FROM ApexPage order by Lastmodifieddate desc", function (err, result){
+        if (err) { return console.error(err); }
+        console.log(result);
+        console.log("fetched : " + result.records.length);
+    });
+}
 //PRIVATE
 function chunkArrayInGroups(arr, size) {
     return new Promise((resolve, reject) => {
