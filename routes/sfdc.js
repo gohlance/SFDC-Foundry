@@ -61,10 +61,10 @@ module.exports = ({
                 // now the session has been expired.
             });
         })
-        .get('showObjects','/showObject', async (ctx)=>{
+        .get('showObjects', '/showObject', async (ctx) => {
             try {
-                var result =  await  global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1',[global.orgId])
-               
+                var result = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1', [global.orgId])
+
                 return ctx.render('objects', {
                     allObject: result.rows[0]["objectinfo"]["allObject"],
                     totalObject: result.rows[0]["objectinfo"]["allObject"].length,
@@ -86,20 +86,20 @@ module.exports = ({
                 console.error("Error [everything]:" + err)
             }
         })
-        .get('showRecordType','/showRecordType', async (ctx) => {
+        .get('showRecordType', '/showRecordType', async (ctx) => {
             try {
                 const result = await sfdcmethods.selectAll_RecordTypesByOrder()
-                return ctx.render('show_recordType',{
+                return ctx.render('show_recordType', {
                     recordType: result.rows
                 })
             } catch (error) {
                 console.error("Error [showRecordType]: " + error)
             }
         })
-        .get('showProfiles','/showProfiles', async (ctx) => {
+        .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
-                const result =  await sfdcmethods.selectAll_ProfilesByOrder()
-                return ctx.render('show_profiles',{
+                const result = await sfdcmethods.selectAll_ProfilesByOrder()
+                return ctx.render('show_profiles', {
                     profiles: result.rows
                 })
             } catch (error) {
@@ -110,11 +110,11 @@ module.exports = ({
         .get('getA', '/getA', async (ctx) => {
             try {
                 const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '8888'")
-        
+
                 return ctx.render('generic', {
                     object: result
                 })
-            }catch (error){
+            } catch (error) {
                 console.error(error)
             }
         })
@@ -122,26 +122,40 @@ module.exports = ({
         .get('getB', '/getB', async (ctx) => {
             try {
                 const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '999'")
-        
+
                 return ctx.render('generic', {
                     object: result
                 })
-            }catch (error){console.error(error)}
+            } catch (error) {
+                console.error(error)
+            }
         })
         .get('getC', '/getC', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1",[global.orgId])
-        
+                const result = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1", [global.orgId])
+
                 return ctx.render('generic', {
                     object: result
                 })
-            }catch (error){console.error(error)}
+            } catch (error) {
+                console.error(error)
+            }
         })
-        .get('getD','/getD', async (ctx) => {
+        .get('getD', '/getD', async (ctx) => {
             try {
                 const result = sfdcmethods.testing_getApexPageByLastModified()
             } catch (error) {
-                
+
+            }
+        })
+        .get('getOrgLimit', '/getE', async (ctx) => {
+            try {
+                const result = await sfdcmethods.get_Org_limitInfo()
+                console.log(result)
+                return result.data
+            } catch (error) {
+                console.log(error)
+                return 0
             }
         })
 }
