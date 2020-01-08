@@ -25,10 +25,12 @@ const pool = new Pool({
     min: 4
 })
 
+const axios = require('axios')
+
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQOpsPMaJfc86b3SBnQOVsndxkOBxCXnirVy4uTq1PGgnUW1dnK8j_WuYcWDxeq1nFTpQm4.YFoES2GoQe1cgQrKwSTn6"
+global.accesscode = "00D46000001Uq6O!AQoAQGMHXjLkiBJLqLMt43yhDW4Atil1rzVnM_Khxho8nLALa5kEYO6pbjPiU5znmV36Fg0K27.MDbDC1UXXLdEfykNQEY33"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -56,7 +58,7 @@ module.exports = {
     getAllCustomObjects,
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
-    testing_recordsquery,testing_getApexPageByLastModified
+    testing_recordsquery,testing_getApexPageByLastModified, get_Org_limitInfo
 }
 
 async function getAllMeta() {
@@ -87,8 +89,6 @@ async function getAllObjectOnce() {
         console.log("Error [sfdc-api/getAllObjectsOnce]" + err)
     }
 }
-
-
 
 async function getAllApex(type) {
     //TODO: Check what can ApexPage, ApexClass and ApexComponent return
@@ -280,8 +280,6 @@ async function getAllObjects() {
     }
 }
 
-
-
 async function sObjectDescribe(result) {
     console.log(result.length)
     var result2 = filter_BeforeCallingAPI(result)
@@ -369,6 +367,14 @@ async function testing_getApexPageByLastModified(){
         console.log(result);
         console.log("fetched : " + result.records.length);
     });
+}
+
+async function get_Org_limitInfo(){
+    const headers = {
+        'Authorization': 'Bearer ' + global.accesscode,
+        'X-PrettyPrint': 1,
+      };
+    return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})
 }
 //PRIVATE
 function chunkArrayInGroups(arr, size) {

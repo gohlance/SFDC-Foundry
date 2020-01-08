@@ -5,20 +5,47 @@
                 Salesforce Org Information
             </div>
             <div class="card-body">
-              <h5 class="card-title">Your Salesforce Org Information</h5>
-              <% if (!global.accesscode || !global.instanceUrl) { %>
+                <h5 class="card-title">Your Salesforce Org Information</h5>
+                <% if (!global.accesscode || !global.instanceUrl) { %>
                 <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
-                <button class="btn btn-primary" id="btnConnect" type="button" >
+                <button class="btn btn-primary" id="btnConnect" type="button">
                     Connect
                 </button>
-              <% } else {%>
+                <% } else {%>
                 <p class="card-text">Instance Connected : <%- global.instanceUrl %></p>
-                <button class="btn btn-primary" id="btnRefresh" type="button" >
+                <button class="btn btn-primary" id="btnRefresh" type="button">
                     Refresh
                 </button>
-            <%}%>
+                <%}%>
             </div>
         </div>
+        <% if (result_orgInformation != 0 || result_orgInformation != undefined) %>
+        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Additional Information <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">👇</button>
+            </div>
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                <div class="card-body">
+                    <% 
+                    array1 = Object.keys(result_orgInformation)
+                    array2 = Object.values(result_orgInformation)
+                    %>
+                <table>
+                    <th>Setting</th>
+                    <th>Max</th>
+                    <th>Remaining</th>
+                    <% for(var i =0; i< array1.length; i ++){ %>
+                    <tr>
+                        <td><%- array1[i]%></td>
+                        <td><%- array2[i]["Max"] %></td>
+                        <td><%- array2[i]["Remaining"] %></td>
+                    </tr>
+                    <%}%>
+                </table>
+            </div>
+            </div>
+        </div>
+        <%}%>
     </div>
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
@@ -27,49 +54,49 @@
             </div>
             <div class="card-body">     
               <h5 class="card-title"><%- result_objects %></h5>
-              <p class="card-text">Your total objects are <%- result_objects %>.</p>
-              <a href="/showObject" class="btn btn-primary">Dive In</a>
+                    <p class="card-text">Your total objects are <%- result_objects %>.</p>
+                    <a href="/showObject" class="btn btn-primary">Dive In</a>
             </div>
         </div>
 
-          <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Profiles
             </div>
             <div class="card-body">
-              <h5 class="card-title"><%- result_profiles %></h5>
-              <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
-              <a href="/showProfiles" class="btn btn-primary">See More Details</a>
+                <h5 class="card-title"><%- result_profiles %></h5>
+                <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+                <a href="/showProfiles" class="btn btn-primary">See More Details</a>
             </div>
-          </div>
+        </div>
 
-          <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Layouts
             </div>
             <div class="card-body">
-              <h5 class="card-title"><%- result_layouts %></h5>
-              <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title"><%- result_layouts %></h5>
+                <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
-          </div>
+        </div>
 
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Records Types
             </div>
-            <div class="card-body">     
+            <div class="card-body">
                 <h5 class="card-title"><%- result_recordTypes %></h5>
                 <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
                 <a href="/showRecordType" class="btn btn-primary">Show More Details</a>
             </div>
-        </div> 
+        </div>
         <!-- Apex -->
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Apex Pages
             </div>
-            <div class="card-body">     
+            <div class="card-body">
                 <h5 class="card-title"><%- result_apexPages %></h5>
                 <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
                 <a href="#" class="btn btn-primary">Go somewhere</a>
@@ -79,7 +106,7 @@
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Apex Trigger
             </div>
-            <div class="card-body">     
+            <div class="card-body">
                 <h5 class="card-title"><%- result_apexTriggers %></h5>
                 <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
                 <a href="#" class="btn btn-primary">Go somewhere</a>
@@ -89,7 +116,7 @@
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Apex Components
             </div>
-            <div class="card-body">     
+            <div class="card-body">
                 <h5 class="card-title"><%- result_ApexComponents %></h5>
                 <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
                 <a href="#" class="btn btn-primary">Go somewhere</a>
@@ -100,40 +127,42 @@
 
 <div class="modal" id="myModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance... </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance... </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnConnect2" type="button">
+                    Connect
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-body">
-            <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
-           
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" id="btnConnect2" type="button" >
-                Connect
-            </button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <script>
-// NEED TO TEST THIS SECTION, need to deploy online
-var orgid = (typeof "<%= global.orgid %>" !== 'undefined' && "<%= global.orgid %>") || 0;
-if (orgid == 0){
-     $('#myModal').modal('show'); 
-}
+    // NEED TO TEST THIS SECTION, need to deploy online
+    var orgid = (typeof "<%= global.orgid %>" !== 'undefined' && "<%= global.orgid %>") || 0;
+    if (orgid == 0) {
+        $('#myModal').modal('show');
+    }
 
-     $(function () {
-      
+    $(function () {
+
         $("#btnRefresh").click(function () {
             //console.log($(this).attr('id'));
             $(this).prop("disabled", true);
-            $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            $(this).html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+                );
             var btn = $(this);
             $.ajax({
                 type: 'POST',
@@ -145,17 +174,19 @@ if (orgid == 0){
                     console.log("Success");
                     console.log(data);
                 },
-                complete: function (response, status){
+                complete: function (response, status) {
                     btn.removeAttr("disabled");
                     btn.remove(".spinner-border.spinner-border-sm");
                     btn.html('Refresh');
                 }
-            }); 
+            });
         });
-        $("#btnConnect, #btnConnect2").click(function(){
+        $("#btnConnect, #btnConnect2").click(function () {
             console.log("Hello");
             $(this).prop("disabled", true);
-            $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            $(this).html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+                );
             var btn = $(this);
             $.ajax({
                 type: 'GET',
@@ -165,12 +196,12 @@ if (orgid == 0){
                 success: function (data) {
                     console.log("Success");
                 },
-                complete: function (){
+                complete: function () {
                     btn.removeAttr("disabled");
                     btn.remove(".spinner-border.spinner-border-sm");
                     btn.html('Connect');
                 }
-            });    
+            });
         })
     });
 </script>

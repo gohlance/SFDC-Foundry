@@ -1,3 +1,4 @@
+const sfdcmethods = require('../sfdc-api')
 module.exports = ({
   router
 }) => {
@@ -14,7 +15,8 @@ module.exports = ({
           result_ApexComponents: await display_Homepage_ApexComponents(),
           result_apexTriggers: await display_Homepage_ApexTrigger(),
           result_apexPages: await display_Homepage_ApexPages(),
-          result_recordTypes: await display_Homepage_RecordTypes()
+          result_recordTypes: await display_Homepage_RecordTypes(),
+          result_orgInformation: await getMoreOrgDetails()
         })
       }
     })
@@ -133,5 +135,15 @@ async function display_Homepage_ApexPages() {
       return 0
     else
       console.error("Error [display_Homepage_ApexPages]: " + error)
+  }
+}
+
+async function getMoreOrgDetails() {
+  try {
+    const result = await sfdcmethods.get_Org_limitInfo()
+    return result.data
+  } catch (error) {
+    console.log(error)
+    return 0
   }
 }
