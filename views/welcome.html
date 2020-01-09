@@ -19,7 +19,7 @@
                 <%}%>
             </div>
         </div>
-        <% if (result_orgInformation != 0 || result_orgInformation != undefined) %>
+        <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Additional Information <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">👇</button>
@@ -46,6 +46,18 @@
             </div>
         </div>
         <%}%>
+        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                License Information
+            </div>
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                <div class="card-body">
+                    <table>
+                       
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
