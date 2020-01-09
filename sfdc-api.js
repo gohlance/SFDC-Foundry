@@ -30,7 +30,7 @@ const axios = require('axios')
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQGMHXjLkiBJLqLMt43yhDW4Atil1rzVnM_Khxho8nLALa5kEYO6pbjPiU5znmV36Fg0K27.MDbDC1UXXLdEfykNQEY33"
+global.accesscode = "00D46000001Uq6O!AQoAQGCnxVuvJuRu4GOSr_gp70kLSqgDLE5sj9j1.oYVmJ7JizINA2ZOL3s7B8qM0sT7WfZ2.JJLrUR7rqjM2kH2r0x.W.ZQ"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -58,7 +58,7 @@ module.exports = {
     getAllCustomObjects,
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
-    testing_recordsquery,testing_getApexPageByLastModified, get_Org_limitInfo
+    get_Org_limitInfo, get_UserWithLicense
 }
 
 async function getAllMeta() {
@@ -369,12 +369,31 @@ async function testing_getApexPageByLastModified(){
     });
 }
 
+async function testing_getUserPackageLicense(){
+    conn.query("Select Id, Name, Profile.UserLicense.Name From User Where Profile.UserLicense.Name = 'Salesforce'", function (err, result){
+    if (err) { return console.error("Error " +  err)}
+    console.log(result);
+});
+}
+
+
+
 async function get_Org_limitInfo(){
     const headers = {
         'Authorization': 'Bearer ' + global.accesscode,
         'X-PrettyPrint': 1,
       };
     return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})
+}
+
+async function get_UserWithLicense(){
+    return new Promise((resolve, reject) => {
+        conn.query("Select Id, Name, Profile.UserLicense.Name From User WHERE Profile.UserLicense.Name != null", function (err, result){
+            if (err) { return console.error("Error " +  err)}
+            let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value() 
+            resolve(totalUserLicense)
+        });
+    })
 }
 //PRIVATE
 function chunkArrayInGroups(arr, size) {

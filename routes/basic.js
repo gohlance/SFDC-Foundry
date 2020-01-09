@@ -16,7 +16,8 @@ module.exports = ({
           result_apexTriggers: await display_Homepage_ApexTrigger(),
           result_apexPages: await display_Homepage_ApexPages(),
           result_recordTypes: await display_Homepage_RecordTypes(),
-          result_orgInformation: await getMoreOrgDetails()
+          result_orgInformation: await getMoreOrgDetails(),
+          result_userLicense: await getUserLicenseDetails()
         })
       }
     })
@@ -143,7 +144,18 @@ async function getMoreOrgDetails() {
     const result = await sfdcmethods.get_Org_limitInfo()
     return result.data
   } catch (error) {
-    console.log(error)
+    console.error("Error [getMoreOrgDetails]: " + error)
+    return 0
+  }
+}
+
+async function getUserLicenseDetails() {
+  try {
+    const result = await sfdcmethods.get_UserWithLicense()
+   // console.log(result.length)
+    return result
+  } catch (error) {
+    console.error("Error [getUserLicenseDetails]: " + error)
     return 0
   }
 }

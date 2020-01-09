@@ -148,11 +148,12 @@ module.exports = ({
 
             }
         })
-        .get('getOrgLimit', '/getE', async (ctx) => {
+        
+        .get('getUserLicense', '/getE', async (ctx) => {
             try {
-                const result = await sfdcmethods.get_Org_limitInfo()
+                const result = await sfdcmethods.get_UserWithLicense()
                 console.log(result)
-                return result.data
+                //return result.data
             } catch (error) {
                 console.log(error)
                 return 0
