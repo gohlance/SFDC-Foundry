@@ -19,7 +19,7 @@
                 <%}%>
             </div>
         </div>
-        <% if (result_orgInformation != 0 || result_orgInformation != undefined) %>
+        <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Additional Information <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">👇</button>
@@ -43,6 +43,26 @@
                     <%}%>
                 </table>
             </div>
+            </div>
+        </div>
+        <%}%>
+        <% if (result_userLicense != 0 || result_userLicense != undefined) {%>
+        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                License Information 
+            </div>
+            <div class="card-body">
+                <% 
+                arryLicenseKey = Object.keys(result_userLicense)
+                arryLicenseValue = Object.values(result_userLicense)
+                %>
+                <table>
+                    <% for(var i =0; i< arryLicenseKey.length; i ++){ %>
+                    <tr><td><%- arryLicenseKey[i] %></td><td>
+                    <%- arryLicenseValue[i].length %></td>
+                </tr>
+                <%}%>
+                </table>
             </div>
         </div>
         <%}%>
