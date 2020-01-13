@@ -1,5 +1,5 @@
 1. are there users in the profile?
-2. record types active vs not active
+2. record types active vs not active - do the chart thing on the page
 3. records created for particular record type -> select count() from account 
     - Have to be objects level
 
@@ -15,6 +15,7 @@
 
 For point 3, need background svc for this.
 
+-DONE
 4. License Usage
 
 - DONE

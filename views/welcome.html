@@ -5,6 +5,8 @@
                 Salesforce Org Information
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
                 <h5 class="card-title">Your Salesforce Org Information</h5>
                 <% if (!global.accesscode || !global.instanceUrl) { %>
                 <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
@@ -17,6 +19,26 @@
                     Refresh
                 </button>
                 <%}%>
+            </div>
+            <div class="col-lg-4">
+                <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
+                <div class="card-body">
+                <% 
+                arryLicenseKey = Object.keys(result_userLicense)
+                arryLicenseValue = Object.values(result_userLicense)
+                %>
+                <table>
+                    <% for(var i =0; i< arryLicenseKey.length; i ++){ %>
+                    <tr><td><%- arryLicenseKey[i] %></td><td>
+                    <%- arryLicenseValue[i].length %></td>
+                </tr>
+                <%}%>
+                </table>
+            </div>
+            <%}%>
+        </div>
+        </div>
+            
             </div>
         </div>
         <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
@@ -46,26 +68,7 @@
             </div>
         </div>
         <%}%>
-        <% if (result_userLicense != 0 || result_userLicense != undefined) {%>
-        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                License Information 
-            </div>
-            <div class="card-body">
-                <% 
-                arryLicenseKey = Object.keys(result_userLicense)
-                arryLicenseValue = Object.values(result_userLicense)
-                %>
-                <table>
-                    <% for(var i =0; i< arryLicenseKey.length; i ++){ %>
-                    <tr><td><%- arryLicenseKey[i] %></td><td>
-                    <%- arryLicenseValue[i].length %></td>
-                </tr>
-                <%}%>
-                </table>
-            </div>
-        </div>
-        <%}%>
+      
     </div>
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
