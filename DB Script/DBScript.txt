@@ -171,6 +171,18 @@ CREATE TABLE public.recordtypes (
 	CONSTRAINT recordtypes_pkey PRIMARY KEY (id)
 );
 
+-- Drop table
+
+DROP TABLE public.license;
+
+CREATE TABLE public.license (
+	id serial NOT NULL,
+	orgid text NULL,
+	license jsonb NULL,
+	CONSTRAINT license_pkey PRIMARY KEY (id)
+);
+
+
 -- FUNCTIONS -- 
 
 CREATE OR REPLACE FUNCTION public.profilesid_function(orgid text)

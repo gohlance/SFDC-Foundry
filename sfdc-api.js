@@ -30,7 +30,7 @@ const axios = require('axios')
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQKxxn4y89mODKfnOK0.HFcO_04q8Z._yIpxyUBRRhXP4_5_4nxc9yGKeIVYbhhtXNsIz5F.W9kpmfABaFneJrjgElnDU"
+global.accesscode = "00D46000001Uq6O!AQoAQGcZFh6oF2xvMQn3VP8eapaIpHaJV5aH1ya20k4uZoamPOdsI0IUEwvDBstJBYSGVzor4qEuFpbtKqN_1ykV3WvV8Vbm"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -58,7 +58,7 @@ module.exports = {
     getAllCustomObjects,
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
-    get_Org_limitInfo, get_UserWithLicense
+    get_Org_limitInfo, get_UserWithLicense,get_UserWithLicense2
 }
 
 async function getAllMeta() {
@@ -395,6 +395,19 @@ async function get_UserWithLicense(){
         });
     })
 }
+
+async function get_UserWithLicense2(){
+    return new Promise((resolve, reject) => {
+        conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result){
+            if (err){
+                return console.error("Error : " + err)
+            }
+            pool.query("INSERT INTO license (orgid, license) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(result.records)])
+            resolve(result.records)
+        })
+    })
+}
+
 //PRIVATE
 function chunkArrayInGroups(arr, size) {
     return new Promise((resolve, reject) => {

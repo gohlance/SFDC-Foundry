@@ -151,9 +151,13 @@ async function getMoreOrgDetails() {
 
 async function getUserLicenseDetails() {
   try {
-    const result = await sfdcmethods.get_UserWithLicense()
-   // console.log(result.length)
-    return result
+    const result = await global.pool.query("SELECT license FROM license WHERE orgid=$1", [global.orgId])
+    if (result.rows[0]["license"].length > 0)
+      return result.rows[0]["license"]
+    else{
+      return sfdcmethods.get_UserWithLicense2()
+    }
+    
   } catch (error) {
     console.error("Error [getUserLicenseDetails]: " + error)
     return 0

@@ -151,7 +151,7 @@ module.exports = ({
         
         .get('getUserLicense', '/getE', async (ctx) => {
             try {
-                const result = await sfdcmethods.get_UserWithLicense()
+                const result = await sfdcmethods.get_UserWithLicense2()
                 console.log(result)
                 //return result.data
             } catch (error) {
