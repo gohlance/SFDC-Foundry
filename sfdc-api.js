@@ -30,7 +30,7 @@ const axios = require('axios')
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQGcZFh6oF2xvMQn3VP8eapaIpHaJV5aH1ya20k4uZoamPOdsI0IUEwvDBstJBYSGVzor4qEuFpbtKqN_1ykV3WvV8Vbm"
+global.accesscode = "00D46000001Uq6O!AQoAQLuMSoWmajqNww7VNuWgQ9FMcaxWuWdpsWw27yM5kgP3.vEOVx8wS0dqBt07XJptD6xXEqFeB.W8.y9MLmtutjmgql9R"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -58,7 +58,8 @@ module.exports = {
     getAllCustomObjects,
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
-    get_Org_limitInfo, get_UserWithLicense,get_UserWithLicense2
+    get_Org_limitInfo,
+    get_UserWithLicense2
 }
 
 async function getAllMeta() {
@@ -402,7 +403,7 @@ async function get_UserWithLicense2(){
             if (err){
                 return console.error("Error : " + err)
             }
-            pool.query("INSERT INTO license (orgid, license) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(result.records)])
+            
             resolve(result.records)
         })
     })

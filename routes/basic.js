@@ -155,7 +155,7 @@ async function getUserLicenseDetails() {
     if (result.rows[0]["license"].length > 0)
       return result.rows[0]["license"]
     else{
-      return sfdcmethods.get_UserWithLicense2()
+      return 0
     }
     
   } catch (error) {

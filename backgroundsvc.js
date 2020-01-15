@@ -121,6 +121,14 @@ async function start_background_call() {
             .then(result => pool.query("INSERT INTO apexcomponents (orgid, apexcomponent) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
             .catch(error => console.log("Step 12: " + error))
             .finally(console.log("Step 13 done"))
+        
+            const step15 = new Promise(async (resolve) => {
+                const result = await sfdcmethod.get_UserWithLicense2();
+                resolve(result)
+            })
+            .then(result => pool.query("INSERT INTO license (orgid, license) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(result.records)]))
+            .catch(error => console.log("Step 12: " + error))
+            .finally(console.log("Step 15 done"))
 
         const step14 = new Promise(async (resolve) => {
                 try {
