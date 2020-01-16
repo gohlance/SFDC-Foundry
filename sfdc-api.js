@@ -31,7 +31,7 @@ const axios = require('axios')
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
 global.accesscode = "00D46000001Uq6O!AQoAQKWx8Yc0l.6D31Q.I8pzHlMxYQEeYWu.HZQQU8Kf6RVvUFiMbP10iXCXfsCJ4tgRDQBEl4FXWVhyow5zv1dsefk7pVMJ"
-global.orgId = "999"
+global.orgId = "888"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
@@ -59,7 +59,7 @@ module.exports = {
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
     get_Org_limitInfo,
-    get_UserWithLicense2
+    get_UserWithLicense2,get_TotalUsersByProfile
 }
 
 async function getAllMeta() {
@@ -387,9 +387,16 @@ async function get_Org_limitInfo(){
    return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})      
 }
 
-async function get_UserWithLicense(){
+async function get_testing2(){
+    conn.metadata.list({type:'Profile'}, '45.0', function (err, metadata){
+        var meta = metadata[0];
+
+    })   
+}
+
+async function get_TotalUsersByProfile(){
     return new Promise((resolve, reject) => {
-        conn.query("Select Id, Name, Profile.UserLicense.Name From User WHERE Profile.UserLicense.Name != null", function (err, result){
+        conn.query("select count(id) Total ,profile.name from user  WHERE Profile.UserLicense.Name != null group by profile.name", function (err, result){
             if (err) { return console.error("Error " +  err)}
             let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value() 
             resolve(totalUserLicense)
