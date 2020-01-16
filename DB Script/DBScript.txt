@@ -90,6 +90,7 @@ CREATE TABLE public.profiles (
 	id serial NOT NULL,
 	orgid text NULL,
 	profile jsonb NULL,
+	totalusers jsonb NULL,
 	CONSTRAINT profiles_pkey PRIMARY KEY (id)
 );
 

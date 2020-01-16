@@ -43,10 +43,13 @@ async function start_background_call() {
             .finally(console.log("Step 3 done"))
 
         const step4 = new Promise(async (resolve) => {
-                const result = await sfdcmethod.getAllProfile()
-                resolve(result)
+                const result_profile = await sfdcmethod.getAllProfile()
+
+                const user_in_profile = await sfdcmethod.get_TotalUsersByProfile()
+
+                resolve([result_profile,user_in_profile])
             })
-            .then(result => pool.query("INSERT INTO profiles (orgid, profile) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .then(result => pool.query("INSERT INTO profiles (orgid, profile, totalusers) VALUES ($1, $2, $3) RETURNING id", [global.orgId, JSON.stringify(result[0]), JSON.stringify(result[1])]))
             .catch(error => console.log("Step 4 : " + error))
             .finally(console.log("Step 4 done"))
 
