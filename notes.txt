@@ -15,6 +15,10 @@
 
 For point 3, need background svc for this.
 
+6. Sharing Settings
+- This is how they can debug.
+
+
 -DONE
 4. License Usage
 

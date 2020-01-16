@@ -151,9 +151,8 @@ module.exports = ({
         
         .get('getUserLicense', '/getE', async (ctx) => {
             try {
-                const result = await sfdcmethods.get_UserWithLicense2()
-                console.log(result)
-                //return result.data
+                const result = await global.pool.query("SELECT orglimit FROM orglimits WHERE orgid=$1",[global.orgId])
+                reconsole.log(result)
             } catch (error) {
                 console.log(error)
                 return 0

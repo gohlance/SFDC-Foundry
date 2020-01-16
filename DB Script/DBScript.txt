@@ -182,6 +182,17 @@ CREATE TABLE public.license (
 	CONSTRAINT license_pkey PRIMARY KEY (id)
 );
 
+-- Drop table
+
+DROP TABLE public.orglimits;
+
+CREATE TABLE public.orglimits (
+	id serial NOT NULL,
+	orgid text NULL,
+	orglimit jsonb NULL,
+	CONSTRAINT orglimits_pkey PRIMARY KEY (id)
+);
+
 
 -- FUNCTIONS -- 
 

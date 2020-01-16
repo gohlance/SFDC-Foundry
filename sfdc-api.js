@@ -30,7 +30,7 @@ const axios = require('axios')
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQLuMSoWmajqNww7VNuWgQ9FMcaxWuWdpsWw27yM5kgP3.vEOVx8wS0dqBt07XJptD6xXEqFeB.W8.y9MLmtutjmgql9R"
+global.accesscode = "00D46000001Uq6O!AQoAQKWx8Yc0l.6D31Q.I8pzHlMxYQEeYWu.HZQQU8Kf6RVvUFiMbP10iXCXfsCJ4tgRDQBEl4FXWVhyow5zv1dsefk7pVMJ"
 global.orgId = "999"
 
 var conn = new jsforce.Connection({
@@ -384,7 +384,7 @@ async function get_Org_limitInfo(){
         'Authorization': 'Bearer ' + global.accesscode,
         'X-PrettyPrint': 1,
       };
-    return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})
+   return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})      
 }
 
 async function get_UserWithLicense(){
@@ -403,7 +403,6 @@ async function get_UserWithLicense2(){
             if (err){
                 return console.error("Error : " + err)
             }
-            
             resolve(result.records)
         })
     })
