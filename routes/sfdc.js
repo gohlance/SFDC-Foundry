@@ -98,49 +98,15 @@ module.exports = ({
         })
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
-                const result = await sfdcmethods.selectAll_ProfilesByOrder()
+                const result = await sfdcmethods.get_TotalUsersByProfile()
                 return ctx.render('show_profiles', {
-                    profiles: result.rows
+                    profiles: result.undefined
                 })
             } catch (error) {
                 console.error("Error [showProfiles]: " + error)
             }
         })
         //***** TESTING */
-        .get('getA', '/getA', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '8888'")
-
-                return ctx.render('generic', {
-                    object: result
-                })
-            } catch (error) {
-                console.error(error)
-            }
-        })
-        //This section show the totalfields
-        .get('getB', '/getB', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT objectinfo FROM objects WHERE orgid = '999'")
-
-                return ctx.render('generic', {
-                    object: result
-                })
-            } catch (error) {
-                console.error(error)
-            }
-        })
-        .get('getC', '/getC', async (ctx) => {
-            try {
-                const result = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1", [global.orgId])
-
-                return ctx.render('generic', {
-                    object: result
-                })
-            } catch (error) {
-                console.error(error)
-            }
-        })
         .get('getD', '/getD', async (ctx) => {
             try {
                 const result = sfdcmethods.testing_getApexPageByLastModified()

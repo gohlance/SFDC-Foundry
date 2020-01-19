@@ -106,7 +106,7 @@ async function start_background_call() {
                 resolve(result)
             })
             .then(result => pool.query("INSERT INTO apexpages (orgid, apexpage) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
-            .catch(error => console.log("Step 11 : " + error))
+            .catch(error => console.error("Error [Step 11] : " + error))
             .finally(console.log("Step 11 done"))
 
         const step12 = new Promise(async (resolve) => {
@@ -114,7 +114,7 @@ async function start_background_call() {
                 resolve(result)
             })
             .then(result => pool.query("INSERT INTO apexclass (orgid, apexclass) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
-            .catch(error => console.log("Step 12: " + error))
+            .catch(error => console.error("Error [Step 12] : " + error))
             .finally(console.log("Step 12 done"))
 
         const step13 = new Promise(async (resolve) => {
@@ -122,7 +122,7 @@ async function start_background_call() {
                 resolve(result)
             })
             .then(result => pool.query("INSERT INTO apexcomponents (orgid, apexcomponent) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
-            .catch(error => console.log("Step 12: " + error))
+            .catch(error => console.error("Error [Step 13] : " + error))
             .finally(console.log("Step 13 done"))
         
         const step15 = new Promise(async (resolve) => {
@@ -130,7 +130,7 @@ async function start_background_call() {
             resolve(result)
         })
         .then(result => pool.query("INSERT INTO license (orgid, license) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(result.records)]))
-        .catch(error => console.log("Step 15: " + error))
+        .catch(error => console.error("Error [Step 15] : " + error))
         .finally(console.log("Step 15 done"))
 
         const step16 = new Promise(async (resolve) => {
@@ -138,7 +138,7 @@ async function start_background_call() {
             resolve(result)
         })
         .then(result => global.pool.query("INSERT INTO orglimits (orgid, orglimit) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result.data)]))
-        .catch(error => console.log("Step 16: " + error))
+        .catch(error => console.error("Error [Step 16] : " + error))
         .finally(console.log("Step 16 done"))
         
 
@@ -148,11 +148,10 @@ async function start_background_call() {
                     const result = await sfdcmethod.getAllObjectOnce()
                     resolve(result)
                 } catch (error) {
-                    console.log("Error ** : " + error);
+                    console.error("Error [Step14] : " + error);
                     throw new Error("will be caught");
                 }
             }).then(result => {
-                 console.log("Starting SobjectDescribe")
                  pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)])
                  sfdcmethod.sObjectDescribe(result)  
             })
