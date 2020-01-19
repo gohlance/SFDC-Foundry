@@ -43,10 +43,13 @@ async function start_background_call() {
             .finally(console.log("Step 3 done"))
 
         const step4 = new Promise(async (resolve) => {
-                const result = await sfdcmethod.getAllProfile()
-                resolve(result)
+                const result_profile = await sfdcmethod.getAllProfile()
+
+                const user_in_profile = await sfdcmethod.get_TotalUsersByProfile()
+
+                resolve([result_profile,user_in_profile])
             })
-            .then(result => pool.query("INSERT INTO profiles (orgid, profile) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
+            .then(result => pool.query("INSERT INTO profiles (orgid, profile, totalusers) VALUES ($1, $2, $3) RETURNING id", [global.orgId, JSON.stringify(result[0]), JSON.stringify(result[1])]))
             .catch(error => console.log("Step 4 : " + error))
             .finally(console.log("Step 4 done"))
 
@@ -103,7 +106,7 @@ async function start_background_call() {
                 resolve(result)
             })
             .then(result => pool.query("INSERT INTO apexpages (orgid, apexpage) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
-            .catch(error => console.log("Step 11 : " + error))
+            .catch(error => console.error("Error [Step 11] : " + error))
             .finally(console.log("Step 11 done"))
 
         const step12 = new Promise(async (resolve) => {
@@ -111,7 +114,7 @@ async function start_background_call() {
                 resolve(result)
             })
             .then(result => pool.query("INSERT INTO apexclass (orgid, apexclass) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
-            .catch(error => console.log("Step 12: " + error))
+            .catch(error => console.error("Error [Step 12] : " + error))
             .finally(console.log("Step 12 done"))
 
         const step13 = new Promise(async (resolve) => {
@@ -119,8 +122,25 @@ async function start_background_call() {
                 resolve(result)
             })
             .then(result => pool.query("INSERT INTO apexcomponents (orgid, apexcomponent) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)]))
-            .catch(error => console.log("Step 12: " + error))
+            .catch(error => console.error("Error [Step 13] : " + error))
             .finally(console.log("Step 13 done"))
+        
+        const step15 = new Promise(async (resolve) => {
+            const result = await sfdcmethod.get_UserWithLicense2();
+            resolve(result)
+        })
+        .then(result => pool.query("INSERT INTO license (orgid, license) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(result.records)]))
+        .catch(error => console.error("Error [Step 15] : " + error))
+        .finally(console.log("Step 15 done"))
+
+        const step16 = new Promise(async (resolve) => {
+            const result = await sfdcmethod.get_Org_limitInfo();
+            resolve(result)
+        })
+        .then(result => global.pool.query("INSERT INTO orglimits (orgid, orglimit) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result.data)]))
+        .catch(error => console.error("Error [Step 16] : " + error))
+        .finally(console.log("Step 16 done"))
+        
 
         const step14 = new Promise(async (resolve) => {
                 try {
@@ -128,11 +148,10 @@ async function start_background_call() {
                     const result = await sfdcmethod.getAllObjectOnce()
                     resolve(result)
                 } catch (error) {
-                    console.log("Error ** : " + error);
+                    console.error("Error [Step14] : " + error);
                     throw new Error("will be caught");
                 }
             }).then(result => {
-                 console.log("Starting SobjectDescribe")
                  pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)])
                  sfdcmethod.sObjectDescribe(result)  
             })

@@ -90,6 +90,7 @@ CREATE TABLE public.profiles (
 	id serial NOT NULL,
 	orgid text NULL,
 	profile jsonb NULL,
+	totalusers jsonb NULL,
 	CONSTRAINT profiles_pkey PRIMARY KEY (id)
 );
 
@@ -180,6 +181,17 @@ CREATE TABLE public.license (
 	orgid text NULL,
 	license jsonb NULL,
 	CONSTRAINT license_pkey PRIMARY KEY (id)
+);
+
+-- Drop table
+
+DROP TABLE public.orglimits;
+
+CREATE TABLE public.orglimits (
+	id serial NOT NULL,
+	orgid text NULL,
+	orglimit jsonb NULL,
+	CONSTRAINT orglimits_pkey PRIMARY KEY (id)
 );
 
 

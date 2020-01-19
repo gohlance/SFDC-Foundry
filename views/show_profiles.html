@@ -5,17 +5,19 @@
         <div class="container">
             <table id="dtObjects" class="table table-striped table-bordered table-sm sortable" cellspacing="0" width="100%">
                 <thead>
-                    <th>Name</th>
-                    <th>Description</th>
-                   
+                    <th>Profile</th>
+                    <th>Total User(s)</th>      
                 </thead>
                 <tbody>
-                    <% for(var i =0; i< profiles.length; i ++){ %>
-                    <tr>
-                        <td><%-profiles[i].name%></td>
-                        <td><%-profiles[i].description%></td>
-                    </tr>
-                    <%}%> 
+                    <% 
+                        profiles.map(function(profile){
+                    %>
+                        <tr>
+                            <td><%-profile.Name%></td>
+                            <td><%-profile.Total%></td>
+                        </tr>
+                    <% })%>
+                    
                 </tbody>   
             </table>
         </div>

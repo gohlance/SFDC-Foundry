@@ -141,8 +141,8 @@ async function display_Homepage_ApexPages() {
 
 async function getMoreOrgDetails() {
   try {
-    const result = await sfdcmethods.get_Org_limitInfo()
-    return result.data
+    const result = await global.pool.query("SELECT orglimit FROM orglimits WHERE orgid=$1",[global.orgId])
+    return result.rows[0]["orglimit"]
   } catch (error) {
     console.error("Error [getMoreOrgDetails]: " + error)
     return 0
@@ -155,7 +155,7 @@ async function getUserLicenseDetails() {
     if (result.rows[0]["license"].length > 0)
       return result.rows[0]["license"]
     else{
-      return sfdcmethods.get_UserWithLicense2()
+      return 0
     }
     
   } catch (error) {

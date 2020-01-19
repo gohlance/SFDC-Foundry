@@ -30,8 +30,8 @@ const axios = require('axios')
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQGcZFh6oF2xvMQn3VP8eapaIpHaJV5aH1ya20k4uZoamPOdsI0IUEwvDBstJBYSGVzor4qEuFpbtKqN_1ykV3WvV8Vbm"
-global.orgId = "999"
+global.accesscode = "00D46000001Uq6O!AQoAQKQgj3RtINm5VM8imzpNy30F3Ip.YJfpoh4CJ0EbPEjLOzS4eDzgaBjsfeUBBajndj.8nR5.3dLgzeYPQI.1vSTOQkx6"
+global.orgId = "888"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
@@ -58,7 +58,8 @@ module.exports = {
     getAllCustomObjects,
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
-    get_Org_limitInfo, get_UserWithLicense,get_UserWithLicense2
+    get_Org_limitInfo,
+    get_UserWithLicense2,get_TotalUsersByProfile
 }
 
 async function getAllMeta() {
@@ -291,7 +292,7 @@ async function sObjectDescribe(result) {
             var morethan100fields = 0;
             const pLimit = require('p-limit');
             const limit = pLimit(100);
-            console.log("I am here sobjectDescribe")
+           
             var i = 1
             var allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
                 var totalfields = await conn.sobject(item.name).describe().then(async response => {
@@ -351,6 +352,36 @@ async function selectAll_ProfilesByOrder() {
     return result
 }
 
+async function get_Org_limitInfo(){
+    const headers = {
+        'Authorization': 'Bearer ' + global.accesscode,
+        'X-PrettyPrint': 1,
+      };
+   return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})      
+}
+
+
+async function get_TotalUsersByProfile(){
+    return new Promise((resolve, reject) => {
+        conn.query("select count(id) Total ,profile.name from user  WHERE Profile.UserLicense.Name != null group by profile.name", function (err, result){
+            if (err) { return console.error("Error " +  err)}
+            let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value() 
+            resolve(totalUserLicense)
+        });
+    })
+}
+
+async function get_UserWithLicense2(){
+    return new Promise((resolve, reject) => {
+        conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result){
+            if (err){
+                return console.error("Error : " + err)
+            }
+            resolve(result.records)
+        })
+    })
+}
+
 async function testing_recordsquery(){
    // let result =  conn.query("select count() from account where recordtype = 'Account'")
     conn.query("SELECT count() FROM Account where recordtypeid = '012460000011jC3AAI'", function(err, result) {
@@ -378,35 +409,7 @@ async function testing_getUserPackageLicense(){
 
 
 
-async function get_Org_limitInfo(){
-    const headers = {
-        'Authorization': 'Bearer ' + global.accesscode,
-        'X-PrettyPrint': 1,
-      };
-    return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})
-}
 
-async function get_UserWithLicense(){
-    return new Promise((resolve, reject) => {
-        conn.query("Select Id, Name, Profile.UserLicense.Name From User WHERE Profile.UserLicense.Name != null", function (err, result){
-            if (err) { return console.error("Error " +  err)}
-            let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value() 
-            resolve(totalUserLicense)
-        });
-    })
-}
-
-async function get_UserWithLicense2(){
-    return new Promise((resolve, reject) => {
-        conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result){
-            if (err){
-                return console.error("Error : " + err)
-            }
-            pool.query("INSERT INTO license (orgid, license) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(result.records)])
-            resolve(result.records)
-        })
-    })
-}
 
 //PRIVATE
 function chunkArrayInGroups(arr, size) {
