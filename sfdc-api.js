@@ -30,7 +30,7 @@ const axios = require('axios')
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQKQgj3RtINm5VM8imzpNy30F3Ip.YJfpoh4CJ0EbPEjLOzS4eDzgaBjsfeUBBajndj.8nR5.3dLgzeYPQI.1vSTOQkx6"
+global.accesscode = "00D46000001Uq6O!AQoAQFD31xanGsZ6rXLIT3OuTgmJWYX_xBEi80Yg4WhQEUDTZenJxcGA8kws7szHHLZ.3ThRM3QNkL0oCNt5lnjj11cuSO4d"
 global.orgId = "888"
 
 var conn = new jsforce.Connection({
@@ -62,6 +62,7 @@ module.exports = {
     get_UserWithLicense2,get_TotalUsersByProfile
 }
 
+//#region Background Service Methods
 async function getAllMeta() {
     try {
         return new Promise((resolve, reject) => {
@@ -73,7 +74,6 @@ async function getAllMeta() {
         console.log("Error [sfdc-api/getAllMeta]: " + err)
     }
 }
-
 async function getAllObjectOnce() {
     try {
         return new Promise((resolve, reject) => {
@@ -90,7 +90,24 @@ async function getAllObjectOnce() {
         console.log("Error [sfdc-api/getAllObjectsOnce]" + err)
     }
 }
+//33 seconds run time for 2050 objects
+async function getAllObjects() {
+    try {
+        return new Promise((resolve, reject) => {
+            conn.describeGlobal(function (err, res) {
+                if (err) {
+                    return console.log(err)
+                }
+                console.log('[sfdc-api/getAllObjects] No of Objects ' + res.sobjects.length)
+                //pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(res)])
+                resolve(res.sobjects)
+            })
+        })
 
+    } catch (err) {
+        console.log("Error [sfdc-api/getAllObjects]" + err)
+    }
+}
 async function getAllApex(type) {
     //TODO: Check what can ApexPage, ApexClass and ApexComponent return
     return new Promise((resolve, reject) => {
@@ -114,7 +131,6 @@ async function getAllApex(type) {
         })
     })
 }
-
 async function getAllLayout() {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function (err, result) {
@@ -126,7 +142,6 @@ async function getAllLayout() {
         })
     })
 }
-
 //Average 1 seconds
 async function getAllProfile() {
     return new Promise((resolve, reject) => {
@@ -139,7 +154,6 @@ async function getAllProfile() {
         })
     })
 }
-
 async function getAllProfile2Layout() {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout", function (err, result) {
@@ -151,7 +165,6 @@ async function getAllProfile2Layout() {
         })
     })
 }
-
 async function getAllRecordType() {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT BusinessProcessId, Description, Name, IsActive,ManageableState,SobjectType FROM RecordTYpe", function (err, result) {
@@ -163,8 +176,6 @@ async function getAllRecordType() {
         })
     })
 }
-
-//TODO : May need to do after SOBJECTDESCRIBE.
 async function getAllValidationRules() {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,ValidationName FROM ValidationRule", function (err, result) {
@@ -187,7 +198,6 @@ async function getAllWorkflowRules() {
         })
     })
 }
-
 async function getAllBusinessProcess() {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Description,IsActive,ManageableState, Name FROM BusinessProcess", function (err, result) {
@@ -199,7 +209,6 @@ async function getAllBusinessProcess() {
         })
     })
 }
-
 async function getAllCustomApplication() {
     return new Promise((resolve, reject) => {
         conn.tooling.query("SELECT Description,DeveloperName,ManageableState,NavType,UiType FROM CustomApplication", function (err, result) {
@@ -211,19 +220,6 @@ async function getAllCustomApplication() {
         })
     })
 }
-
-async function getAllSecruityRisk() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT RiskType, Setting, SettingGroup, OrgValue, StandardValue FROM SecurityHealthCheckRisks where RiskType=’HIGH_RISK’", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
-            }
-            console.log("[sfdc-api/getAllCustomApplication] : " + result)
-            resolve(result)
-        })
-    })
-}
-
 async function getAllCustomObjects() {
     return new Promise((resolve, reject) => {
         conn.metadata.retrieve()
@@ -236,51 +232,6 @@ async function getAllCustomObjects() {
         })
     })
 }
-
-async function letsGetEverything() {
-    try {
-        return new Promise((resolve, reject) => {
-            const worker = new Worker('./backgroundsvc.js', {
-                workerData: {
-                    instance: global.instanceUrl,
-                    code: global.accesscode
-                }
-            });
-            console.log("Worker Started")
-            worker.on('message', (message) => {
-                console.log("I am here " + message.status);
-                resolve("Success")
-            });
-            worker.on('error', reject);
-            worker.on('exit', (code) => {
-                if (code !== 0)
-                    reject(new Error(`Worker stopped with exit code ${code}`));
-            })
-        })
-    } catch (error) {
-        console.log("Error [sfdc-api/letsGetEverything] : " + error)
-    }
-}
-
-//33 seconds run time for 2050 objects
-async function getAllObjects() {
-    try {
-        return new Promise((resolve, reject) => {
-            conn.describeGlobal(function (err, res) {
-                if (err) {
-                    return console.log(err)
-                }
-                console.log('[sfdc-api/getAllObjects] No of Objects ' + res.sobjects.length)
-                //pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(res)])
-                resolve(res.sobjects)
-            })
-        })
-
-    } catch (err) {
-        console.log("Error [sfdc-api/getAllObjects]" + err)
-    }
-}
-
 async function sObjectDescribe(result) {
     console.log(result.length)
     var result2 = filter_BeforeCallingAPI(result)
@@ -341,6 +292,60 @@ async function sObjectDescribe(result) {
         console.log("Error [sfdc-api/sObjectDescribe]" + err)
     }
 }
+async function get_UserWithLicense2(){
+    return new Promise((resolve, reject) => {
+        conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result){
+            if (err){
+                return console.error("Error : " + err)
+            }
+            resolve(result.records)
+        })
+    })
+}
+async function get_Org_limitInfo(){
+    const headers = {
+        'Authorization': 'Bearer ' + global.accesscode,
+        'X-PrettyPrint': 1,
+      };
+   return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})      
+}
+async function letsGetEverything() {
+    try {
+        return new Promise((resolve, reject) => {
+            const worker = new Worker('./backgroundsvc.js', {
+                workerData: {
+                    instance: global.instanceUrl,
+                    code: global.accesscode
+                }
+            });
+            console.log("Worker Started")
+            worker.on('message', (message) => {
+                console.log("I am here " + message.status);
+                resolve("Success")
+            });
+            worker.on('error', reject);
+            worker.on('exit', (code) => {
+                if (code !== 0)
+                    reject(new Error(`Worker stopped with exit code ${code}`));
+            })
+        })
+    } catch (error) {
+        console.log("Error [sfdc-api/letsGetEverything] : " + error)
+    }
+}
+//#endregion
+
+async function getAllSecruityRisk() {
+    return new Promise((resolve, reject) => {
+        conn.tooling.query("SELECT RiskType, Setting, SettingGroup, OrgValue, StandardValue FROM SecurityHealthCheckRisks where RiskType=’HIGH_RISK’", function (err, result) {
+            if (err) {
+                console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
+            }
+            console.log("[sfdc-api/getAllCustomApplication] : " + result)
+            resolve(result)
+        })
+    })
+}
 
 async function selectAll_RecordTypesByOrder(){
     let result = await global.pool.query("select elem-> 'Name' as name, elem -> 'SobjectType' as objectType, elem->'IsActive' as active, elem->'Description' as description, elem -> 'BusinessProcessId' as businessprocessid from public.recordtypes, lateral jsonb_array_elements(recordtype -> 'records') elem where orgid = $1 order by 2",[global.orgId])
@@ -352,15 +357,6 @@ async function selectAll_ProfilesByOrder() {
     return result
 }
 
-async function get_Org_limitInfo(){
-    const headers = {
-        'Authorization': 'Bearer ' + global.accesscode,
-        'X-PrettyPrint': 1,
-      };
-   return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})      
-}
-
-
 async function get_TotalUsersByProfile(){
     return new Promise((resolve, reject) => {
         conn.query("select count(id) Total ,profile.name from user  WHERE Profile.UserLicense.Name != null group by profile.name", function (err, result){
@@ -368,17 +364,6 @@ async function get_TotalUsersByProfile(){
             let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value() 
             resolve(totalUserLicense)
         });
-    })
-}
-
-async function get_UserWithLicense2(){
-    return new Promise((resolve, reject) => {
-        conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result){
-            if (err){
-                return console.error("Error : " + err)
-            }
-            resolve(result.records)
-        })
     })
 }
 
@@ -407,11 +392,7 @@ async function testing_getUserPackageLicense(){
 });
 }
 
-
-
-
-
-//PRIVATE
+//#region Private Methods
 function chunkArrayInGroups(arr, size) {
     return new Promise((resolve, reject) => {
         var myArray = [];
@@ -461,8 +442,9 @@ async function filter_RecordTypesBy (sobjectname){
     let result = await global.pool.query("select elem from public.recordtypes, lateral jsonb_array_elements(recordtype ->'records') elem where elem @> '{\"SobjectType\":\"$1\"}' and orgid = $2;", [sobjectname,global.orgId])
     //result.rows[0].elem
     return result
-  }
+}
 
+//#endregion
 
 
 /**

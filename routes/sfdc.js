@@ -6,8 +6,8 @@ const {
     workerData
 } = require('worker_threads');
 
-
 const jsforce = require('jsforce')
+const _ = require('lodash')
 
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
@@ -99,8 +99,21 @@ module.exports = ({
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
                 const result = await sfdcmethods.get_TotalUsersByProfile()
+
+                const range = _.partition(result.undefined, function (item){
+                    return item.Total >= 10;
+                })
+
+                const profileWithOnly_1User = _.partition(result.undefined, function(item){
+                    return item.Total == 1;
+                })
+
                 return ctx.render('show_profiles', {
-                    profiles: result.undefined
+                    profiles: result.undefined,
+                    morethan10: range[0].length,
+                    lessthan10: range[1].length,
+                    totalObject: result.undefined.length,
+                    singleuser: profileWithOnly_1User[0].length
                 })
             } catch (error) {
                 console.error("Error [showProfiles]: " + error)

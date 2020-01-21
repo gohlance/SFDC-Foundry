@@ -19,7 +19,7 @@
                             <h5 class="card-title">Total Object(s)</h5>
                     </div>
             </div>
-    </div>
+    </div> //end of row for graph
 
    <div class="row">
         <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
@@ -64,9 +64,8 @@
         .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
 </style>
 <script>
-        var morethan1001 = <%= moreObject %>;
-                                            var gauge1 = loadLiquidFillGauge("fillgauge1", <%- moreObject %> /
-                                            <%- totalObject %> *100 );
-                                            var gauge2 = loadLiquidFillGauge("fillgauge2", <%- lessObject %> /
-                                            <%- totalObject %> *100);
-                                            </script>
+var gauge1 = loadLiquidFillGauge("fillgauge1", <%- moreObject %> /
+<%- totalObject %> *100 );
+var gauge2 = loadLiquidFillGauge("fillgauge2", <%- lessObject %> /
+<%- totalObject %> *100);
+</script>
