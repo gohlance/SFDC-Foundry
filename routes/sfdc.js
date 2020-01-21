@@ -89,8 +89,17 @@ module.exports = ({
         .get('showRecordType', '/showRecordType', async (ctx) => {
             try {
                 const result = await sfdcmethods.selectAll_RecordTypesByOrder()
+                
+                const range = _(result.rows).groupBy('objecttype').partition(function (item){ return item.length > 5}).value()
+                
+                const recordType_NotActive = _.partition(result.rows, 'active')
+
                 return ctx.render('show_recordType', {
-                    recordType: result.rows
+                    recordType: result.rows,
+                    morethan: range[0].length,
+                    lessthan: range[1].length,
+                    totalObject: range[0].length + range[1].length,
+                    notactive: recordType_NotActive[1].length
                 })
             } catch (error) {
                 console.error("Error [showRecordType]: " + error)

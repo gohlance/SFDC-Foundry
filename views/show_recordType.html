@@ -1,23 +1,54 @@
-    <div class="row">
-        <div class="container">
-                Record Type ( <%- recordType.length %> )
-        </div>
-        <div class="container">
-            <table id="dtObjects" class="table table-striped table-bordered table-sm sortable" cellspacing="0" width="100%">
-                <thead>
-                    <th>Record Type</th>
-                    <th>Object Associated With</th>
-                    <th>Active</th>
-                </thead>
-                <tbody>
-                    <% for(var i =0; i< recordType.length; i ++){ %>
-                    <tr>
-                        <td><%-recordType[i].name%></td>
-                        <td><%-recordType[i].objecttype%></td>
-                        <td><%-recordType[i].active%> </td>
-                    </tr>
-                    <%}%> 
-                </tbody>   
-            </table>
+<div class="row">
+    <div class="card" style="width: 30%;height:220px">
+        <svg id="fillgauge1" width="97%" height="100" style="margin-top:2"></svg>
+        <div class="card-body text-center">
+            <h5 class="card-title"><%-morethan%> </h5>
+            <p class="card-text">More than 5 recordtypes in the particular object</p>
         </div>
     </div>
+    <div class="card" style="width: 30%;height:220px">
+        <svg id="fillgauge2" width="97%" height="100" style="margin-top:2"></svg>
+        <div class="card-body text-center">
+            <h5 class="card-title"><%-lessthan%></h5>
+            <p class="card-text">Less than 5 recordtypes in the particular object</p>
+        </div>
+    </div>
+    <div class="card" style="width: 30%;height:220px">
+        <div class="card-body text-center">
+            <h2 class="card-title"><%-notactive%></h2>
+            <p class="card-text">You have 2 Record Types that is not active. You may consider removing it?</p>
+        </div>
+    </div>
+</div>
+   
+<div class="row">
+    <div class="container">
+            Record Type ( <%- recordType.length %> )
+    </div>
+    <div class="container">
+        <table id="dtObjects" class="table table-striped table-bordered table-sm sortable" cellspacing="0" width="100%">
+            <thead>
+                <th>Record Type</th>
+                <th>Object Associated With</th>
+                <th>Active</th>
+            </thead>
+            <tbody>
+                <% for(var i =0; i< recordType.length; i ++){ %>
+                <tr>
+                    <td><%-recordType[i].name%></td>
+                    <td><%-recordType[i].objecttype%></td>
+                    <td><%-recordType[i].active%> </td>
+                </tr>
+                <%}%> 
+            </tbody>   
+        </table>
+    </div>
+</div>
+<script src="/liquidFillGauge.js"></script>
+<style>
+        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+</style>
+<script>
+var gauge1 = loadLiquidFillGauge("fillgauge1", <%-morethan%>/<%- totalObject %> *100);
+var gauge2 = loadLiquidFillGauge("fillgauge2", <%-lessthan%>/<%- totalObject %> *100);
+</script>
