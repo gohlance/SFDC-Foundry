@@ -24,7 +24,6 @@ conn = new jsforce.Connection({
     accessToken: global.accesscode
 })
 
-
 module.exports = ({
     router
 }) => {
@@ -126,6 +125,29 @@ module.exports = ({
                 })
             } catch (error) {
                 console.error("Error [showProfiles]: " + error)
+            }
+        })
+        .get('showApexTrigger', '/getApexTrigger', async (ctx)=>{
+            try {
+                const result = await global.pool.query("SELECT apextrigger FROM apextriggers WHERE orgid = $1",[global.orgId])
+
+                const range = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').value()
+                const rangeCondition = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').partition(function (item){
+                    return item.length > 5
+                }).value()
+
+                const notActive = _.partition(result.rows[0]["apextrigger"].records, function (item){return item.Status == "Active"})
+                return ctx.render('show_apexTrigger',{
+                    type: "ApexTrigger",
+                    apex: result.rows[0]["apextrigger"].records,
+                    subheader: Object.keys(range),
+                    subcontent: Object.values(range),
+                    morethan:rangeCondition[0].length,
+                    lessthan:rangeCondition[1].length,
+                    notactive: notActive[1].length
+                })
+            } catch (error) {
+                console.error("Error [showApexTrigger]: " + error)
             }
         })
         //***** TESTING */
