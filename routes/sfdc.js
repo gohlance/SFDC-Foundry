@@ -158,14 +158,14 @@ module.exports = ({
 
             }
         })
-        
-        .get('getUserLicense', '/getE', async (ctx) => {
+        .get('getUserLicense', '/getf', async (ctx) => {
             try {
                 const result = sfdcmethods.get_testing()
                 console.log(result)
             } catch (error) {
-                console.log(error)
+                console.log("A: " + error)
                 return 0
             }
         })
+       
 }

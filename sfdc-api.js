@@ -30,7 +30,7 @@ const axios = require('axios')
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
 //global.instanceUrl = "https://ap16.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQFD31xanGsZ6rXLIT3OuTgmJWYX_xBEi80Yg4WhQEUDTZenJxcGA8kws7szHHLZ.3ThRM3QNkL0oCNt5lnjj11cuSO4d"
+global.accesscode = "00D46000001Uq6O!AQoAQMF8Wm.M0K4ZcWXpj.nBizDKYxZBq5yqege9AQf0ryEdwQiqmYn383GrqcUDXTr5SdCFwkP.EUCW84krhcIcEI8xrYyW"
 global.orgId = "888"
 
 var conn = new jsforce.Connection({
@@ -59,7 +59,7 @@ module.exports = {
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
     get_Org_limitInfo,
-    get_UserWithLicense2,get_TotalUsersByProfile
+    get_UserWithLicense2,get_TotalUsersByProfile,get_testing
 }
 
 //#region Background Service Methods
@@ -247,6 +247,7 @@ async function sObjectDescribe(result) {
             var i = 1
             var allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
                 var totalfields = await conn.sobject(item.name).describe().then(async response => {
+                    
                     return {
                         totalfields: response.fields.length,
                         layout: response.namedLayoutInfos.length,
@@ -254,7 +255,8 @@ async function sObjectDescribe(result) {
                         recordType: response.recordTypeInfos.length,
                         createable: response.createable,
                         deletable: response.deletable,
-                        undeletable: response.undeletable
+                        undeletable: response.undeletable,
+                        childRelationship_details: response.childRelationships
                     }
                 })
 
@@ -286,7 +288,7 @@ async function sObjectDescribe(result) {
             }
             console.log("[SobjectDescribe - Inserting Record Operation]")
             pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(jsonResult)])
-           console.log("[SobjectDescribe - Inserting Completed]")
+            console.log("[SobjectDescribe - Inserting Completed]")
        
     } catch (err) {
         console.log("Error [sfdc-api/sObjectDescribe]" + err)
@@ -390,6 +392,9 @@ async function testing_getUserPackageLicense(){
     if (err) { return console.error("Error " +  err)}
     console.log(result);
 });
+}
+
+async function get_testing(){
 }
 
 //#region Private Methods

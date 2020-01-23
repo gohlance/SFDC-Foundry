@@ -11,6 +11,7 @@
     "license": "ISC",
     "dependencies": {
         "axios": "^0.19.1",
+        "gojs": "^2.1.6",
         "jsforce": "^1.9.3",
         "koa": "^2.11.0",
         "koa-ejs": "^4.2.0",
