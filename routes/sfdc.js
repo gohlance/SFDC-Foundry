@@ -167,5 +167,10 @@ module.exports = ({
                 return 0
             }
         })
+        .get('showLinkage','/geth', async (ctx)=>{
+            return ctx.render('show_objectLinkage',{
+                
+            })
+        })
        
 }
