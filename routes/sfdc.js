@@ -8,6 +8,7 @@ const {
 
 const jsforce = require('jsforce')
 const _ = require('lodash')
+const chart = require('../chartGenerator')
 
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
@@ -167,9 +168,9 @@ module.exports = ({
                 return 0
             }
         })
-        .get('showLinkage','/geth', async (ctx)=>{
-            return ctx.render('show_objectLinkage',{
-                
+        .get('showChart','/getChart', async (ctx)=>{
+            return ctx.render('show_chart',{
+                chart : chart.generate()
             })
         })
        
