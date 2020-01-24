@@ -11,7 +11,7 @@ var oauth2 = new jsforce.OAuth2({
     // loginUrl : 'https://test.salesforce.com',
     clientId: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
     clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
-    redirectUri: 'https://testingauth123.herokuapp.com/auth3/login/return'
+    redirectUri: 'https://shielded-cliffs-45260.herokuapp.com/auth3/login/return'
 });
 
 const Pool = require('pg-pool')
@@ -28,10 +28,9 @@ const pool = new Pool({
 const axios = require('axios')
 
 //*** Only for Development */
-//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-//global.instanceUrl = "https://ap16.salesforce.com"
-//global.accesscode = "00D46000001Uq6O!AQoAQMF8Wm.M0K4ZcWXpj.nBizDKYxZBq5yqege9AQf0ryEdwQiqmYn383GrqcUDXTr5SdCFwkP.EUCW84krhcIcEI8xrYyW"
-//global.orgId = "888"
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQMF8Wm.M0K4ZcWXpj.nBizDKYxZBq5yqege9AQf0ryEdwQiqmYn383GrqcUDXTr5SdCFwkP.EUCW84krhcIcEI8xrYyW"
+global.orgId = "888"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
