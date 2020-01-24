@@ -10,9 +10,9 @@ const LINKS = {
 }
 
 module.exports ={
-    generate
+    generateChart
 }
 
-function generate(){
+function generateChart(schema){
    
 }

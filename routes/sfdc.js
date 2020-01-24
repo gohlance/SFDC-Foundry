@@ -158,9 +158,13 @@ module.exports = ({
         //***** TESTING */
         .get('getD', '/getD', async (ctx) => {
             try {
-                const result = sfdcmethods.testing_getApexPageByLastModified()
+                const result = await sfdcmethods.get_childRelationship("Account")
+                const json_result = JSON.parse(result.rows[0]["relationship"])
+                return ctx.render('test',{
+                    object: result
+                })
             } catch (error) {
-
+                console.error(error)
             }
         })
         .get('getUserLicense', '/getf', async (ctx) => {
@@ -174,7 +178,7 @@ module.exports = ({
         })
         .get('showChart','/getChart', async (ctx)=>{
             return ctx.render('show_chart',{
-                chart : chart.generate()
+                chart : 'classDiagram\n' + 'Animal <|-- Duck'
             })
         })
        

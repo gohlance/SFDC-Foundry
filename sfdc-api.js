@@ -28,9 +28,9 @@ const pool = new Pool({
 const axios = require('axios')
 
 //*** Only for Development */
-//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-//global.accesscode = "00D46000001Uq6O!AQoAQMF8Wm.M0K4ZcWXpj.nBizDKYxZBq5yqege9AQf0ryEdwQiqmYn383GrqcUDXTr5SdCFwkP.EUCW84krhcIcEI8xrYyW"
-//global.orgId = "888"
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQDZ0mQ_3LyNE3l8oToArjQeu6ZBOeu7KtVLp2Gnae8AbizcSdq7fDTsHoTZcKSEPCAW4xB9VM_vQVQbjndXCRjGcBpWC"
+global.orgId = "168"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
@@ -58,7 +58,7 @@ module.exports = {
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
     get_Org_limitInfo,
-    get_UserWithLicense2,get_TotalUsersByProfile,get_testing
+    get_UserWithLicense2,get_TotalUsersByProfile,get_childRelationship
 }
 
 //#region Background Service Methods
@@ -232,8 +232,7 @@ async function getAllCustomObjects() {
     })
 }
 async function sObjectDescribe(result) {
-    console.log(result.length)
-    var result2 = filter_BeforeCallingAPI(result)
+     var result2 = filter_BeforeCallingAPI(result)
     //console.log(result);
     //TODO : this section can do child relationship
     try {
@@ -254,16 +253,14 @@ async function sObjectDescribe(result) {
                         recordType: response.recordTypeInfos.length,
                         createable: response.createable,
                         deletable: response.deletable,
-                        undeletable: response.undeletable,
-                        childRelationship_details: response.childRelationships
+                        childRelationship_details: response.childRelationships,
+                        undeletable: response.undeletable 
                     }
                 })
 
                 if (totalfields.totalfields > 100) {
-
                     morethan100fields++
                 } else {
-
                     lessthan100fields++
                 }
 
@@ -277,7 +274,8 @@ async function sObjectDescribe(result) {
                     layout: totalfields.layout,
                     createable: totalfields.createable,
                     deletable: totalfields.deletable,
-                    undeletable: totalfields.undeletable
+                    undeletable: totalfields.undeletable,
+                    childRelationship_details: totalfields.childRelationship_details
                 }
             })))
             var jsonResult = {
@@ -366,6 +364,11 @@ async function get_TotalUsersByProfile(){
             resolve(totalUserLicense)
         });
     })
+}
+
+async function get_childRelationship(objectName){
+    let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.objects , lateral jsonb_array_elements(objectinfo -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,global.orgId])
+    return result
 }
 
 async function testing_recordsquery(){
