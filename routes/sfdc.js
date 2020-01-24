@@ -58,7 +58,11 @@ module.exports = ({
                 if (err) {
                     return console.error(err);
                 }
+                global.accesscode = ''
+                global.instanceUrl = ''
+                global.orgId =''
             });
+
             return ctx.render('index')
         })
         .get('showObjects', '/showObject', async (ctx) => {
