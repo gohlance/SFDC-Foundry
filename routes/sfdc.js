@@ -58,8 +58,8 @@ module.exports = ({
                 if (err) {
                     return console.error(err);
                 }
-                // now the session has been expired.
             });
+            return ctx.render('index')
         })
         .get('showObjects', '/showObject', async (ctx) => {
             try {
