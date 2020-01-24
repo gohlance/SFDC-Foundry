@@ -28,9 +28,9 @@ const pool = new Pool({
 const axios = require('axios')
 
 //*** Only for Development */
-global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQMF8Wm.M0K4ZcWXpj.nBizDKYxZBq5yqege9AQf0ryEdwQiqmYn383GrqcUDXTr5SdCFwkP.EUCW84krhcIcEI8xrYyW"
-global.orgId = "888"
+//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.accesscode = "00D46000001Uq6O!AQoAQMF8Wm.M0K4ZcWXpj.nBizDKYxZBq5yqege9AQf0ryEdwQiqmYn383GrqcUDXTr5SdCFwkP.EUCW84krhcIcEI8xrYyW"
+//global.orgId = "888"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
