@@ -44,7 +44,7 @@
                                     <tbody>
                                             <% for(var i =0; i< allObject.length; i ++){ %>
                                             <tr>
-                                                    <td><%- allObject[i].Objectname%></td>
+                                                    <td><a href="/getChart?t=<%- allObject[i].Objectname %> "><%- allObject[i].Objectname%></a></td>
                                                     <td> <%-allObject[i].Custom%></td>
                                                     <td> <%- allObject[i].totalfields%> </td>
                                                     <td> <%- allObject[i].Label%> </td>

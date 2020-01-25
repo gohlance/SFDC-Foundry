@@ -58,7 +58,8 @@ module.exports = {
     selectAll_RecordTypesByOrder,
     selectAll_ProfilesByOrder,
     get_Org_limitInfo,
-    get_UserWithLicense2,get_TotalUsersByProfile,get_childRelationship
+    get_UserWithLicense2,get_TotalUsersByProfile,get_childRelationship,
+    get_childRelationship_chart
 }
 
 //#region Background Service Methods
@@ -372,10 +373,35 @@ async function get_childRelationship(objectName){
 
     const json_result = JSON.parse(result.rows[0]["relationship"])
 
+    let unique_Object = _(json_result).groupBy('childSObject').partition(function (item){
+        return item.relationshipName != null
+    })
+
+    let unique_Object2 = _(json_result).partition(function (item){
+        return item.relationshipName == null
+    }).value()
+
+    let newObject3 = _.groupBy(unique_Object2[1],'childSObject')
+
+    let chart_schema = "classDiagram\n"
+    Object.keys(newObject3).forEach(function (item){
+        chart_schema = chart_schema + objectName + " <|-- " + item + "\n"
+    })
+    return chart_schema
+   // return result
+}
+
+async function get_childRelationship_chart(objectName){
+    let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.objects , lateral jsonb_array_elements(objectinfo -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,global.orgId])
+
+    const json_result = JSON.parse(result.rows[0]["relationship"])
+
     let unique_Object = _.groupBy(json_result,'childSObject')
     let chart_schema = "classDiagram\n"
     Object.keys(unique_Object).forEach(function (item){
-        chart_schema = chart_schema + objectName + " <|-- " + item + "\n"
+        unique_Object[item].forEach(function (subitem){
+            chart_schema = chart_schema + objectName + " : " + subitem.field  + "\n"
+        }) 
     })
     return chart_schema
    // return result

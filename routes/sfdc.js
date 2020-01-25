@@ -168,8 +168,8 @@ module.exports = ({
         })
         .get('showChart','/getChart', async (ctx)=>{
             var abc = "classDiagram\n" + "Animal <|-- Duck"
-            const result = await sfdcmethods.get_childRelationship("Account")
-               
+            console.log(ctx.query)
+            const result = await sfdcmethods.get_childRelationship(ctx.query["t"])
             return ctx.render('show_chart',{
                 chart : result
             })
