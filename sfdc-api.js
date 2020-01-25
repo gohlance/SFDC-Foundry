@@ -366,9 +366,19 @@ async function get_TotalUsersByProfile(){
     })
 }
 
+//unique_object[item] - get key value - which is an array to get the fields that is linked
 async function get_childRelationship(objectName){
     let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.objects , lateral jsonb_array_elements(objectinfo -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,global.orgId])
-    return result
+
+    const json_result = JSON.parse(result.rows[0]["relationship"])
+
+    let unique_Object = _.groupBy(json_result,'childSObject')
+    let chart_schema = "classDiagram\n"
+    Object.keys(unique_Object).forEach(function (item){
+        chart_schema = chart_schema + objectName + " <|-- " + item + "\n"
+    })
+    return chart_schema
+   // return result
 }
 
 async function testing_recordsquery(){

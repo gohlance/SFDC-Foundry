@@ -156,17 +156,7 @@ module.exports = ({
             }
         })
         //***** TESTING */
-        .get('getD', '/getD', async (ctx) => {
-            try {
-                const result = await sfdcmethods.get_childRelationship("Account")
-                const json_result = JSON.parse(result.rows[0]["relationship"])
-                return ctx.render('test',{
-                    object: result
-                })
-            } catch (error) {
-                console.error(error)
-            }
-        })
+       
         .get('getUserLicense', '/getf', async (ctx) => {
             try {
                 const result = sfdcmethods.get_testing()
@@ -177,8 +167,11 @@ module.exports = ({
             }
         })
         .get('showChart','/getChart', async (ctx)=>{
+            var abc = "classDiagram\n" + "Animal <|-- Duck"
+            const result = await sfdcmethods.get_childRelationship("Account")
+               
             return ctx.render('show_chart',{
-                chart : 'classDiagram\n' + 'Animal <|-- Duck'
+                chart : result
             })
         })
        

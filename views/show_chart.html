@@ -1,9 +1,13 @@
-
 <div class="mermaid" id="mermaid">
     <%- chart %>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.4/mermaid.min.js"></script>
-<script> mermaid.mermaidAPI.initialize({
-    startOnLoad: true
-});</script>
+<script>
+    mermaid.mermaidAPI.initialize({
+        startOnLoad: true,
+        flowChart: {
+            width: '50%'
+        }
+    });
+</script>
