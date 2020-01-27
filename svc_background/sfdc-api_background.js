@@ -32,7 +32,7 @@ module.exports = {
     get_UserWithLicense2, get_Org_limitInfo,
     getAllObjectOnce,sObjectDescribe,
     getAllSecruityRisk,
-    letsGetEverything
+    letsGetEverything,set_ConnObject
 }
 
 async function letsGetEverything() {
@@ -41,9 +41,11 @@ async function letsGetEverything() {
             const worker = new Worker('./svc_background/backgroundsvc.js', {
                 workerData: {
                     instance: global.instanceUrl,
-                    code: global.accesscode
+                    accesscode: global.accesscode,
+                    orgid: global.orgid
                 }
             });
+
             console.log("Worker Started")
             worker.on('message', (message) => {
                 console.log("I am here " + message.status);
@@ -60,11 +62,14 @@ async function letsGetEverything() {
     }
 }
 
+function set_ConnObject(workerData){
+    conn.accessToken  = workerData.accesscode
+    conn.instanceUrl = workerData.instance
+}
+
 async function getAllMeta() {
     try {
-        console.log("**************")
-        console.log(conn.instanceUrl)
-        console.log(conn.accessToken)
+      
         return new Promise((resolve, reject) => {
             conn.metadata.describe().then(response => {
                 resolve(response)

@@ -65,3 +65,8 @@ Get access to Salesforce metadata. You can do this using the metadata API direct
 Get metadata for profiles and for layouts. The layouts metadata provides you a full list of page layouts across all objects, while the profile files contain the info on which page layout/record type combos the profile is associated with.
 
 Compare the profiles' assignments to page layouts to the list of page layouts. I did this using some scripting code which parsed through the xml files.
+
+
+
+ 
+    
