@@ -42,7 +42,7 @@ async function letsGetEverything() {
                 workerData: {
                     instance: global.instanceUrl,
                     accesscode: global.accesscode,
-                    orgid: global.orgid
+                    orgId: global.orgid
                 }
             });
 

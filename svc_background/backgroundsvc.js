@@ -140,7 +140,7 @@ async function start_background_call() {
                 const result = await sfdcmethod.get_Org_limitInfo();
                 resolve(result)
             })
-            .then(result => workerData.pool.query("INSERT INTO orglimits (orgid, orglimit) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result.data)]))
+            .then(result => pool.query("INSERT INTO orglimits (orgid, orglimit) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result.data)]))
             .catch(error => console.error("Error [Step 16] : " + error))
             .finally(console.log("Step 16 done"))
 
@@ -148,7 +148,7 @@ async function start_background_call() {
                 const result = await sfdcmethod.getAllSecruityRisk();
                 resolve(result)
             })
-            .then(result => workerData.pool.query("INSERT INTO securityrisk (orgid, securityrisk) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result.records)]))
+            .then(result => pool.query("INSERT INTO securityrisk (orgid, securityrisk) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result.records)]))
             .catch(error => console.error("Error [Step 17] : " + error))
             .finally(console.log("Step 17 done"))
 
