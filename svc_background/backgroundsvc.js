@@ -3,7 +3,7 @@ const {
     parentPort
 } = require('worker_threads')
 
-const sfdcmethod = require('./sfdc-api')
+const sfdcmethod = require('./sfdc-api_background.js')
 const Pool = require('pg-pool')
 const pool = new Pool({
     user: 'postgres',
@@ -18,6 +18,8 @@ const pool = new Pool({
 async function start_background_call() {
     try {
         console.log("background starting")
+        //TODO : need to pass the workerData instance and Accesscode 
+        console.log(workerData.instance)
         const step1 = new Promise(async (resolve) => {
                 const result = await sfdcmethod.getAllMeta()
                 resolve(result)
@@ -140,7 +142,14 @@ async function start_background_call() {
         .then(result => global.pool.query("INSERT INTO orglimits (orgid, orglimit) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result.data)]))
         .catch(error => console.error("Error [Step 16] : " + error))
         .finally(console.log("Step 16 done"))
-        
+
+        const step17 = new Promise (async (resolve) => {
+            const result = await sfdcmethod.getAllSecruityRisk();
+            result(result)
+        })
+        .then(result => global.pool.query("INSERT INTO securityrisk (orgid, securityrisk) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result.records)]))
+        .catch(error => console.error("Error [Step 17] : " + error))
+        .finally(console.log("Step 17 done"))
 
         const step14 = new Promise(async (resolve) => {
                 try {
@@ -151,9 +160,12 @@ async function start_background_call() {
                     console.error("Error [Step14] : " + error);
                     throw new Error("will be caught");
                 }
-            }).then(result => {
-                 pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)])
-                 sfdcmethod.sObjectDescribe(result)  
+            }).then(result => async() => {
+                pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(result)])
+                jsonResult = await sfdcmethod.sObjectDescribe(result)  
+                console.log("[SobjectDescribe - Inserting Record Operation]")
+                pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(jsonResult)])
+                console.log("[SobjectDescribe - Inserting Completed]")
             })
             .catch(error => console.log("Step 14: " + error))
             .finally(() => {

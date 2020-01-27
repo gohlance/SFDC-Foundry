@@ -1,7 +1,3 @@
-const {
-    Worker
-} = require('worker_threads')
-
 //global Oauth setting
 const jsforce = require('jsforce')
 
@@ -25,12 +21,10 @@ const pool = new Pool({
     min: 4
 })
 
-const axios = require('axios')
-
 //*** Only for Development */
 global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQDZ0mQ_3LyNE3l8oToArjQeu6ZBOeu7KtVLp2Gnae8AbizcSdq7fDTsHoTZcKSEPCAW4xB9VM_vQVQbjndXCRjGcBpWC"
-global.orgId = "168"
+global.accesscode = "00D46000001Uq6O!AQoAQAuo.7BozrVgRfwffCeHL0clOrBi3aAJ4HKHRnSzeh_g58a6EU508VXpNlGDOcXFSIZvcPYaflB42MFWZ0dYPP7_eDS6"
+global.orgId = "188"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
@@ -39,312 +33,11 @@ var conn = new jsforce.Connection({
 })
 
 module.exports = {
-    //Average Run: 3,637 ms to 4,000 ms
-    getAllObjects: getAllObjects,
-    getAllApex: getAllApex,
-    getAllMeta: getAllMeta,
-    getAllLayout,
-    getAllProfile,
-    getAllRecordType,
-    getAllProfile2Layout,
-    getAllValidationRules,
-    getAllWorkflowRules,
-    getAllBusinessProcess,
-    getAllCustomApplication,
-    letsGetEverything,
-    getAllObjectOnce,
-    sObjectDescribe,
-    getAllCustomObjects,
     selectAll_RecordTypesByOrder,
-    selectAll_ProfilesByOrder,
-    get_Org_limitInfo,
-    get_UserWithLicense2,get_TotalUsersByProfile,get_childRelationship,
-    get_childRelationship_chart
-}
-
-//#region Background Service Methods
-async function getAllMeta() {
-    try {
-        return new Promise((resolve, reject) => {
-            conn.metadata.describe().then(response => {
-                resolve(response)
-            })
-        })
-    } catch (err) {
-        console.log("Error [sfdc-api/getAllMeta]: " + err)
-    }
-}
-async function getAllObjectOnce() {
-    try {
-        return new Promise((resolve, reject) => {
-            conn.describeGlobal(function (err, res) {
-                if (err) {
-                    return console.log(err)
-                }
-                console.log('[sfdc-api/getAllObjectsOnce] No of Objects ' + res.sobjects.length)
-                resolve(res.sobjects)
-            })
-        })
-
-    } catch (err) {
-        console.log("Error [sfdc-api/getAllObjectsOnce]" + err)
-    }
-}
-//33 seconds run time for 2050 objects
-async function getAllObjects() {
-    try {
-        return new Promise((resolve, reject) => {
-            conn.describeGlobal(function (err, res) {
-                if (err) {
-                    return console.log(err)
-                }
-                console.log('[sfdc-api/getAllObjects] No of Objects ' + res.sobjects.length)
-                //pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [global.orgId, JSON.stringify(res)])
-                resolve(res.sobjects)
-            })
-        })
-
-    } catch (err) {
-        console.log("Error [sfdc-api/getAllObjects]" + err)
-    }
-}
-async function getAllApex(type) {
-    //TODO: Check what can ApexPage, ApexClass and ApexComponent return
-    return new Promise((resolve, reject) => {
-        var query = ""
-        if (type == "ApexTrigger") {
-            query = "SELECT Name, TableEnumOrId, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexTrigger"
-        } else if (type == "ApexPage") {
-            query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexPage"
-        } else if (type == "ApexClass") {
-            query = "SELECT Name, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexClass"
-        } else if (type == "ApexComponent") {
-            query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexComponent"
-        }
-
-        conn.tooling.query(query, function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllApex] : " + err)
-            }
-            console.log("[sfdc-api/getAllApex] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllLayout() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllLayout]: " + err)
-            }
-            console.log("[sfdc-api/getAllLayout] : " + result)
-            resolve(result)
-        })
-    })
-}
-//Average 1 seconds
-async function getAllProfile() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description, Name FROM Profile", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllProfile]: " + err)
-            }
-            console.log("[sfdc-api/getAllProfile] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllProfile2Layout() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllProfile2Layout]: " + err)
-            }
-            console.log("[sfdc-api/getAllProfile2Layout] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllRecordType() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT BusinessProcessId, Description, Name, IsActive,ManageableState,SobjectType FROM RecordTYpe", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllRecordType] : " + err)
-            }
-            console.log("[sfdc-api/getAllRecordType] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllValidationRules() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,ValidationName FROM ValidationRule", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllValidationRules] : " + err)
-            }
-            console.log("[sfdc-api/getAllValidationRules] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllWorkflowRules() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT ManageableState,Name,TableEnumOrId FROM WORKFLOWRULE", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllWorkflowRules] : " + err)
-            }
-            console.log("[sfdc-api/getAllWorkflowRules] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllBusinessProcess() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description,IsActive,ManageableState, Name FROM BusinessProcess", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllBusinessProcess] : " + err)
-            }
-            console.log("[sfdc-api/getAllBusinessProcess] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllCustomApplication() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT Description,DeveloperName,ManageableState,NavType,UiType FROM CustomApplication", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
-            }
-            console.log("[sfdc-api/getAllCustomApplication] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function getAllCustomObjects() {
-    return new Promise((resolve, reject) => {
-        conn.metadata.retrieve()
-        conn.tooling.query("SELECT CustomHelpId, Description, DeveloperName, ExternalName, ExternalRepository, Language, ManageableState,NamespacePrefix,SharingModel FROM CustomObject", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
-            }
-            console.log("[sfdc-api/getAllCustomApplication] : " + result)
-            resolve(result)
-        })
-    })
-}
-async function sObjectDescribe(result) {
-     var result2 = filter_BeforeCallingAPI(result)
-    //console.log(result);
-    //TODO : this section can do child relationship
-    try {
-            var i = 0;
-            var lessthan100fields = 0;
-            var morethan100fields = 0;
-            const pLimit = require('p-limit');
-            const limit = pLimit(100);
-           
-            var i = 1
-            var allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
-                var totalfields = await conn.sobject(item.name).describe().then(async response => {
-                    
-                    return {
-                        totalfields: response.fields.length,
-                        layout: response.namedLayoutInfos.length,
-                        childRelatioship: response.childRelationships.length,
-                        recordType: response.recordTypeInfos.length,
-                        createable: response.createable,
-                        deletable: response.deletable,
-                        childRelationship_details: response.childRelationships,
-                        undeletable: response.undeletable 
-                    }
-                })
-
-                if (totalfields.totalfields > 100) {
-                    morethan100fields++
-                } else {
-                    lessthan100fields++
-                }
-
-                return {
-                    Objectname: item.name,
-                    totalfields: totalfields.totalfields,
-                    Custom: item.custom,
-                    Label: item.label,
-                    childRelationships: totalfields.childRelationships,
-                    recordType: totalfields.recordType,
-                    layout: totalfields.layout,
-                    createable: totalfields.createable,
-                    deletable: totalfields.deletable,
-                    undeletable: totalfields.undeletable,
-                    childRelationship_details: totalfields.childRelationship_details
-                }
-            })))
-            var jsonResult = {
-                allObject: allObjectTotalFields,
-                morethan100: morethan100fields,
-                lessthan100: lessthan100fields
-            }
-            console.log("[SobjectDescribe - Inserting Record Operation]")
-            pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id",[global.orgId,JSON.stringify(jsonResult)])
-            console.log("[SobjectDescribe - Inserting Completed]")
-       
-    } catch (err) {
-        console.log("Error [sfdc-api/sObjectDescribe]" + err)
-    }
-}
-async function get_UserWithLicense2(){
-    return new Promise((resolve, reject) => {
-        conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result){
-            if (err){
-                return console.error("Error : " + err)
-            }
-            resolve(result.records)
-        })
-    })
-}
-async function get_Org_limitInfo(){
-    const headers = {
-        'Authorization': 'Bearer ' + global.accesscode,
-        'X-PrettyPrint': 1,
-      };
-   return await axios.get(global.instanceUrl+'/services/data/v45.0/limits/',{headers})      
-}
-async function letsGetEverything() {
-    try {
-        return new Promise((resolve, reject) => {
-            const worker = new Worker('./backgroundsvc.js', {
-                workerData: {
-                    instance: global.instanceUrl,
-                    code: global.accesscode
-                }
-            });
-            console.log("Worker Started")
-            worker.on('message', (message) => {
-                console.log("I am here " + message.status);
-                resolve("Success")
-            });
-            worker.on('error', reject);
-            worker.on('exit', (code) => {
-                if (code !== 0)
-                    reject(new Error(`Worker stopped with exit code ${code}`));
-            })
-        })
-    } catch (error) {
-        console.log("Error [sfdc-api/letsGetEverything] : " + error)
-    }
-}
-//#endregion
-
-async function getAllSecruityRisk() {
-    return new Promise((resolve, reject) => {
-        conn.tooling.query("SELECT RiskType, Setting, SettingGroup, OrgValue, StandardValue FROM SecurityHealthCheckRisks where RiskType=’HIGH_RISK’", function (err, result) {
-            if (err) {
-                console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
-            }
-            console.log("[sfdc-api/getAllCustomApplication] : " + result)
-            resolve(result)
-        })
-    })
+    
+    get_childRelationship,
+//NOTE: Unused Methods
+    selectAll_ProfilesByOrder,get_childRelationship_chart
 }
 
 async function selectAll_RecordTypesByOrder(){
@@ -357,15 +50,6 @@ async function selectAll_ProfilesByOrder() {
     return result
 }
 
-async function get_TotalUsersByProfile(){
-    return new Promise((resolve, reject) => {
-        conn.query("select count(id) Total ,profile.name from user  WHERE Profile.UserLicense.Name != null group by profile.name", function (err, result){
-            if (err) { return console.error("Error " +  err)}
-            let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value() 
-            resolve(totalUserLicense)
-        });
-    })
-}
 
 //unique_object[item] - get key value - which is an array to get the fields that is linked
 async function get_childRelationship(objectName){
@@ -435,7 +119,7 @@ async function testing_getUserPackageLicense(){
 async function get_testing(){
 }
 
-//#region Private Methods
+//#region Private Methods - Unused
 function chunkArrayInGroups(arr, size) {
     return new Promise((resolve, reject) => {
         var myArray = [];
@@ -451,34 +135,6 @@ function chunkArrayInGroups(arr, size) {
         }
         resolve(myArray)
     });
-}
-
-function filter_BeforeCallingAPI (result){
-    console.log("result : " + result.length)
-    var custom_is_false = _.filter(result, function (o){
-        if (o.custom == false)
-        return o
-    })
-    console.log ("*******************")
-    console.log(custom_is_false.length)
-
-    var layoutable_is_true = _.filter(custom_is_false, function (i){
-        if (i.layoutable ==  true){
-            return i
-        }
-    })
-
-    console.log(layoutable_is_true.length)
-
-    var createable_is_true = _.filter(layoutable_is_true, function(i){
-        if (i.createable == true){
-            return i
-        }
-    })
-
-    console.log(createable_is_true.length)
-
-    return createable_is_true
 }
 
 async function filter_RecordTypesBy (sobjectname){
