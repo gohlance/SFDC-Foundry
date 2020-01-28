@@ -34,7 +34,7 @@ var conn = new jsforce.Connection({
 
 module.exports = {
     selectAll_RecordTypesByOrder,
-    
+    getSecurityRisk,
     get_childRelationship,
 //NOTE: Unused Methods
     selectAll_ProfilesByOrder,get_childRelationship_chart
@@ -50,6 +50,22 @@ async function selectAll_ProfilesByOrder() {
     return result
 }
 
+async function getSecurityRisk(){
+    try {
+      const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid=$1", [global.orgId])
+      if (result.rows[0]["securityrisk"].length > 0){
+        const highrisk = _.partition(result.rows[0]["securityrisk"], function (item){
+          return item.RiskType == "HIGH_RISK"
+        })
+        return [result.rows[0]["securityrisk"], highrisk[0]]
+      }else{
+        return 0
+      }
+    } catch (error) {
+      console.error("Error [getSecurityRiskDetails]: " + error)
+      return 0
+    }
+  }
 
 //unique_object[item] - get key value - which is an array to get the fields that is linked
 async function get_childRelationship(objectName){

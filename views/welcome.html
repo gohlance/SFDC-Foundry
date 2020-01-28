@@ -40,16 +40,19 @@
             </div>
         </div>
         <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
+            <% 
+                    array1 = Object.keys(result_orgInformation)
+                    array2 = Object.values(result_orgInformation)
+                    
+                    if (array1.length > 0 && array2.length > 0) {
+            %>
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Additional Information <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">👇</button>
             </div>
             <div class="collapse multi-collapse" id="multiCollapseExample2">
                 <div class="card-body">
-                    <% 
-                    array1 = Object.keys(result_orgInformation)
-                    array2 = Object.values(result_orgInformation)
-                    %>
+                    
                 <table>
                     <th>Setting</th>
                     <th>Max</th>
@@ -65,8 +68,7 @@
             </div>
             </div>
         </div>
-        <%}%>
-      
+        <%}}%>
     </div>
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
@@ -112,6 +114,18 @@
                 <a href="/showRecordType" class="btn btn-primary">Show More Details</a>
             </div>
         </div>
+
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Security Risk
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%- result_securityRisk[0] %></h5>
+                <p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
+                <a href="/showSecurityRisk" class="btn btn-primary">Show More Details</a>
+            </div>
+        </div>
+        
         <!-- Apex -->
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">

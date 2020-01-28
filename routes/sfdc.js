@@ -157,10 +157,12 @@ module.exports = ({
                 console.error("Error [showApexTrigger]: " + error)
             }
         })
-        .get('getSecurityRisk','/getRisk', async (ctx) => {
-            const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid = $1",[global.orgId])
-            console.log("Done??")
-            //TODO : add views and need to show on welcome page
+        .get('showSecurityRisk','/showSecurityRisk', async (ctx) => {
+            const result = await sfdcmethods.getSecurityRisk()
+            return ctx.render('show_securityrisk',{
+                highrisk: result[1],
+                otherrisk: result[0]
+            })
         })
         //***** TESTING */
        

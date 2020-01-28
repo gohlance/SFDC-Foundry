@@ -1,4 +1,5 @@
 const sfdcmethods = require('../sfdc-api')
+const _ = require('lodash')
 module.exports = ({
   router
 }) => {
@@ -17,7 +18,8 @@ module.exports = ({
           result_apexPages: await display_Homepage_ApexPages(),
           result_recordTypes: await display_Homepage_RecordTypes(),
           result_orgInformation: await getMoreOrgDetails(),
-          result_userLicense: await getUserLicenseDetails()
+          result_userLicense: await getUserLicenseDetails(),
+          result_securityRisk: await getSecurityRiskDetails()
         })
       }
     })
@@ -142,7 +144,7 @@ async function display_Homepage_ApexPages() {
 async function getMoreOrgDetails() {
   try {
     const result = await global.pool.query("SELECT orglimit FROM orglimits WHERE orgid=$1",[global.orgId])
-    
+    // BUG  - TypeError: Cannot read property 'orglimit' of undefined
     if (result.rows[0]["orglimit"].size > 0)
       return result.rows[0]["orglimit"]
     else
@@ -155,6 +157,7 @@ async function getMoreOrgDetails() {
 
 async function getUserLicenseDetails() {
   try {
+    // BUG - TypeError: Cannot read property 'license' of undefined
     const result = await global.pool.query("SELECT license FROM license WHERE orgid=$1", [global.orgId])
     if (result.rows[0]["license"].length > 0)
       return result.rows[0]["license"]
@@ -164,6 +167,23 @@ async function getUserLicenseDetails() {
     
   } catch (error) {
     console.error("Error [getUserLicenseDetails]: " + error)
+    return 0
+  }
+}
+
+async function getSecurityRiskDetails(){
+  try {
+    const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid=$1", [global.orgId])
+    if (result.rows[0]["securityrisk"].length > 0){
+      const highrisk = _.partition(result.rows[0]["securityrisk"], function (item){
+        return item.RiskType == "HIGH_RISK"
+      })
+      return [result.rows[0]["securityrisk"].length, highrisk[0].length]
+    }else{
+      return 0
+    }
+  } catch (error) {
+    console.error("Error [getSecurityRiskDetails]: " + error)
     return 0
   }
 }
