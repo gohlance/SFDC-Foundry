@@ -37,10 +37,10 @@ app.use(logger());
 app.use(async (ctx, next) => {
   try {
     await next()
-  } catch (err) {
-    console.log(err.status)
-    ctx.status = err.status || 500;
-    ctx.body = err.message;
+  } catch (error) {
+    console.log(error)
+    ctx.status = error.status || 500;
+    ctx.body = error.message;
   }
 })
 

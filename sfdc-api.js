@@ -22,9 +22,9 @@ const pool = new Pool({
 })
 
 //*** Only for Development */
-//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-//global.accesscode = "00D46000001Uq6O!AQoAQPGo9JmPDvoxbdq34d7GCONkE2GLSub.QW6VLPPf8b6N9ni1FFLqr0JrBSI4tpXuOh.1jHG75cFyNxfoaEe17Ue7ZdjI"
-//global.orgId = "188"
+global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+global.accesscode = "00D46000001Uq6O!AQoAQFW6oeGb05mKZhJkWUDv.ebasyzT3SaXbiSxtuWuNIYHZ51mhG7xNH41NAuT_pWRVckQ375OvEYDPHsP7chkyx7iVkEw"
+global.orgId = "188"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
@@ -38,8 +38,23 @@ module.exports = {
 
     selectAll_RecordTypesByOrder,
     get_childRelationship,
+    check_firstTime_Login,
 //NOTE: Unused Methods
     selectAll_ProfilesByOrder,get_childRelationship_chart
+}
+
+async function check_firstTime_Login(){
+    try {
+        let result = await global.pool.query("SELECT * FROM metas WHERE orgid=$1",[global.orgId])
+        if (result.rows > 0){
+            return true
+        }else{
+            return false
+        }
+    } catch (error) {
+        console.log("Error [check_firstTime_Login] : " + error)
+        return false //this is for first time
+    }
 }
 
 async function selectAll_RecordTypesByOrder(){

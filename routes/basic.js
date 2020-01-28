@@ -9,19 +9,36 @@ module.exports = ({
       if (!global.accesscode || !global.instanceUrl) {
         return ctx.render('index')
       } else {
-        return ctx.render('welcome', {
-          result_objects: await display_Homepage_Objects(),
-          result_profiles: await display_Homepage_Profiles(),
-          result_layouts: await display_Homepage_Layouts(),
-          result_ApexComponents: await display_Homepage_ApexComponents(),
-          result_apexTriggers: await display_Homepage_ApexTrigger(),
-          result_apexPages: await display_Homepage_ApexPages(),
-          result_recordTypes: await display_Homepage_RecordTypes(),
-          result_orgInformation: await getMoreOrgDetails(),
-          result_userLicense: await getUserLicenseDetails(),
-          result_securityRisk: await sfdcmethods.getSecurityRisk("HOME"),
-          result_customapp: await sfdcmethods.getCustomApps("HOME")
-        })
+        const check_existingUser = await sfdcmethods.check_firstTime_Login()
+        if (check_existingUser == false){
+          return ctx.render('welcome', {
+            result_objects: 0,
+            result_profiles: 0,
+            result_layouts: 0,
+            result_ApexComponents: 0,
+            result_apexTriggers: 0,
+            result_apexPages: 0,
+            result_recordTypes: 0,
+            result_orgInformation: 0,
+            result_userLicense: 0,
+            result_securityRisk: 0,
+            result_customapp: 0
+          })
+        }else{
+          return ctx.render('welcome', {
+            result_objects: await display_Homepage_Objects(),
+            result_profiles: await display_Homepage_Profiles(),
+            result_layouts: await display_Homepage_Layouts(),
+            result_ApexComponents: await display_Homepage_ApexComponents(),
+            result_apexTriggers: await display_Homepage_ApexTrigger(),
+            result_apexPages: await display_Homepage_ApexPages(),
+            result_recordTypes: await display_Homepage_RecordTypes(),
+            result_orgInformation: await getMoreOrgDetails(),
+            result_userLicense: await getUserLicenseDetails(),
+            result_securityRisk: await sfdcmethods.getSecurityRisk("HOME"),
+            result_customapp: await sfdcmethods.getCustomApps("HOME")
+          })
+        }
       }
     })
     .get('index', '/index', (ctx) => {
