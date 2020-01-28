@@ -142,7 +142,11 @@ async function display_Homepage_ApexPages() {
 async function getMoreOrgDetails() {
   try {
     const result = await global.pool.query("SELECT orglimit FROM orglimits WHERE orgid=$1",[global.orgId])
-    return result.rows[0]["orglimit"]
+    
+    if (result.rows[0]["orglimit"].size > 0)
+      return result.rows[0]["orglimit"]
+    else
+      return 0
   } catch (error) {
     console.error("Error [getMoreOrgDetails]: " + error)
     return 0
