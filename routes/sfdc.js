@@ -19,7 +19,6 @@ oauth2 = new jsforce.OAuth2({
     redirectUri: 'https://warm-garden-23298.herokuapp.com/auth3/login/return'
 });
 
-
 conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
