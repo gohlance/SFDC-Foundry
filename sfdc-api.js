@@ -7,24 +7,24 @@ var oauth2 = new jsforce.OAuth2({
     // loginUrl : 'https://test.salesforce.com',
     clientId: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
     clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
-    redirectUri: 'https://shielded-cliffs-45260.herokuapp.com/auth3/login/return'
+    redirectUri: 'https://warm-garden-23298.herokuapp.com/auth3/login/return'
 });
 
 const Pool = require('pg-pool')
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Beaver',
-    password: 'P@ssw0rd1',
+    user: 'bxhbybpvxuyesk',
+    host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
+    database: 'detjik593i3enh',
+    password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
 })
 
 //*** Only for Development */
-global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQPGo9JmPDvoxbdq34d7GCONkE2GLSub.QW6VLPPf8b6N9ni1FFLqr0JrBSI4tpXuOh.1jHG75cFyNxfoaEe17Ue7ZdjI"
-global.orgId = "188"
+//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.accesscode = "00D46000001Uq6O!AQoAQPGo9JmPDvoxbdq34d7GCONkE2GLSub.QW6VLPPf8b6N9ni1FFLqr0JrBSI4tpXuOh.1jHG75cFyNxfoaEe17Ue7ZdjI"
+//global.orgId = "188"
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,

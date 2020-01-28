@@ -69,4 +69,18 @@ Compare the profiles' assignments to page layouts to the list of page layouts. I
 
 
  
-    
+    Need to create storedprocedure for this
+This will get all the relationship between profiles and layout
+select distinct 
+elem -> 'LayoutId' as LayoutID, 
+elem -> 'ProfileId' as profile, 
+elem2 -> 'Name' as ProfileName,
+elem -> 'TableEnumOrId' as idontknow,
+elem -> 'RecordTypeId' as Recordtype
+from public.profileslayouts, 
+lateral jsonb_array_elements(profileslayout -> 'records') elem,
+public.profiles,
+lateral jsonb_array_elements(profile -> 'records') elem2
+where replace(cast(elem-> 'ProfileId' as text),'"','') =
+replace(substring(cast(elem2 -> 'attributes'-> 'url' as text) from '([^\/]*$)'), '"','')
+order by elem2 -> 'Name'
