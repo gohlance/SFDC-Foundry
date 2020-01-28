@@ -1,4 +1,5 @@
 const sfdcmethods = require('../sfdc-api')
+const sfdcbackground_methods = require('../svc_background/sfdc-api_background')
 const {
     Worker,
     isMainThread,
@@ -81,7 +82,8 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
-                var result = await sfdcmethods.letsGetEverything()
+                //var result = await sfdcmethods.letsGetEverything()
+                const result = sfdcbackground_methods.letsGetEverything()
                 //ctx.body = {
                 // status: 'success',
                 // message: 'hello, world!'
@@ -154,6 +156,11 @@ module.exports = ({
             } catch (error) {
                 console.error("Error [showApexTrigger]: " + error)
             }
+        })
+        .get('getSecurityRisk','/getRisk', async (ctx) => {
+            const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid = $1",[global.orgId])
+            console.log("Done??")
+            //TODO : add views and need to show on welcome page
         })
         //***** TESTING */
        

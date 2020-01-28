@@ -194,6 +194,17 @@ CREATE TABLE public.orglimits (
 	CONSTRAINT orglimits_pkey PRIMARY KEY (id)
 );
 
+-- DROP table
+
+DROP TABLE public.securityrisk;
+
+CREATE TABLE public.securityrisk (
+	id serial NOT NULL,
+	orgid text NULL,
+	securityrisk jsonb NULL,
+	CONSTRAINT securityrisk_pkey PRIMARY KEY (id)
+);
+
 
 -- FUNCTIONS -- 
 
