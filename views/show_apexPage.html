@@ -1,92 +1,17 @@
 <div class="row">
-    <div class="card" style="width: 30%;height:220px">
-        <svg id="fillgauge1" width="97%" height="100" style="margin-top:2"></svg>
-        <div class="card-body text-center">
-            <h5 class="card-title"><%- morethan %> </h5>
-            <p class="card-text">More than 5 trigger active in the object</p>
-        </div>
-    </div>
-    <div class="card" style="width: 30%;height:220px">
-        <svg id="fillgauge2" width="97%" height="100" style="margin-top:2"></svg>
-        <div class="card-body text-center">
-            <h5 class="card-title"><%- lessthan %></h5>
-            <p class="card-text">Less than 5 trigger active in the object</p>
-        </div>
-    </div>
-    <div class="card" style="width: 30%;height:220px">
-        <div class="card-body text-center">
-                <h2 class="card-title"><%- notactive %></h2>
-                <h5 class="card-title">Total Number of Trigger Not Active .</h5>
-        </div>
-</div>
-</div>
-<div class="row">
     <div class="container">
-    <% if (type == 'ApexTrigger') {%>
-        
-    <table class="table sortable">
-        <thead> <%-type%> ( <%-apex.length%> )</thead>
-        <th>Name</th>
-        <th>Status</th>
-        
-        <% for(var i =0; i< subheader.length; i ++){ %>
-            <tr><td colspan="2"> <%-subheader[i]%> ( <%- subcontent[i].length %> )</td></tr>
-            <% for(var j = 0; j < subcontent[i].length; j ++){%>
-                <tr><td><%-subcontent[i][j].Name%></td><td><%-subcontent[i][j].Status%></td></tr>
-            <%}%>
-        <%}%>
-        
-    </table>
-    <%} else if (type =='ApexClass'){%>
         <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
+            <thead> Apex Page ( <%-apex.length%> )</thead>
             <th>Name</th>
-            <th>Status</th>
-            <th>IsValid</th>
+            <th>API Version </th>
+            <th>NamespacePrefix</th>
             <% for(var i =0; i< apex.length; i ++){ %>
             <tr>
                 <td><%- apex[i].Name%></td>
-                <td><%- apex[i].Status %></td>
-                <% if (apex[i].isValid) {%>
-                    <td>true</td>
-                <% } else {%>
-                    <td>false</td>
-                <%}%>
+                <td><%- apex[i].ApiVersion%></td>
+                <td><%- apex[i].NamspacePrefix%></td>
             </tr>
             <%}%> <!--End of For Loop-->
         </table>
-    <%} else if (type == 'ApexComponent'){ %>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-                
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%} else if (type == 'ApexPage') {%>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%}%>
+    </div>
 </div>
-</div>
-<script src="/liquidFillGauge.js"></script>
-<style>
-        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
-</style>
-<script>
-var gauge1 = loadLiquidFillGauge("fillgauge1", <%- morethan %> /
-<%- subheader.length %> *100 );
-var gauge2 = loadLiquidFillGauge("fillgauge2", <%- lessthan %> /
-<%- subheader.length %> *100);
-</script>

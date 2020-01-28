@@ -33,8 +33,10 @@ var conn = new jsforce.Connection({
 })
 
 module.exports = {
-    selectAll_RecordTypesByOrder,
     getSecurityRisk,
+    getCustomApps,
+
+    selectAll_RecordTypesByOrder,
     get_childRelationship,
 //NOTE: Unused Methods
     selectAll_ProfilesByOrder,get_childRelationship_chart
@@ -50,19 +52,40 @@ async function selectAll_ProfilesByOrder() {
     return result
 }
 
-async function getSecurityRisk(){
+
+async function getCustomApps(type){
+    try {
+      const result = await global.pool.query("SELECT customapp FROM customapps WHERE orgid=$1", [global.orgId])
+      const classicInterface = _.partition(result.rows[0]["customapp"].records, function(item){
+          return item.UiType == null
+      })
+
+      if (type == "HOME"){
+          return [result.rows[0]["customapp"].records.length, classicInterface[0].length, classicInterface[1].length]
+      }else{
+          return [result.rows[0]["customapp"].records, classicInterface]
+      }
+    } catch (error) {
+        console.error("Error [getCustomApps]: " + error)
+    }
+  }
+
+async function getSecurityRisk(type){
     try {
       const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid=$1", [global.orgId])
       if (result.rows[0]["securityrisk"].length > 0){
         const highrisk = _.partition(result.rows[0]["securityrisk"], function (item){
           return item.RiskType == "HIGH_RISK"
         })
-        return [result.rows[0]["securityrisk"], highrisk[0]]
+        if (type == "HOME")
+            return [result.rows[0]["securityrisk"].length, highrisk[0].length]
+        else
+            return [result.rows[0]["securityrisk"], highrisk[0]]
       }else{
         return 0
       }
     } catch (error) {
-      console.error("Error [getSecurityRiskDetails]: " + error)
+      console.error("Error [getSecurityRisk]: " + error)
       return 0
     }
   }

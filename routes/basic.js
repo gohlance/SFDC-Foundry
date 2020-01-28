@@ -19,7 +19,8 @@ module.exports = ({
           result_recordTypes: await display_Homepage_RecordTypes(),
           result_orgInformation: await getMoreOrgDetails(),
           result_userLicense: await getUserLicenseDetails(),
-          result_securityRisk: await getSecurityRiskDetails()
+          result_securityRisk: await sfdcmethods.getSecurityRisk("HOME"),
+          result_customapp: await sfdcmethods.getCustomApps("HOME")
         })
       }
     })
@@ -167,23 +168,6 @@ async function getUserLicenseDetails() {
     
   } catch (error) {
     console.error("Error [getUserLicenseDetails]: " + error)
-    return 0
-  }
-}
-
-async function getSecurityRiskDetails(){
-  try {
-    const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid=$1", [global.orgId])
-    if (result.rows[0]["securityrisk"].length > 0){
-      const highrisk = _.partition(result.rows[0]["securityrisk"], function (item){
-        return item.RiskType == "HIGH_RISK"
-      })
-      return [result.rows[0]["securityrisk"].length, highrisk[0].length]
-    }else{
-      return 0
-    }
-  } catch (error) {
-    console.error("Error [getSecurityRiskDetails]: " + error)
     return 0
   }
 }

@@ -157,11 +157,38 @@ module.exports = ({
                 console.error("Error [showApexTrigger]: " + error)
             }
         })
+        .get('showApexComponent', '/getApexComponent', async (ctx)=>{
+            try {
+                const result = await global.pool.query("SELECT apexcomponent FROM apexcomponents WHERE orgid = $1",[global.orgId])
+                return ctx.render('show_apexComponent',{
+                    apex: result.rows[0]["apextrigger"].records,
+                })
+            } catch (error) {
+                console.error("Error [showApexComponent]: " + error)
+            }
+        })
+        .get('showApexPage','/getApexPage', async (ctx)=> {
+            try {
+                const result = await global.pool.query("SELECT apexpage FROM apexpages WHERE orgid=$1",[global.orgId])
+                return ctx.render('show_apexPage',{
+                    apex: result.rows[0]["apexpage"].records
+                })
+            } catch (error) {
+                console.error("Error [showApexPage]: " + error)
+            }
+        })
         .get('showSecurityRisk','/showSecurityRisk', async (ctx) => {
             const result = await sfdcmethods.getSecurityRisk()
             return ctx.render('show_securityrisk',{
                 highrisk: result[1],
                 otherrisk: result[0]
+            })
+        })
+        .get('showCustomApp','/showCustomApp', async (ctx)=>{
+            const result = await sfdcmethods.getCustomApps()
+            console.log("Shit")
+            return ctx.render('show_customapp',{
+                result: result
             })
         })
         //***** TESTING */

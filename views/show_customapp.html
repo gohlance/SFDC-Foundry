@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="container">
+        <table class="table sortable">
+            <thead> Custom Apps ( <%-result[0].length%> )</thead>
+            <th>Name</th>
+            <th>Nav Type</th>
+            <th>UiType</th>
+            <th>Description</th>
+            <% for(var i =0; i< result[0].length; i ++){ %>
+            <tr>
+                <td><%- result[0][i].DeveloperName%></td>
+                <td><%- result[0][i].NavType%></td>
+                <td><%- result[0][i].UiType%></td>
+                <td><%- result[0][i].Description%></td>
+            </tr>
+            <%}%> <!--End of For Loop-->
+        </table>
+    </div>
+</div>
