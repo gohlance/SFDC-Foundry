@@ -5,7 +5,7 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', async (ctx) => {
-
+      console.log("HI****")
       if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
         return ctx.render('index')
       } else {

@@ -48,6 +48,7 @@ module.exports = ({
                 ctx.session.orgId = userInfo.organizationId
 
                 console.log("Going to Home Now!!!")
+                ctx.status = 301;
                 ctx.redirect('/');
             })
             console.log("************")
