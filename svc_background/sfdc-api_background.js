@@ -18,9 +18,9 @@ var oauth2 = new jsforce.OAuth2({
 const axios = require('axios')
 
 var conn = new jsforce.Connection({
-    oauth2: oauth2,
-    instanceUrl: global.instanceUrl,
-    accessToken: global.accesscode
+    oauth2: oauth2
+   // instanceUrl: global.instanceUrl,
+   // accessToken: global.accesscode
 })
 //#endregion
 
