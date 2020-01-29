@@ -84,3 +84,10 @@ lateral jsonb_array_elements(profile -> 'records') elem2
 where replace(cast(elem-> 'ProfileId' as text),'"','') =
 replace(substring(cast(elem2 -> 'attributes'-> 'url' as text) from '([^\/]*$)'), '"','')
 order by elem2 -> 'Name'
+
+
+ Error : INVALID_FIELD: 
+2020-01-29T14:15:34.011369+00:00 app[web.1]: LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed
+2020-01-29T14:15:34.011372+00:00 app[web.1]:                                    ^
+2020-01-29T14:15:34.011377+00:00 app[web.1]: ERROR at Row:1:Column:43
+2020-01-29T14:15:34.011380+00:00 app[web.1]: No such column 'MonthlyLoginsEntitlement' on entity 'UserLicense'. If you are attempting to use a custom field, be sure to append the '__c' after the custom field name. Please reference your WSDL or the describe call for the appropriate names.

@@ -8,7 +8,7 @@ module.exports = ({
       return ctx.render('index')
     })
     .get('home2', '/welcome', async (ctx) => {
-      console.log("AAA : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl)
+      console.log("AAA : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
       if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
         return ctx.render('index')
       } else {

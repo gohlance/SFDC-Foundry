@@ -94,6 +94,9 @@ module.exports = ({
                 // status: 'success',
                 // message: 'hello, world!'
                 //};
+
+                // TODO : Refresh this page
+
             } catch (err) {
                 console.error("Error [everything]:" + err)
             }

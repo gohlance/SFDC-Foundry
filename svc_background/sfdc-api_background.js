@@ -42,7 +42,7 @@ async function letsGetEverything(session) {
                 workerData: {
                     instance: session.instanceUrl,
                     accesscode: session.accesscode,
-                    orgId: session.orgid
+                    orgId: session.orgId
                 }
             });
 
