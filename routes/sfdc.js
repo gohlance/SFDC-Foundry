@@ -36,20 +36,22 @@ module.exports = ({
         })
         .get('oauth', '/auth3/login/return', (ctx) => {
             var code = ctx.request.query["code"]
-            console.log("**** - " + code)
-
+           
             conn.authorize(code, function (err, userInfo) {
                 if (err) {
                     return console.error(err)
                 }
-                console.log("&&& : " + conn.accessToken)
-                console.log("&&& : " + conn.instanceUrl)
+                console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
+               
+                ctx.session.accessCode = conn.accessToken
+                ctx.session.instanceUrl = conn.instanceUrl
+                ctx.session.orgId = conn.userInfo.orgId
 
-                global.accesscode = conn.accessToken
-                global.instanceUrl = conn.instanceUrl
-                global.orgId = conn.userInfo.orgId
+                //global.accesscode = conn.accessToken
+                //global.instanceUrl = conn.instanceUrl
+                //global.orgId = conn.userInfo.orgId
             })
-            if (!global.accesscode || !global.instanceUrl) {
+            if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
                 return ctx.render('welcome')
             }
         })
@@ -194,7 +196,7 @@ module.exports = ({
        
         .get('getUserLicense', '/getf', async (ctx) => {
             try {
-                const result = sfdcmethods.get_testing()
+                const result = sfdcmethods.get_testing(ctx)
                 console.log(result)
             } catch (error) {
                 console.log("A: " + error)

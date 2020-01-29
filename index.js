@@ -1,6 +1,7 @@
 'use strict';
 
 const Koa = require('koa')
+const session = require('koa-session')
 const path = require('path')
 const render = require('koa-ejs')
 const koa_router = require('koa-router')
@@ -28,6 +29,10 @@ render(app, {
   debug: true
 })
 var serve = require('koa-static');
+
+app.keys = ['82a5193f-37e4-4dba-bf9c-750389f80699']
+//Session for App
+app.use(session(app))
 app.use(serve('./public'))
 
 //log all events to the terminal

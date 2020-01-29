@@ -40,7 +40,10 @@ module.exports = {
     get_childRelationship,
     check_firstTime_Login,
 //NOTE: Unused Methods
-    selectAll_ProfilesByOrder,get_childRelationship_chart
+    selectAll_ProfilesByOrder,get_childRelationship_chart,
+
+    //testing
+    get_testing
 }
 
 async function check_firstTime_Login(){
@@ -170,7 +173,8 @@ async function testing_getUserPackageLicense(){
 });
 }
 
-async function get_testing(){
+async function get_testing(ctx){
+    ctx.session.accessCode = "ABC"
 }
 
 //#region Private Methods - Unused

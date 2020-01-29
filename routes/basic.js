@@ -6,7 +6,7 @@ module.exports = ({
   router
     .get('home', '/', async (ctx) => {
 
-      if (!global.accesscode || !global.instanceUrl) {
+      if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
         return ctx.render('index')
       } else {
         const check_existingUser = await sfdcmethods.check_firstTime_Login()
@@ -22,7 +22,8 @@ module.exports = ({
             result_orgInformation: 0,
             result_userLicense: 0,
             result_securityRisk: 0,
-            result_customapp: 0
+            result_customapp: 0,
+            session: ctx.session
           })
         }else{
           return ctx.render('welcome', {
@@ -36,7 +37,8 @@ module.exports = ({
             result_orgInformation: await getMoreOrgDetails(),
             result_userLicense: await getUserLicenseDetails(),
             result_securityRisk: await sfdcmethods.getSecurityRisk("HOME"),
-            result_customapp: await sfdcmethods.getCustomApps("HOME")
+            result_customapp: await sfdcmethods.getCustomApps("HOME"),
+            session: ctx.session
           })
         }
       }
@@ -53,7 +55,6 @@ module.exports = ({
     .get('payment', '/payment', (ctx) => {
       return ctx.render('payment')
     })
-
 }
 
 //private methods

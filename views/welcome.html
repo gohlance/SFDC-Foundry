@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-lg-5">
                 <h5 class="card-title">Your Salesforce Org Information</h5>
-                <% if (!global.accesscode || !global.instanceUrl) { %>
+                <% if (!session.accesscode || !session.instanceUrl) { %>
                 <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
                 <button class="btn btn-primary" id="btnConnect" type="button">
                     Connect
@@ -19,7 +19,7 @@
                     Refresh
                 </button>
                 <%}%>
-               Hello :  <%- global.accesscode %> 
+               Hello :  <%- session.accessCode %> 
             </div>
             <div class="col-lg-5">
                 <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
