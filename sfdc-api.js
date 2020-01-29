@@ -52,8 +52,8 @@ module.exports = {
 async function check_firstTime_Login(session){
     try {
         let result = await global.pool.query("SELECT * FROM metas WHERE orgid=$1",[session.orgId])
-        console.log("************ " + result.rows )
-        if (result.rows > 0){
+        console.log("************ " + result.rowCount )
+        if (result.rowCount > 0){
             return true
         }else{
             return false
