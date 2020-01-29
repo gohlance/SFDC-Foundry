@@ -50,6 +50,9 @@ module.exports = ({
       ctx.body = "About US..."
     })
     .get('contact', '/contact', (ctx) => {
+      ctx.session.accesscode ="asd"
+      ctx.session.orgId = "168"
+      ctx.session.instanceUrl = "facebook.com"
       ctx.body = "Contact US...."
     })
     .get('payment', '/payment', (ctx) => {

@@ -33,6 +33,7 @@ var serve = require('koa-static');
 app.keys = ['82a5193f-37e4-4dba-bf9c-750389f80699']
 //Session for App
 app.use(session(app))
+
 app.use(serve('./public'))
 
 //log all events to the terminal

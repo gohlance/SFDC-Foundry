@@ -42,12 +42,13 @@ module.exports = ({
                     return console.error(err)
                 }
                 console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
-               
-                ctx.session.accessCode = conn.accessToken
-                ctx.session.instanceUrl = conn.instanceUrl
-                ctx.session.orgId = conn.userInfo.orgId
 
             })
+
+            ctx.session.accessCode = conn.accessToken
+            ctx.session.instanceUrl = conn.instanceUrl
+            ctx.session.orgId = conn.userInfo.orgId
+
             if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
                 return ctx.render('welcome')
             }
