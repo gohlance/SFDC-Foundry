@@ -43,17 +43,29 @@ module.exports = ({
                 }
                 console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
                 console.log("Id : " + userInfo.organizationId)
-                orgIdentification = userInfo.organizationId
+                ctx.session.accessCode = conn.accessToken
+                ctx.session.instanceUrl = conn.instanceUrl
+                ctx.session.orgId = userInfo.organizationId
+
+                return ctx.render('welcome', {
+                    result_objects: 0,
+                    result_profiles: 0,
+                    result_layouts: 0,
+                    result_ApexComponents: 0,
+                    result_apexTriggers: 0,
+                    result_apexPages: 0,
+                    result_recordTypes: 0,
+                    result_orgInformation: 0,
+                    result_userLicense: 0,
+                    result_securityRisk: 0,
+                    result_customapp: 0,
+                    session: ctx.session
+                  })
             })
-
-            ctx.session.accessCode = conn.accessToken
-            ctx.session.instanceUrl = conn.instanceUrl
-            console.log("OrdID : " + orgIdentification)
-            ctx.session.orgId = orgIdentification
-
-            if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
-                return ctx.render('welcome')
-            }
+            console.log("************")
+           // if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
+           //     return ctx.render('welcome')
+         //   }
         })
         .get('logout', '/logout', (ctx) => {
             conn.logout(function (err) {
