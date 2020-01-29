@@ -13,6 +13,7 @@ module.exports = ({
         return ctx.render('index')
       } else {
         const check_existingUser = await sfdcmethods.check_firstTime_Login(ctx.session)
+        console.log("************* : " + check_existingUser)
         if (check_existingUser == false){
           return ctx.render('welcome', {
             result_objects: 0,
