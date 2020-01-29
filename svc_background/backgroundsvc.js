@@ -162,6 +162,7 @@ async function start_background_call() {
                     throw new Error("will be caught");
                 }
             }).then(result => async () => {
+                console.log("Trying to insert data")
                 pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result)])
                 jsonResult = await sfdcmethod.sObjectDescribe(result)
                 console.log("[SobjectDescribe - Inserting Record Operation]")
