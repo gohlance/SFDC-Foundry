@@ -56,7 +56,7 @@ module.exports = ({
             if (decrypt[0] == true) {
                 ctx.session.accessCode = decrypt[2]
                 ctx.session.instanceUrl = decrypt[1]
-                ctx.session.orgId = userInfo.organizationId
+                ctx.session.orgId = decrypt[3]
                 ctx.redirect('/welcome')
             }else{
                 ctx.redirect('/index')
