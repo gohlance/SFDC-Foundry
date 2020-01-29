@@ -42,8 +42,8 @@ module.exports = ({
                     return console.error(err)
                 }
                 console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
-                console.log("Id : " + conn.userInfo.orgId)
-                orgIdentification = conn.userInfo.orgId
+                console.log("Id : " + userInfo.organizationId)
+                orgIdentification = userInfo.organizationId
             })
 
             ctx.session.accessCode = conn.accessToken
