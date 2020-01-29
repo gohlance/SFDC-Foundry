@@ -36,18 +36,20 @@ module.exports = ({
         })
         .get('oauth', '/auth3/login/return', (ctx) => {
             var code = ctx.request.query["code"]
-           
+            let orgIdentification = ''
             conn.authorize(code, function (err, userInfo) {
                 if (err) {
                     return console.error(err)
                 }
                 console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
-
+                console.log("Id : " + conn.userInfo.orgId)
+                orgIdentification = conn.userInfo.orgId
             })
 
             ctx.session.accessCode = conn.accessToken
             ctx.session.instanceUrl = conn.instanceUrl
-            ctx.session.orgId = conn.userInfo.orgId
+            console.log("OrdID : " + orgIdentification)
+            ctx.session.orgId = orgIdentification
 
             if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
                 return ctx.render('welcome')
