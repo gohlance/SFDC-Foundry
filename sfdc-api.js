@@ -174,7 +174,7 @@ async function testing_getUserPackageLicense(){
 }
 
 async function get_testing(ctx){
-    ctx.session.accessCode = "ABC"
+    ctx.session.accesscode = "ABC"
 }
 
 //#region Private Methods - Unused

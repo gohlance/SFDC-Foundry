@@ -54,7 +54,7 @@ module.exports = ({
             var code = ctx.request.query["code"]
             let decrypt = await private_gettoken(code)
             if (decrypt[0] == true) {
-                ctx.session.accessCode = decrypt[2]
+                ctx.session.accesscode = decrypt[2]
                 ctx.session.instanceUrl = decrypt[1]
                 ctx.session.orgId = decrypt[3]
                 ctx.redirect('/welcome')
