@@ -47,20 +47,8 @@ module.exports = ({
                 ctx.session.instanceUrl = conn.instanceUrl
                 ctx.session.orgId = userInfo.organizationId
 
-                return ctx.render('welcome', {
-                    result_objects: 0,
-                    result_profiles: 0,
-                    result_layouts: 0,
-                    result_ApexComponents: 0,
-                    result_apexTriggers: 0,
-                    result_apexPages: 0,
-                    result_recordTypes: 0,
-                    result_orgInformation: 0,
-                    result_userLicense: 0,
-                    result_securityRisk: 0,
-                    result_customapp: 0,
-                    session: ctx.session
-                  })
+                console.log("Going to Home Now!!!")
+                ctx.redirect('/');
             })
             console.log("************")
            // if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
