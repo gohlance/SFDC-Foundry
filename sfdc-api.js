@@ -46,9 +46,9 @@ module.exports = {
     get_testing
 }
 
-async function check_firstTime_Login(){
+async function check_firstTime_Login(session){
     try {
-        let result = await global.pool.query("SELECT * FROM metas WHERE orgid=$1",[global.orgId])
+        let result = await global.pool.query("SELECT * FROM metas WHERE orgid=$1",[session.orgId])
         if (result.rows > 0){
             return true
         }else{
@@ -60,20 +60,20 @@ async function check_firstTime_Login(){
     }
 }
 
-async function selectAll_RecordTypesByOrder(){
-    let result = await global.pool.query("select elem-> 'Name' as name, elem -> 'SobjectType' as objectType, elem->'IsActive' as active, elem->'Description' as description, elem -> 'BusinessProcessId' as businessprocessid from public.recordtypes, lateral jsonb_array_elements(recordtype -> 'records') elem where orgid = $1 order by 2",[global.orgId])
+async function selectAll_RecordTypesByOrder(session){
+    let result = await global.pool.query("select elem-> 'Name' as name, elem -> 'SobjectType' as objectType, elem->'IsActive' as active, elem->'Description' as description, elem -> 'BusinessProcessId' as businessprocessid from public.recordtypes, lateral jsonb_array_elements(recordtype -> 'records') elem where orgid = $1 order by 2",[session.orgId])
     return result
 }
 
-async function selectAll_ProfilesByOrder() {
-    let result = await global.pool.query("select elem->'Name' as name, elem->'Description' as description  from public.profiles, lateral jsonb_array_elements(profile -> 'records') elem WHERE orgid = $1",[global.orgId])
+async function selectAll_ProfilesByOrder(session) {
+    let result = await global.pool.query("select elem->'Name' as name, elem->'Description' as description  from public.profiles, lateral jsonb_array_elements(profile -> 'records') elem WHERE orgid = $1",[session.orgId])
     return result
 }
 
 
-async function getCustomApps(type){
+async function getCustomApps(type, session){
     try {
-      const result = await global.pool.query("SELECT customapp FROM customapps WHERE orgid=$1", [global.orgId])
+      const result = await global.pool.query("SELECT customapp FROM customapps WHERE orgid=$1", [session.orgId])
       const classicInterface = _.partition(result.rows[0]["customapp"].records, function(item){
           return item.UiType == null
       })
@@ -88,9 +88,9 @@ async function getCustomApps(type){
     }
   }
 
-async function getSecurityRisk(type){
+async function getSecurityRisk(type, session){
     try {
-      const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid=$1", [global.orgId])
+      const result = await global.pool.query("SELECT securityrisk FROM securityrisk WHERE orgid=$1", [session.orgId])
       if (result.rows[0]["securityrisk"].length > 0){
         const highrisk = _.partition(result.rows[0]["securityrisk"], function (item){
           return item.RiskType == "HIGH_RISK"
@@ -109,8 +109,8 @@ async function getSecurityRisk(type){
   }
 
 //unique_object[item] - get key value - which is an array to get the fields that is linked
-async function get_childRelationship(objectName){
-    let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.objects , lateral jsonb_array_elements(objectinfo -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,global.orgId])
+async function get_childRelationship(objectName, session){
+    let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.objects , lateral jsonb_array_elements(objectinfo -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,session.orgId])
 
     const json_result = JSON.parse(result.rows[0]["relationship"])
 
@@ -132,8 +132,8 @@ async function get_childRelationship(objectName){
    // return result
 }
 
-async function get_childRelationship_chart(objectName){
-    let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.objects , lateral jsonb_array_elements(objectinfo -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,global.orgId])
+async function get_childRelationship_chart(objectName, session){
+    let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.objects , lateral jsonb_array_elements(objectinfo -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,session.orgId])
 
     const json_result = JSON.parse(result.rows[0]["relationship"])
 
@@ -195,6 +195,8 @@ function chunkArrayInGroups(arr, size) {
     });
 }
 
+
+//Unused
 async function filter_RecordTypesBy (sobjectname){
     let result = await global.pool.query("select elem from public.recordtypes, lateral jsonb_array_elements(recordtype ->'records') elem where elem @> '{\"SobjectType\":\"$1\"}' and orgid = $2;", [sobjectname,global.orgId])
     //result.rows[0].elem

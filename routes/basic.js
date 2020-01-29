@@ -9,7 +9,7 @@ module.exports = ({
       if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
         return ctx.render('index')
       } else {
-        const check_existingUser = await sfdcmethods.check_firstTime_Login()
+        const check_existingUser = await sfdcmethods.check_firstTime_Login(ctx.session)
         if (check_existingUser == false){
           return ctx.render('welcome', {
             result_objects: 0,
@@ -27,17 +27,17 @@ module.exports = ({
           })
         }else{
           return ctx.render('welcome', {
-            result_objects: await display_Homepage_Objects(),
-            result_profiles: await display_Homepage_Profiles(),
-            result_layouts: await display_Homepage_Layouts(),
-            result_ApexComponents: await display_Homepage_ApexComponents(),
-            result_apexTriggers: await display_Homepage_ApexTrigger(),
-            result_apexPages: await display_Homepage_ApexPages(),
-            result_recordTypes: await display_Homepage_RecordTypes(),
-            result_orgInformation: await getMoreOrgDetails(),
-            result_userLicense: await getUserLicenseDetails(),
-            result_securityRisk: await sfdcmethods.getSecurityRisk("HOME"),
-            result_customapp: await sfdcmethods.getCustomApps("HOME"),
+            result_objects: await display_Homepage_Objects(ctx.session),
+            result_profiles: await display_Homepage_Profiles(ctx.session),
+            result_layouts: await display_Homepage_Layouts(ctx.session),
+            result_ApexComponents: await display_Homepage_ApexComponents(ctx.session),
+            result_apexTriggers: await display_Homepage_ApexTrigger(ctx.session),
+            result_apexPages: await display_Homepage_ApexPages(ctx.session),
+            result_recordTypes: await display_Homepage_RecordTypes(ctx.session),
+            result_orgInformation: await getMoreOrgDetails(ctx.session),
+            result_userLicense: await getUserLicenseDetails(ctx.session),
+            result_securityRisk: await sfdcmethods.getSecurityRisk("HOME", ctx.session),
+            result_customapp: await sfdcmethods.getCustomApps("HOME", ctx.session),
             session: ctx.session
           })
         }
@@ -58,9 +58,9 @@ module.exports = ({
 }
 
 //private methods
-async function display_Homepage_Objects() {
+async function display_Homepage_Objects(session) {
   try {
-    const result_object = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1', [global.orgId])
+    const result_object = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1', [session.orgId])
     if (result_object.rows[0]["objectinfo"] != null)
       return return_Object = result_object.rows[0]["objectinfo"]["allObject"].length
     else
@@ -72,9 +72,9 @@ async function display_Homepage_Objects() {
       console.error("Error [display_Homepage_Objects]: " + error)
   }
 }
-async function display_Homepage_Profiles() {
+async function display_Homepage_Profiles(session) {
   try {
-    const result_profile = await global.pool.query("SELECT profile FROM profiles WHERE orgid=$1", [global.orgId])
+    const result_profile = await global.pool.query("SELECT profile FROM profiles WHERE orgid=$1", [session.orgId])
     if (result_profile.rows[0]["profile"].size > 0)
       return result_profile.rows[0]["profile"].size
     else
@@ -86,9 +86,9 @@ async function display_Homepage_Profiles() {
       console.error("Error [display_Homepage_Profiles]: " + error)
   }
 }
-async function display_Homepage_Layouts() {
+async function display_Homepage_Layouts(session) {
   try {
-    const result_profile = await global.pool.query("SELECT layout FROM layouts WHERE orgid=$1", [global.orgId])
+    const result_profile = await global.pool.query("SELECT layout FROM layouts WHERE orgid=$1", [session.orgId])
     if (result_profile.rows[0]["layout"].size > 0)
       return result_profile.rows[0]["layout"].size
     else
@@ -100,9 +100,9 @@ async function display_Homepage_Layouts() {
       console.error("Error [display_Homepage_Layouts]: " + error)
   }
 }
-async function display_Homepage_RecordTypes() {
+async function display_Homepage_RecordTypes(session) {
   try {
-    const result_profile = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1", [global.orgId])
+    const result_profile = await global.pool.query("SELECT recordtype FROM recordtypes WHERE orgid=$1", [session.orgId])
     if (result_profile.rows[0]["recordtype"].size > 0)
       return result_profile.rows[0]["recordtype"].size
     else
@@ -114,9 +114,9 @@ async function display_Homepage_RecordTypes() {
       console.error("Error [display_Homepage_RecordTypes]: " + error)
   }
 }
-async function display_Homepage_ApexComponents() {
+async function display_Homepage_ApexComponents(session) {
   try {
-    const result_apexcomponent = await global.pool.query("SELECT apexcomponent FROM apexcomponents WHERE orgid=$1", [global.orgId])
+    const result_apexcomponent = await global.pool.query("SELECT apexcomponent FROM apexcomponents WHERE orgid=$1", [session.orgId])
 
     if (result_apexcomponent.rows[0]["apexcomponent"].size > 0)
       return result_apexcomponent.rows[0]["apexcomponent"].size
@@ -130,9 +130,9 @@ async function display_Homepage_ApexComponents() {
       console.error("Error [display_Homepage_ApexComponents]: " + error)
   }
 }
-async function display_Homepage_ApexTrigger() {
+async function display_Homepage_ApexTrigger(session) {
   try {
-    const result_apextrigger = await global.pool.query("SELECT apextrigger FROM apextriggers WHERE orgid=$1", [global.orgId])
+    const result_apextrigger = await global.pool.query("SELECT apextrigger FROM apextriggers WHERE orgid=$1", [session.orgId])
     if (result_apextrigger.rows[0]["apextrigger"].size > 0)
       return result_apextrigger.rows[0]["apextrigger"].size
     else
@@ -144,9 +144,9 @@ async function display_Homepage_ApexTrigger() {
       console.error("Error [display_Homepage_ApexTrigger]: " + error)
   }
 }
-async function display_Homepage_ApexPages() {
+async function display_Homepage_ApexPages(session) {
   try {
-    const result_apexpages = await global.pool.query("SELECT apexpage FROM apexpages WHERE orgid=$1", [global.orgId])
+    const result_apexpages = await global.pool.query("SELECT apexpage FROM apexpages WHERE orgid=$1", [session.orgId])
 
     if (result_apexpages.rows[0]["apexpage"].size > 0)
       return result_apexpages.rows[0]["apexpage"].size
@@ -160,9 +160,9 @@ async function display_Homepage_ApexPages() {
   }
 }
 
-async function getMoreOrgDetails() {
+async function getMoreOrgDetails(session) {
   try {
-    const result = await global.pool.query("SELECT orglimit FROM orglimits WHERE orgid=$1",[global.orgId])
+    const result = await global.pool.query("SELECT orglimit FROM orglimits WHERE orgid=$1",[session.orgId])
     // BUG  - TypeError: Cannot read property 'orglimit' of undefined
     if (result.rows[0]["orglimit"].size > 0)
       return result.rows[0]["orglimit"]
@@ -174,10 +174,10 @@ async function getMoreOrgDetails() {
   }
 }
 
-async function getUserLicenseDetails() {
+async function getUserLicenseDetails(session) {
   try {
     // BUG - TypeError: Cannot read property 'license' of undefined
-    const result = await global.pool.query("SELECT license FROM license WHERE orgid=$1", [global.orgId])
+    const result = await global.pool.query("SELECT license FROM license WHERE orgid=$1", [session.orgId])
     if (result.rows[0]["license"].length > 0)
       return result.rows[0]["license"]
     else{

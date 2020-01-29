@@ -35,14 +35,14 @@ module.exports = {
     letsGetEverything,set_ConnObject
 }
 
-async function letsGetEverything() {
+async function letsGetEverything(session) {
     try {
         return new Promise((resolve, reject) => {
             const worker = new Worker('./svc_background/backgroundsvc.js', {
                 workerData: {
-                    instance: global.instanceUrl,
-                    accesscode: global.accesscode,
-                    orgId: global.orgid
+                    instance: session.instanceUrl,
+                    accesscode: session.accesscode,
+                    orgId: session.orgid
                 }
             });
 

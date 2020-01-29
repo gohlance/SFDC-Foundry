@@ -207,7 +207,7 @@
 
 <script>
     // NEED TO TEST THIS SECTION, need to deploy online
-    var orgid = (typeof "<%= global.orgid %>" !== 'undefined' && "<%= global.orgid %>") || 0;
+    var orgid = (typeof "<%= session.orgid %>" !== 'undefined' && "<%= session.orgid %>") || 0;
     if (orgid == 0) {
         $('#myModal').modal('show');
     }
