@@ -36,10 +36,10 @@ module.exports = ({
         })
         .get('oauth', '/auth3/login/return', (ctx) => {
             var code = ctx.request.query["code"]
-            let orgIdentification = ''
-            conn.authorize(code, function (err, userInfo) {
+            const result = await conn.authorize(code, function (err, userInfo) {
                 if (err) {
-                    return console.error(err)
+                    console.error(err)
+                    return false;
                 }
                 console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
                 console.log("Id : " + userInfo.organizationId)
@@ -48,13 +48,16 @@ module.exports = ({
                 ctx.session.orgId = userInfo.organizationId
 
                 console.log("Going to Home Now!!!")
-                ctx.status = 301;
-                ctx.redirect('/');
+                return true;
             })
             console.log("************")
            // if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
            //     return ctx.render('welcome')
          //   }
+            if (result)
+                ctx.redirect('/')
+            else
+                ctx.redirect('/index')
         })
         .get('logout', '/logout', (ctx) => {
             conn.logout(function (err) {
