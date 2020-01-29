@@ -11,6 +11,7 @@ const app = new Koa()
 
 //global DB Connection
 const Pool = require('pg-pool')
+
 global.pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -19,7 +20,7 @@ global.pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})
+}) 
 
 render(app, {
   root: path.join(__dirname, 'views'),

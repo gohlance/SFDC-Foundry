@@ -11,6 +11,8 @@ var oauth2 = new jsforce.OAuth2({
 });
 
 const Pool = require('pg-pool')
+
+
 const pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -50,6 +52,7 @@ module.exports = {
 async function check_firstTime_Login(session){
     try {
         let result = await global.pool.query("SELECT * FROM metas WHERE orgid=$1",[session.orgId])
+        console.log("************ " + result.rows )
         if (result.rows > 0){
             return true
         }else{
