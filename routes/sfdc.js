@@ -20,9 +20,10 @@ oauth2 = new jsforce.OAuth2({
 });
 
 conn = new jsforce.Connection({
-    oauth2: oauth2,
-    instanceUrl: global.instanceUrl,
-    accessToken: global.accesscode
+    oauth2: oauth2
+  //  oauth2: oauth2,
+   // instanceUrl: global.instanceUrl,
+   // accessToken: global.accesscode
 })
 
 async function private_gettoken(code) {
@@ -120,6 +121,7 @@ module.exports = ({
         })
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
+                // BUG : Need to select from database instead
                 const result = await sfdcbackground_methods.get_TotalUsersByProfile()
 
                 const range = _.partition(result.undefined, function (item) {

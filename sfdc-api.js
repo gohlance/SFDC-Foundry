@@ -22,14 +22,15 @@ const pool = new Pool({
 })
 
 //*** Only for Development */
-global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQFW6oeGb05mKZhJkWUDv.ebasyzT3SaXbiSxtuWuNIYHZ51mhG7xNH41NAuT_pWRVckQ375OvEYDPHsP7chkyx7iVkEw"
-global.orgId = "188"
+//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.accesscode = "00D46000001Uq6O!AQoAQFW6oeGb05mKZhJkWUDv.ebasyzT3SaXbiSxtuWuNIYHZ51mhG7xNH41NAuT_pWRVckQ375OvEYDPHsP7chkyx7iVkEw"
+//global.orgId = "188"
 
 var conn = new jsforce.Connection({
-    oauth2: oauth2,
-    instanceUrl: global.instanceUrl,
-    accessToken: global.accesscode
+    oauth2: oauth2
+    //oauth2: oauth2,
+    //instanceUrl: global.instanceUrl,
+    //accessToken: global.accesscode
 })
 
 module.exports = {
@@ -172,6 +173,7 @@ async function testing_getUserPackageLicense(){
     console.log(result);
 });
 }
+
 
 async function get_testing(ctx){
     ctx.session.accesscode = "ABC"
