@@ -5,6 +5,9 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', async (ctx) => {
+      return ctx.render('index')
+    })
+    .get('home2', '/welcome', async (ctx) => {
       if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
         return ctx.render('index')
       } else {

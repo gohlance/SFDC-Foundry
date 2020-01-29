@@ -25,6 +25,22 @@ conn = new jsforce.Connection({
     accessToken: global.accesscode
 })
 
+async function private_gettoken(code) {
+    return new Promise((resolve, reject) => {
+        conn.authorize(code, function (err, userInfo) {
+
+            if (err) {
+                console.error(err)
+            }
+            console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
+            //console.log("Id : " + userInfo.organizationId)
+            let status = true
+            resolve([status, conn.instanceUrl, conn.accessToken, userInfo.organizationId])
+            //ctx.session.orgId = userInfo.organizationId
+        })
+    })
+}
+
 module.exports = ({
     router
 }) => {
@@ -34,30 +50,17 @@ module.exports = ({
                 scope: 'api web'
             }))
         })
-        .get('oauth', '/auth3/login/return', (ctx) => {
+        .get('oauth', '/auth3/login/return', async (ctx) => {
             var code = ctx.request.query["code"]
-            const result = await conn.authorize(code, function (err, userInfo) {
-                if (err) {
-                    console.error(err)
-                    return false;
-                }
-                console.log("AccessToken : " + conn.accessToken + " InstanceURL : " + conn.instanceUrl)
-                console.log("Id : " + userInfo.organizationId)
-                ctx.session.accessCode = conn.accessToken
-                ctx.session.instanceUrl = conn.instanceUrl
+            let decrypt = await private_gettoken(code)
+            if (decrypt[0] == true) {
+                ctx.session.accessCode = decrypt[2]
+                ctx.session.instanceUrl = decrypt[1]
                 ctx.session.orgId = userInfo.organizationId
-
-                console.log("Going to Home Now!!!")
-                return true;
-            })
-            console.log("************")
-           // if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
-           //     return ctx.render('welcome')
-         //   }
-            if (result)
-                ctx.redirect('/')
-            else
+                ctx.redirect('/welcome')
+            }else{
                 ctx.redirect('/index')
+            }
         })
         .get('logout', '/logout', (ctx) => {
             conn.logout(function (err) {
@@ -97,9 +100,11 @@ module.exports = ({
         .get('showRecordType', '/showRecordType', async (ctx) => {
             try {
                 const result = await sfdcmethods.selectAll_RecordTypesByOrder(ctx.session)
-                
-                const range = _(result.rows).groupBy('objecttype').partition(function (item){ return item.length > 5}).value()
-                
+
+                const range = _(result.rows).groupBy('objecttype').partition(function (item) {
+                    return item.length > 5
+                }).value()
+
                 const recordType_NotActive = _.partition(result.rows, 'active')
 
                 return ctx.render('show_recordType', {
@@ -117,11 +122,11 @@ module.exports = ({
             try {
                 const result = await sfdcbackground_methods.get_TotalUsersByProfile()
 
-                const range = _.partition(result.undefined, function (item){
+                const range = _.partition(result.undefined, function (item) {
                     return item.Total >= 10;
                 })
 
-                const profileWithOnly_1User = _.partition(result.undefined, function(item){
+                const profileWithOnly_1User = _.partition(result.undefined, function (item) {
                     return item.Total == 1;
                 })
 
@@ -136,65 +141,67 @@ module.exports = ({
                 console.error("Error [showProfiles]: " + error)
             }
         })
-        .get('showApexTrigger', '/getApexTrigger', async (ctx)=>{
+        .get('showApexTrigger', '/getApexTrigger', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apextrigger FROM apextriggers WHERE orgid = $1",[ctx.session.orgId])
+                const result = await global.pool.query("SELECT apextrigger FROM apextriggers WHERE orgid = $1", [ctx.session.orgId])
 
                 const range = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').value()
-                const rangeCondition = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').partition(function (item){
+                const rangeCondition = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').partition(function (item) {
                     return item.length > 5
                 }).value()
 
-                const notActive = _.partition(result.rows[0]["apextrigger"].records, function (item){return item.Status == "Active"})
-                return ctx.render('show_apexTrigger',{
+                const notActive = _.partition(result.rows[0]["apextrigger"].records, function (item) {
+                    return item.Status == "Active"
+                })
+                return ctx.render('show_apexTrigger', {
                     type: "ApexTrigger",
                     apex: result.rows[0]["apextrigger"].records,
                     subheader: Object.keys(range),
                     subcontent: Object.values(range),
-                    morethan:rangeCondition[0].length,
-                    lessthan:rangeCondition[1].length,
+                    morethan: rangeCondition[0].length,
+                    lessthan: rangeCondition[1].length,
                     notactive: notActive[1].length
                 })
             } catch (error) {
                 console.error("Error [showApexTrigger]: " + error)
             }
         })
-        .get('showApexComponent', '/getApexComponent', async (ctx)=>{
+        .get('showApexComponent', '/getApexComponent', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apexcomponent FROM apexcomponents WHERE orgid = $1",[ctx.session.orgId])
-                return ctx.render('show_apexComponent',{
+                const result = await global.pool.query("SELECT apexcomponent FROM apexcomponents WHERE orgid = $1", [ctx.session.orgId])
+                return ctx.render('show_apexComponent', {
                     apex: result.rows[0]["apextrigger"].records,
                 })
             } catch (error) {
                 console.error("Error [showApexComponent]: " + error)
             }
         })
-        .get('showApexPage','/getApexPage', async (ctx)=> {
+        .get('showApexPage', '/getApexPage', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apexpage FROM apexpages WHERE orgid=$1",[ctx.session.orgId])
-                return ctx.render('show_apexPage',{
+                const result = await global.pool.query("SELECT apexpage FROM apexpages WHERE orgid=$1", [ctx.session.orgId])
+                return ctx.render('show_apexPage', {
                     apex: result.rows[0]["apexpage"].records
                 })
             } catch (error) {
                 console.error("Error [showApexPage]: " + error)
             }
         })
-        .get('showSecurityRisk','/showSecurityRisk', async (ctx) => {
-            const result = await sfdcmethods.getSecurityRisk('',ctx.session)
-            return ctx.render('show_securityrisk',{
+        .get('showSecurityRisk', '/showSecurityRisk', async (ctx) => {
+            const result = await sfdcmethods.getSecurityRisk('', ctx.session)
+            return ctx.render('show_securityrisk', {
                 highrisk: result[1],
                 otherrisk: result[0]
             })
         })
-        .get('showCustomApp','/showCustomApp', async (ctx)=>{
+        .get('showCustomApp', '/showCustomApp', async (ctx) => {
             const result = await sfdcmethods.getCustomApps('', ctx.session)
-            return ctx.render('show_customapp',{
+            return ctx.render('show_customapp', {
                 result: result
             })
         })
 
         //***** TESTING */
-       
+
         .get('getUserLicense', '/getf', async (ctx) => {
             try {
                 const result = sfdcmethods.get_testing(ctx)
@@ -204,13 +211,13 @@ module.exports = ({
                 return 0
             }
         })
-        .get('showChart','/getChart', async (ctx)=>{
+        .get('showChart', '/getChart', async (ctx) => {
             var abc = "classDiagram\n" + "Animal <|-- Duck"
             console.log(ctx.query)
             const result = await sfdcmethods.get_childRelationship(ctx.query["t"], ctx.session)
-            return ctx.render('show_chart',{
-                chart : result
+            return ctx.render('show_chart', {
+                chart: result
             })
         })
-       
+
 }
