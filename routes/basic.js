@@ -1,6 +1,6 @@
 const sfdcmethods = require('../sfdc-api')
 const _ = require('lodash')
-const testing = require('../test')
+
 module.exports = ({
   router
 }) => {
@@ -61,8 +61,5 @@ module.exports = ({
     })
     .get('payment', '/payment', (ctx) => {
       return ctx.render('payment')
-    })
-    .get('/lance',  (ctx)=>{
-      const a = testing.testing()
     })
 }

@@ -5,7 +5,7 @@ const {
 
 const sfdcmethod = require('./sfdc-api_background.js')
 const Pool = require('pg-pool')
-/**
+
 const pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -15,8 +15,9 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 })
- */
+
 //DEV
+/**
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
@@ -25,11 +26,11 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})
+}) */
 async function start_background_call() {
     try {
         console.log("background starting")
-       
+
         sfdcmethod.set_ConnObject(workerData)
 
         const step1 = new Promise(async (resolve) => {
@@ -167,20 +168,19 @@ async function start_background_call() {
                 try {
                     console.log("starting step 14")
                     const result = await sfdcmethod.getAllObjectOnce()
-                    resolve(result)
+                    //resolve(result)
+
+                    console.log("Trying to insert data")
+                    pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result)])
+                    jsonResult = await sfdcmethod.sObjectDescribe(result)
+                    console.log("[SobjectDescribe - Inserting Record Operation]")
+                    pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(jsonResult)])
+                    console.log("[SobjectDescribe - Inserting Completed]")
                 } catch (error) {
                     console.error("Error [Step14] : " + error);
                     throw new Error("will be caught");
                 }
-            }).then(result => async () => {
-                console.log("Trying to insert data")
-                pool.query("INSERT INTO sobjectdesribe (orgid, sobjectdesribe) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result)])
-                jsonResult = await sfdcmethod.sObjectDescribe(result)
-                console.log("[SobjectDescribe - Inserting Record Operation]")
-                pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(jsonResult)])
-                console.log("[SobjectDescribe - Inserting Completed]")
-            })
-            .catch(error => console.log("Step 14: " + error))
+            }).catch(error => console.log("Step 14: " + error))
             .finally(() => {
                 parentPort.postMessage({
                     fileName: "Done",
