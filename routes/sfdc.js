@@ -9,7 +9,6 @@ const {
 
 const jsforce = require('jsforce')
 const _ = require('lodash')
-const chart = require('../chartGenerator')
 
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
@@ -21,9 +20,6 @@ oauth2 = new jsforce.OAuth2({
 
 conn = new jsforce.Connection({
     oauth2: oauth2
-  //  oauth2: oauth2,
-   // instanceUrl: global.instanceUrl,
-   // accessToken: global.accesscode
 })
 
 async function private_gettoken(code) {
@@ -88,13 +84,8 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
-                //var result = await sfdcmethods.letsGetEverything()
                 const result = sfdcbackground_methods.letsGetEverything(ctx.session)
-                //ctx.body = {
-                // status: 'success',
-                // message: 'hello, world!'
-                //};
-
+               
                 // TODO : Refresh this page
 
             } catch (err) {
@@ -205,17 +196,6 @@ module.exports = ({
             })
         })
 
-        //***** TESTING */
-
-        .get('getUserLicense', '/getf', async (ctx) => {
-            try {
-                const result = sfdcmethods.get_testing(ctx)
-                console.log(result)
-            } catch (error) {
-                console.log("A: " + error)
-                return 0
-            }
-        })
         .get('showChart', '/getChart', async (ctx) => {
             var abc = "classDiagram\n" + "Animal <|-- Duck"
             console.log(ctx.query)

@@ -9,6 +9,11 @@ const koa_router = require('koa-router')
 const logger = require('koa-logger')
 const app = new Koa()
 
+//*** Only for Development */
+//global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
+//global.accesscode = "00D46000001Uq6O!AQoAQFW6oeGb05mKZhJkWUDv.ebasyzT3SaXbiSxtuWuNIYHZ51mhG7xNH41NAuT_pWRVckQ375OvEYDPHsP7chkyx7iVkEw"
+//global.orgId = "188"
+
 //global DB Connection
 const Pool = require('pg-pool')
 
