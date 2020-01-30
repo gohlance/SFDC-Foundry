@@ -221,14 +221,14 @@ async function sObjectDescribe(result) {
     //console.log(result);
     //TODO : this section can do child relationship
     try {
-            var i = 0;
-            var lessthan100fields = 0;
-            var morethan100fields = 0;
+            let i = 0;
+            let lessthan100fields = 0;
+            let morethan100fields = 0;
             const pLimit = require('p-limit');
             const limit = pLimit(100);
            
-            var i = 1
-            var allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
+            let i = 1
+            let allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
                 var totalfields = await conn.sobject(item.name).describe().then(async response => {
                     
                     return {
@@ -263,7 +263,7 @@ async function sObjectDescribe(result) {
                     childRelationship_details: totalfields.childRelationship_details
                 }
             })))
-            var jsonResult = {
+            let jsonResult = {
                 allObject: allObjectTotalFields,
                 morethan100: morethan100fields,
                 lessthan100: lessthan100fields
