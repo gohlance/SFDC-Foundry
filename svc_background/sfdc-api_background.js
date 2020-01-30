@@ -91,9 +91,6 @@ async function getAllMeta() {
 async function getAllObjectOnce() {
     try {
         return new Promise((resolve, reject) => {
-            conn.accessToken = global.accesscode
-            conn.instanceUrl = global.instanceUrl
-            
             conn.describeGlobal(function (err, res) {
                 if (err) {
                     return console.error("Error [sfdc-api/getAllObjectsOnce - describeGlobal] : " + err)
