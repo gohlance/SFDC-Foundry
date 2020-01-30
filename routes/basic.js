@@ -1,5 +1,6 @@
 const sfdcmethods = require('../sfdc-api')
 const _ = require('lodash')
+const testing = require('../test')
 module.exports = ({
   router
 }) => {
@@ -53,12 +54,15 @@ module.exports = ({
       ctx.body = "About US..."
     })
     .get('contact', '/contact', (ctx) => {
-      ctx.session.accesscode = "asd"
+      ctx.session.accesscode = "00D46000001Uq6O!AQoAQIkDo2PPZMoQAEesFvuwFvyatBwEdituD0tmXP_ogsPOcXD4MODbhFlUs876sxc0Fo5t0EvXJ7q7W78VXFgUhw6FgGhP"
       ctx.session.orgId = "168"
-      ctx.session.instanceUrl = "facebook.com"
+      ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
       ctx.body = "Contact US...."
     })
     .get('payment', '/payment', (ctx) => {
       return ctx.render('payment')
+    })
+    .get('/lance',  (ctx)=>{
+      const a = testing.testing()
     })
 }

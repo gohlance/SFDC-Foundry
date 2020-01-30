@@ -58,7 +58,7 @@ async function letsGetEverything(session) {
 
             console.log("Worker Started")
             worker.on('message', (message) => {
-                console.log("I am here " + message.status);
+                //console.log("I am here " + message.status);
                 resolve("Success")
             });
             worker.on('error', reject);
@@ -91,9 +91,12 @@ async function getAllMeta() {
 async function getAllObjectOnce() {
     try {
         return new Promise((resolve, reject) => {
+            conn.accessToken = global.accesscode
+            conn.instanceUrl = global.instanceUrl
+            
             conn.describeGlobal(function (err, res) {
                 if (err) {
-                    return console.log(err)
+                    return console.error("Error [sfdc-api/getAllObjectsOnce - describeGlobal] : " + err)
                 }
                 console.log('[sfdc-api/getAllObjectsOnce] No of Objects ' + res.sobjects.length)
                 resolve(res.sobjects)
