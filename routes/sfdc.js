@@ -84,8 +84,8 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
-                const result = sfdcbackground_methods.letsGetEverything(ctx.session)
-               
+                const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
+                ctx.redirect('/welcome')
                 // TODO : Refresh this page
 
             } catch (err) {
@@ -115,7 +115,6 @@ module.exports = ({
         })
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
-                // BUG : Need to select from database instead
                 const result = await global.pool.query("SELECT totalusers FROM profiles where orgid = $1",[ctx.session.orgId])
 
                 const range = _.partition(result.rows[0]["totalusers"]["undefined"], function (item) {
