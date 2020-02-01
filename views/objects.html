@@ -1,4 +1,8 @@
-    <div class="row">
+<div class="row">
+        <canvas id="myChart" width="90%" height="220"></canvas>
+</div>
+
+<div class="row">
             <div class="card" style="width: 30%;height:220px">
                     <svg id="fillgauge1" width="97%" height="100" style="margin-top:2"></svg>
                     <div class="card-body text-center">
@@ -68,4 +72,12 @@ var gauge1 = loadLiquidFillGauge("fillgauge1", <%- moreObject %> /
 <%- totalObject %> *100 );
 var gauge2 = loadLiquidFillGauge("fillgauge2", <%- lessObject %> /
 <%- totalObject %> *100);
+</script>
+<script>
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: [<%- moreObject %>, <%- lessObject %>],
+                label:['more than 20', 'less than 20']
+        })
 </script>
