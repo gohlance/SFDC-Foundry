@@ -116,21 +116,21 @@ module.exports = ({
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
                 // BUG : Need to select from database instead
-                const result = await sfdcbackground_methods.get_TotalUsersByProfile()
+                const result = await global.pool.query("SELECT totalusers FROM profiles where orgid = $1",[ctx.session.orgId])
 
-                const range = _.partition(result.undefined, function (item) {
+                const range = _.partition(result.rows[0]["totalusers"]["undefined"], function (item) {
                     return item.Total >= 10;
                 })
 
-                const profileWithOnly_1User = _.partition(result.undefined, function (item) {
+                const profileWithOnly_1User = _.partition(result.rows[0]["totalusers"]["undefined"], function (item) {
                     return item.Total == 1;
                 })
 
                 return ctx.render('show_profiles', {
-                    profiles: result.undefined,
+                    profiles: result.rows[0]["totalusers"]["undefined"],
                     morethan10: range[0].length,
                     lessthan10: range[1].length,
-                    totalObject: result.undefined.length,
+                    totalObject: result.rows[0]["totalusers"]["undefined"].length,
                     singleuser: profileWithOnly_1User[0].length
                 })
             } catch (error) {
