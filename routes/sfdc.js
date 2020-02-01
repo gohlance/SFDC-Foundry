@@ -85,6 +85,7 @@ module.exports = ({
         .post('everything', '/everything', async (ctx) => {
             try {
                 const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
+                console.log("***  : "  +result)
                 ctx.redirect('/welcome')
                 // TODO : Refresh this page
 
