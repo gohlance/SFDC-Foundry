@@ -26,47 +26,6 @@
         <%}%>
         
     </table>
-    <%} else if (type =='ApexClass'){%>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            <th>Status</th>
-            <th>IsValid</th>
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-                <td><%- apex[i].Status %></td>
-                <% if (apex[i].isValid) {%>
-                    <td>true</td>
-                <% } else {%>
-                    <td>false</td>
-                <%}%>
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%} else if (type == 'ApexComponent'){ %>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-                
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%} else if (type == 'ApexPage') {%>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%}%>
 </div>
 </div>
 <script>
