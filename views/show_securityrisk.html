@@ -5,7 +5,7 @@
         High Security Risk ( <%- highrisk.length %> )
     </div>
     <div class="container">
-        <table id="dtObjects" class="table table-striped table-bordered table-sm sortable" cellspacing="0" width="100%">
+        <table id="dtObjects" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead>
                 <th>Risk</th>
             </thead>
@@ -27,7 +27,7 @@
         Others Security Risk ( <%- otherrisk.length %> )
     </div>
     <div class="container">
-        <table id="dtObjects" class="table table-striped table-bordered table-sm sortable" cellspacing="0" width="100%">
+        <table id="dtObjects" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead>
                 <th>Risk</th>
             </thead>
@@ -43,3 +43,8 @@
         </table>
     </div>
 </div>
+<script>
+    $(document).ready( function () {
+                $('#dtObjects').DataTable();
+        } );
+</script>

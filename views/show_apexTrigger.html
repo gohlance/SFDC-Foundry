@@ -13,7 +13,7 @@
     <div class="container">
     <% if (type == 'ApexTrigger') {%>
         
-    <table class="table sortable">
+    <table class="table" id="dtObjects">
         <thead> <%-type%> ( <%-apex.length%> )</thead>
         <th>Name</th>
         <th>Status</th>
@@ -101,4 +101,7 @@
                     }
             }
     });
+    $(document).ready( function () {
+                $('#dtObjects').DataTable();
+        } );
 </script>
