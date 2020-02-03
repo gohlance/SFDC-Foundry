@@ -108,7 +108,7 @@ async function getAllApex(type) {
         return new Promise((resolve, reject) => {
             var query = ""
             if (type == "ApexTrigger") {
-                query = "SELECT Name, TableEnumOrId, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexTrigger"
+                query = "SELECT Name,BodyCrc,ApiVersion, Status, IsValid, EntityDefinitionId,UsageAfterDelete, UsageAfterInsert,UsageAfterUndelete,UsageAfterUpdate,UsageBeforeDelete,UsageBeforeInsert,UsageBeforeUpdate,UsageIsBulk FROM ApexTrigger"
             } else if (type == "ApexPage") {
                 query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexPage"
             } else if (type == "ApexClass") {
