@@ -1,11 +1,11 @@
-psql -h localhost -p 5432 -U my_user -d my_database -f INSTALL_PGMEMENTO.sql
+--psql -h localhost -p 5432 -U my_user -d my_database -f INSTALL_PGMEMENTO.sql
 
-psql -h localhost -p 5432 -U my_user -d my_database -f INIT.sql
+--psql -h localhost -p 5432 -U my_user -d my_database -f INIT.sql
 
 
 -- DROP table
 
-DROP TABLE public.metas;
+-- DROP TABLE public.metas;
 
 CREATE TABLE public.metas (
 	id serial NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE public.metas (
 
 -- DROP table
 
-DROP TABLE public.apextriggers;
+-- DROP TABLE public.apextriggers;
 
 CREATE TABLE public.apextriggers (
 	id serial NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE public.apextriggers (
 
 -- DROP table
 
-DROP TABLE public.sobjectdesribe;
+-- DROP TABLE public.sobjectdesribe;
 
 CREATE TABLE public.sobjectdesribe (
 	id serial NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE public.sobjectdesribe (
 
 -- DROP table
 
-DROP TABLE public.apexpages;
+-- DROP TABLE public.apexpages;
 
 CREATE TABLE public.apexpages (
 	id serial NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE public.apexpages (
 
 -- DROP table
 
-DROP TABLE public.apexclass;
+-- DROP TABLE public.apexclass;
 
 CREATE TABLE public.apexclass (
 	id serial NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE public.apexclass (
 
 -- DROP table
 
-DROP TABLE public.apexcomponents;
+-- DROP TABLE public.apexcomponents;
 
 CREATE TABLE public.apexcomponents (
 	id serial NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE public.apexcomponents (
 
 -- DROP table
 
-DROP TABLE public.profileslayouts;
+-- DROP TABLE public.profileslayouts;
 
 CREATE TABLE public.profileslayouts (
 	id serial NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE public.profileslayouts (
 
 -- DROP table
 
-DROP TABLE public.profiles;
+-- DROP TABLE public.profiles;
 
 CREATE TABLE public.profiles (
 	id serial NOT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE public.profiles (
 
 -- DROP table
 
-DROP TABLE public.layouts;
+-- DROP TABLE public.layouts;
 
 CREATE TABLE public.layouts (
 	id serial NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE public.layouts (
 
 -- DROP table
 
-DROP TABLE public.objects;
+-- DROP TABLE public.objects;
 
 CREATE TABLE public.objects (
 	id serial NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE public.objects (
 
 -- DROP table
 
-DROP TABLE public.customApps;
+-- DROP TABLE public.customApps;
 
 CREATE TABLE public.customApps (
 	id serial NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE public.customApps (
 
 -- DROP table
 
-DROP TABLE public.businessprocess;
+-- DROP TABLE public.businessprocess;
 
 CREATE TABLE public.businessprocess (
 	id serial NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE public.businessprocess (
 
 -- DROP table
 
-DROP TABLE public.workflowrules;
+-- DROP TABLE public.workflowrules;
 
 CREATE TABLE public.workflowrules (
 	id serial NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE public.workflowrules (
 
 -- DROP table
 
-DROP TABLE public.validationrules;
+-- DROP TABLE public.validationrules;
 
 CREATE TABLE public.validationrules (
 	id serial NOT NULL,
@@ -163,7 +163,7 @@ CREATE TABLE public.validationrules (
 
 -- DROP table
 
-DROP TABLE public.recordtypes;
+-- DROP TABLE public.recordtypes;
 
 CREATE TABLE public.recordtypes (
 	id serial NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE public.recordtypes (
 
 -- DROP table
 
-DROP TABLE public.license;
+-- DROP TABLE public.license;
 
 CREATE TABLE public.license (
 	id serial NOT NULL,
@@ -185,7 +185,7 @@ CREATE TABLE public.license (
 
 -- DROP table
 
-DROP TABLE public.orglimits;
+-- DROP TABLE public.orglimits;
 
 CREATE TABLE public.orglimits (
 	id serial NOT NULL,
@@ -196,7 +196,7 @@ CREATE TABLE public.orglimits (
 
 -- DROP table
 
-DROP TABLE public.securityrisk;
+-- DROP TABLE public.securityrisk;
 
 CREATE TABLE public.securityrisk (
 	id serial NOT NULL,
@@ -217,18 +217,3 @@ from public.profiles, lateral jsonb_array_elements(profile -> 'records') elem wh
 $function$
 ;
 
-//Need to create storedprocedure for this
-//This will get all the relationship between profiles and layout
-select distinct 
-elem -> 'LayoutId' as LayoutID, 
-elem -> 'ProfileId' as profile, 
-elem2 -> 'Name' as ProfileName,
-elem -> 'TableEnumOrId' as idontknow,
-elem -> 'RecordTypeId' as Recordtype
-from public.profileslayouts, 
-lateral jsonb_array_elements(profileslayout -> 'records') elem,
-public.profiles,
-lateral jsonb_array_elements(profile -> 'records') elem2
-where replace(cast(elem-> 'ProfileId' as text),'"','') =
-replace(substring(cast(elem2 -> 'attributes'-> 'url' as text) from '([^\/]*$)'), '"','')
-order by elem2 -> 'Name'
