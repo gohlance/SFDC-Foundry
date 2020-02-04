@@ -1,18 +1,7 @@
 <div class="row">
-    <div class="card" style="width: 30%;height:220px">
-        <svg id="fillgauge1" width="97%" height="100" style="margin-top:2"></svg>
-        <div class="card-body text-center">
-            <h5 class="card-title"><%- morethan %> </h5>
-            <p class="card-text">More than 5 trigger active in the object</p>
-        </div>
-    </div>
-    <div class="card" style="width: 30%;height:220px">
-        <svg id="fillgauge2" width="97%" height="100" style="margin-top:2"></svg>
-        <div class="card-body text-center">
-            <h5 class="card-title"><%- lessthan %></h5>
-            <p class="card-text">Less than 5 trigger active in the object</p>
-        </div>
-    </div>
+    <div class="card" style="width: 70%;height:220px">
+        <canvas id="myChart" width="200" height="50"></canvas>
+</div>
     <div class="card" style="width: 30%;height:220px">
         <div class="card-body text-center">
                 <h2 class="card-title"><%- notactive %></h2>
@@ -24,7 +13,7 @@
     <div class="container">
     <% if (type == 'ApexTrigger') {%>
         
-    <table class="table sortable">
+    <table class="table" id="dtObjects">
         <thead> <%-type%> ( <%-apex.length%> )</thead>
         <th>Name</th>
         <th>Status</th>
@@ -37,56 +26,41 @@
         <%}%>
         
     </table>
-    <%} else if (type =='ApexClass'){%>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            <th>Status</th>
-            <th>IsValid</th>
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-                <td><%- apex[i].Status %></td>
-                <% if (apex[i].isValid) {%>
-                    <td>true</td>
-                <% } else {%>
-                    <td>false</td>
-                <%}%>
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%} else if (type == 'ApexComponent'){ %>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-                
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%} else if (type == 'ApexPage') {%>
-        <table class="table sortable">
-            <thead> <%-type%> ( <%-apex.length%> )</thead>
-            <th>Name</th>
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </table>
-    <%}%>
 </div>
 </div>
-<script src="/liquidFillGauge.js"></script>
-<style>
-        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
-</style>
 <script>
-var gauge1 = loadLiquidFillGauge("fillgauge1", <%- morethan %> /
-<%- subheader.length %> *100 );
-var gauge2 = loadLiquidFillGauge("fillgauge2", <%- lessthan %> /
-<%- subheader.length %> *100);
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['> 5 trigger active in the object', '< 5 trigger active in the object'],
+        datasets: [{
+            label: '# of Trigger on an Object',
+            data: [<%- morethan %>, <%- lessthan %>],
+            backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+            ],
+            borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'
+            ],
+                    borderWidth: 1
+            }]
+            },
+            options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                            yAxes: [{
+                                    ticks: {
+                                            beginAtZero: true
+                                    }
+                            }]
+                    }
+            }
+    });
+    $(document).ready( function () {
+                $('#dtObjects').DataTable();
+        } );
 </script>

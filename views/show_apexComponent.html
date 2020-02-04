@@ -1,6 +1,6 @@
 <div class="row">
     <div class="container">
-        <table class="table sortable">
+        <table class="table" id="dtObjects">
             <thead> Apex Component ( <%-apex.length%> )</thead>
             <th>Name</th>
             <th>API Version </th>
@@ -15,3 +15,8 @@
         </table>
     </div>
 </div>
+<script>
+ $(document).ready( function () {
+                $('#dtObjects').DataTable();
+        } );
+</script>

@@ -72,7 +72,7 @@ module.exports = ({
             try {
                 var result = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1', [ctx.session.orgId])
 
-                return ctx.render('objects', {
+                return ctx.render('show_objects', {
                     allObject: result.rows[0]["objectinfo"]["allObject"],
                     totalObject: result.rows[0]["objectinfo"]["allObject"].length,
                     moreObject: result.rows[0]["objectinfo"].morethan100,
