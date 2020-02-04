@@ -194,7 +194,7 @@ async function getAllRecordType() {
 async function getAllValidationRules() {
     try {
         return new Promise((resolve, reject) => {
-            conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,ValidationName FROM ValidationRule", function (err, result) {
+            conn.tooling.query("SELECT Active, Description,ErrorDisplayField,Id, ManageableState,NamespacePrefix,ValidationName FROM ValidationRule", function (err, result) {
                 if (err) {
                     console.log("Error [sfdc-api/getAllValidationRules] : " + err)
                 }
