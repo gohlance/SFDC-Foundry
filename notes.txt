@@ -1,3 +1,7 @@
+SELECT Active, Description,  ManageableState, NamespacePrefix, ValidationName FROM ValidationRule
+
+
+
 1. are there users in the profile? -done
 2. record types active vs not active - do the chart thing on the page - done
 3. records created for particular record type -> select count() from account 
