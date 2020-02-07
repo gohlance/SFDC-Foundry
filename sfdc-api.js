@@ -220,7 +220,6 @@ async function display_Homepage_Objects(session) {
       else {
         return 0
       }
-  
     } catch (error) {
       console.error("Error [getUserLicenseDetails]: " + error)
       return 0

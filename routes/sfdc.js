@@ -19,7 +19,10 @@ oauth2 = new jsforce.OAuth2({
 });
 
 conn = new jsforce.Connection({
-    oauth2: oauth2
+    //oauth2: oauth2
+    oauth2: oauth2,
+    instanceUrl: global.instanceUrl,
+    accessToken: global.accesscode
 })
 
 async function private_gettoken(code) {

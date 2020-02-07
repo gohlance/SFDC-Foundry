@@ -45,6 +45,7 @@ module.exports = {
     set_ConnObject
 }
 
+
 async function letsGetEverything(session) {
     try {
         return new Promise((resolve, reject) => {
@@ -55,10 +56,10 @@ async function letsGetEverything(session) {
                     orgId: session.orgId
                 }
             });
-
+            
             console.log("Worker Started")
             worker.on('message', (message) => {
-                //console.log("I am here " + message.status);
+                console.log("Completed !!!! I am here " + message.status);
                 resolve("Success")
             });
             worker.on('error', reject);
@@ -338,13 +339,13 @@ async function get_UserWithLicense2() {
         console.error("Error [sfdc-api/get_UserWithLicense2] : " + error)
     }
 }
-async function get_Org_limitInfo() {
+async function get_Org_limitInfo(accesscode, instanceurl) {
     try {
         const headers = {
-            'Authorization': 'Bearer ' + global.accesscode,
+            'Authorization': 'Bearer ' + accesscode,
             'X-PrettyPrint': 1,
         };
-        return await axios.get(global.instanceUrl + '/services/data/v45.0/limits/', {
+        return await axios.get(instanceurl + '/services/data/v45.0/limits/', {
             headers
         })
     } catch (error) {

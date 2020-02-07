@@ -150,7 +150,7 @@ async function start_background_call() {
             .finally(console.log("Step 15 done"))
 
         const step16 = new Promise(async (resolve) => {
-                const result = await sfdcmethod.get_Org_limitInfo();
+                const result = await sfdcmethod.get_Org_limitInfo(workerData.accesscode, workerData.instance);
                 resolve(result)
             })
             .then(result => pool.query("INSERT INTO orglimits (orgid, orglimit) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(result.data)]))
@@ -177,19 +177,17 @@ async function start_background_call() {
                     console.log("[SobjectDescribe - Inserting Record Operation]")
                     pool.query("INSERT INTO objects (orgid, objectinfo) VALUES ($1, $2) RETURNING id", [workerData.orgId, JSON.stringify(jsonResult)])
                     console.log("[SobjectDescribe - Inserting Completed]")
+                    parentPort.postMessage({
+                        status: 'Done'
+                    })
                 } catch (error) {
                     console.error("Error [Step14] : " + error);
                     throw new Error("will be caught");
                 }
             }).catch(error => console.log("Step 14: " + error))
             .finally(() => {
-                parentPort.postMessage({
-                    fileName: "Done",
-                    status: 'Done'
-                })
                 console.log("Step 14 done")
             })
-
     } catch (error) {
         console.log("Error [backgroundsvc.js] : " + error)
     }

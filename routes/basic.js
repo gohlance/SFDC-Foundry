@@ -37,15 +37,13 @@ module.exports = ({
     ctx.body = "About US..."
   })
   .get('contact', '/contact', (ctx) => {
-    ctx.session.accesscode = "00D46000001Uq6O!AQoAQMsR9viIZZzjH9gIun3_lx59sjxV0HfZ_sFWjC4W_UlxDygKujDFZGHSjppIabATAO_aqIwnMsnBhDgNydI7Qr1kmWca"
-    ctx.session.orgId = "168"
+    ctx.session.accesscode = "00D46000001Uq6O!AQoAQOmaZktD3oNGSoBRNAXQppLHFDsW4ocqkFgiXffmQiemtKH2cHKbyynijwpSfBK7mpvh6MYAOIH.uNlodgX2r4fQ_h5Q"
+    ctx.session.orgId = "588"
     ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
     ctx.body = "Contact US...."
   })
   .get('payment', '/payment', (ctx) => {
     return ctx.render('payment')
   })
-  .get('testing', '/testing', (ctx) => {
-    return ctx.render('test')
-  })
+
 }
