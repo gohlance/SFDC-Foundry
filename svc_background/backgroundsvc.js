@@ -22,7 +22,7 @@ const pool = new Pool({
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'Beaver',
+    database: 'Beaver2',
     password: 'P@ssw0rd1',
     port: 5432,
     max: 20, // set pool max size to 20
