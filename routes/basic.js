@@ -37,7 +37,7 @@ module.exports = ({
     ctx.body = "About US..."
   })
   .get('contact', '/contact', (ctx) => {
-    ctx.session.accesscode = "00D46000001Uq6O!AQoAQOmaZktD3oNGSoBRNAXQppLHFDsW4ocqkFgiXffmQiemtKH2cHKbyynijwpSfBK7mpvh6MYAOIH.uNlodgX2r4fQ_h5Q"
+    ctx.session.accesscode = "00D46000001Uq6O!AQoAQFMqEg6pq9YHkPPMTPjdNmsId35dfnDdFEn8GiDEs0V3oYCIY_Rxw_Kd8ZuWxQ4b3xg8JT7LerF.BWrsktM8huJRMr6E"
     ctx.session.orgId = "588"
     ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
     ctx.body = "Contact US...."

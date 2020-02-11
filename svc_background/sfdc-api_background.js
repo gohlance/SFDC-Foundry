@@ -24,6 +24,28 @@ var conn = new jsforce.Connection({
 })
 //#endregion
 
+const Pool = require('pg-pool')
+/**
+const pool = new Pool({
+    user: 'bxhbybpvxuyesk',
+    host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
+    database: 'detjik593i3enh',
+    password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
+    port: 5432,
+    max: 20, // set pool max size to 20
+    min: 4
+})
+ */
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'Beaver2',
+  password: 'P@ssw0rd1',
+  port: 5432,
+  max: 20, // set pool max size to 20
+  min: 4
+}) 
+
 module.exports = {
     getAllMeta,
     getAllLayout,
@@ -35,20 +57,33 @@ module.exports = {
     getAllWorkflowRules,
     getAllBusinessProcess,
     getAllCustomApplication,
-    getAllApex,
+    getAllApexTrigger,
+    getAllApexPage,
+    getAllApexComponent,
+    getAllApexClass,
     get_UserWithLicense2,
     get_Org_limitInfo,
     getAllObjectOnce,
     sObjectDescribe,
-    getAllSecruityRisk,
+    getAllSecurityRisk,
     letsGetEverything,
-    set_ConnObject
+    set_ConnObject,
+    insertBackgroundData
 }
 
+async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype){
+    try {
+        let sqlid = await pool.query("INSERT INTO orginformation (orgid, metainformation, objectinformation, orgLicenseInformation, orgLimitsInformation, orgSecurityRisk, sobjectdescribe, apextrigger, apexpage, apexclass, apexcomponent, profile, profile_user, layout, profileslayout, customAppn, businessprocess, workflowrule, validationrule, recordtype) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING id",[orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp, businessprocess, workflowrules, validationRules, recordtype])
+
+        console.log("Returning ID from SQL insert : " + sqlid)
+     } catch (error) {
+         console.log("Error from SQL : " + error)
+     }
+}
 
 async function letsGetEverything(session) {
     try {
-        return new Promise((resolve, reject) => {
+        
             const worker = new Worker('./svc_background/backgroundsvc.js', {
                 workerData: {
                     instance: session.instanceUrl,
@@ -67,7 +102,7 @@ async function letsGetEverything(session) {
                 if (code !== 0)
                     reject(new Error(`Worker stopped with exit code ${code}`));
             })
-        })
+      
     } catch (error) {
         console.log("Error [sfdc-api/letsGetEverything] : " + error)
     }
@@ -82,6 +117,7 @@ async function getAllMeta() {
     try {
         return new Promise((resolve, reject) => {
             conn.metadata.describe().then(response => {
+                console.log("[sfdc-api/getAllMeta] : " + response)
                 resolve(response)
             })
         })
@@ -92,12 +128,16 @@ async function getAllMeta() {
 async function getAllObjectOnce() {
     try {
         return new Promise((resolve, reject) => {
-            conn.describeGlobal(function (err, res) {
+            conn.describeGlobal(async function (err, res) {
                 if (err) {
                     return console.error("Error [sfdc-api/getAllObjectsOnce - describeGlobal] : " + err)
                 }
                 console.log('[sfdc-api/getAllObjectsOnce] No of Objects ' + res.sobjects.length)
-                resolve(res.sobjects)
+                //resolve(res.sobjects)
+                console.log("GetAllObject Once : " + res)
+                jsonResult = await sObjectDescribe(res.sobjects)
+                console.log("GetAllObject Once Returning")
+                resolve([res.sobjects, jsonResult])
             })
         })
     } catch (error) {
@@ -108,6 +148,7 @@ async function getAllApex(type) {
     try {
         return new Promise((resolve, reject) => {
             var query = ""
+            console.log("getAllApex Type = " + type)
             if (type == "ApexTrigger") {
                 query = "SELECT Name,BodyCrc,ApiVersion, Status, IsValid, EntityDefinitionId,UsageAfterDelete, UsageAfterInsert,UsageAfterUndelete,UsageAfterUpdate,UsageBeforeDelete,UsageBeforeInsert,UsageBeforeUpdate,UsageIsBulk FROM ApexTrigger"
             } else if (type == "ApexPage") {
@@ -117,7 +158,7 @@ async function getAllApex(type) {
             } else if (type == "ApexComponent") {
                 query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexComponent"
             }
-
+            console.log("getAllApex Query : " + query)
             conn.tooling.query(query, function (err, result) {
                 if (error) {
                     console.log("Error [sfdc-api/getAllApex - conn.tooling] : " + error)
@@ -130,6 +171,69 @@ async function getAllApex(type) {
         console.error("Error [sfdc-api/getAllApex " + type + " ] : " + error)
     }
 }
+
+async function getAllApexTrigger() {
+    try {
+        return new Promise((resolve, reject) => {
+            console.log("Conn : " + conn.accessToken)
+            conn.tooling.query("SELECT Name,BodyCrc,ApiVersion, Status, IsValid, EntityDefinitionId,UsageAfterDelete, UsageAfterInsert,UsageAfterUndelete,UsageAfterUpdate,UsageBeforeDelete,UsageBeforeInsert,UsageBeforeUpdate,UsageIsBulk FROM ApexTrigger", function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllApexTrigger - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllApexTrigger] : " + result)
+                resolve(result)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllApexTrigger] : " + error)
+    }
+}
+async function getAllApexPage() {
+    try {
+        return new Promise((resolve, reject) => {            
+            conn.tooling.query("SELECT Name, NamespacePrefix, ApiVersion FROM ApexPage", function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllApexPage - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllApexPage] : " + result)
+                resolve(result)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllApexPage] : " + error)
+    }
+}
+async function getAllApexClass() {
+    try {
+        return new Promise((resolve) => {
+              conn.tooling.query("SELECT Name, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexClass", function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllApexClass - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllApexClass] : " + result)
+                resolve(result)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllApexClass] : " + error)
+    }
+}
+async function getAllApexComponent() {
+    try {
+        return new Promise((resolve) => {
+            conn.tooling.query("SELECT Name, NamespacePrefix, ApiVersion FROM ApexComponent", function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllApexComponent - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllApexComponent] : " + result)
+                resolve(result)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllApexComponent] : " + error)
+    }
+}
+
 async function getAllLayout() {
     try {
         return new Promise((resolve, reject) => {
@@ -260,6 +364,7 @@ async function get_TotalUsersByProfile() {
                     return console.error("Error " + err)
                 }
                 let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value()
+                console.log("[sfdc-api/get_TotalUsersByProfile] : " + totalUserLicense)
                 resolve(totalUserLicense)
             });
         })
@@ -332,6 +437,7 @@ async function get_UserWithLicense2() {
                 if (err) {
                     return console.error("Error : " + err)
                 }
+                console.log("[sfdc-api/get_UserWithLicense2] : " + result.records)
                 resolve(result.records)
             })
         })
@@ -353,14 +459,14 @@ async function get_Org_limitInfo(accesscode, instanceurl) {
     }
 }
 
-async function getAllSecruityRisk() {
+async function getAllSecurityRisk() {
     try {
         return new Promise((resolve, reject) => {
             conn.tooling.query("SELECT RiskType, Setting, SettingGroup, OrgValue, StandardValue FROM SecurityHealthCheckRisks", function (err, result) {
                 if (err) {
                     console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
                 }
-                console.log("[sfdc-api/getAllCustomApplication] : " + result)
+                console.log("[sfdc-api/getAllSecurityRisk] : " + result)
                 resolve(result)
             })
         })
