@@ -144,33 +144,6 @@ async function getAllObjectOnce() {
         console.error("Error [sfdc-api/getAllObjectsOnce] : " + error)
     }
 }
-async function getAllApex(type) {
-    try {
-        return new Promise((resolve, reject) => {
-            var query = ""
-            console.log("getAllApex Type = " + type)
-            if (type == "ApexTrigger") {
-                query = "SELECT Name,BodyCrc,ApiVersion, Status, IsValid, EntityDefinitionId,UsageAfterDelete, UsageAfterInsert,UsageAfterUndelete,UsageAfterUpdate,UsageBeforeDelete,UsageBeforeInsert,UsageBeforeUpdate,UsageIsBulk FROM ApexTrigger"
-            } else if (type == "ApexPage") {
-                query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexPage"
-            } else if (type == "ApexClass") {
-                query = "SELECT Name, NamespacePrefix, ApiVersion, Status, IsValid FROM ApexClass"
-            } else if (type == "ApexComponent") {
-                query = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexComponent"
-            }
-            console.log("getAllApex Query : " + query)
-            conn.tooling.query(query, function (err, result) {
-                if (error) {
-                    console.log("Error [sfdc-api/getAllApex - conn.tooling] : " + error)
-                }
-                console.log("[sfdc-api/getAllApex] : " + result)
-                resolve(result)
-            })
-        })
-    } catch (error) {
-        console.error("Error [sfdc-api/getAllApex " + type + " ] : " + error)
-    }
-}
 
 async function getAllApexTrigger() {
     try {
@@ -430,6 +403,7 @@ async function sObjectDescribe(result) {
         console.log("Error [sfdc-api/sObjectDescribe]" + err)
     }
 }
+
 async function get_UserWithLicense2() {
     try {
         return new Promise((resolve, reject) => {

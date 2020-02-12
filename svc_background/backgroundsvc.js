@@ -68,7 +68,7 @@ async function start_background_call() {
                     sfdcmethod.insertBackgroundData(workerData.orgId, 
                         JSON.stringify(meta), 
                         JSON.stringify(objectinfo[0]),
-                        JSON.stringify(license.records),
+                        JSON.stringify(license),
                         JSON.stringify(orglimit.data), 
                         JSON.stringify(securityrisk.records), 
                         JSON.stringify(objectinfo[1]), 
@@ -86,9 +86,9 @@ async function start_background_call() {
                         JSON.stringify(validationRules), 
                         JSON.stringify(recordtype))
                 
-                //parentPort.postMessage({
-                //    status: 'Done'
-                //})
+                parentPort.postMessage({
+                    status: 'Done'
+                })
              })
     } catch (error) {
         console.log("Error [backgroundsvc.js] : " + error)

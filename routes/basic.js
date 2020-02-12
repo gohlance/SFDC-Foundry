@@ -37,7 +37,7 @@ module.exports = ({
     ctx.body = "About US..."
   })
   .get('contact', '/contact', (ctx) => {
-    ctx.session.accesscode = "00D46000001Uq6O!AQoAQFMqEg6pq9YHkPPMTPjdNmsId35dfnDdFEn8GiDEs0V3oYCIY_Rxw_Kd8ZuWxQ4b3xg8JT7LerF.BWrsktM8huJRMr6E"
+    ctx.session.accesscode = "00D46000001Uq6O!AQoAQLhrRfDSY7ujQ3BcS2uK79gCr1q0RL9LrqRLDNeRjYT4_o5F.7a34d18OixvV2pYJxGGtGcE85x.oNM4XDpWgOHsF.15"
     ctx.session.orgId = "588"
     ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
     ctx.body = "Contact US...."
@@ -45,5 +45,4 @@ module.exports = ({
   .get('payment', '/payment', (ctx) => {
     return ctx.render('payment')
   })
-
 }
