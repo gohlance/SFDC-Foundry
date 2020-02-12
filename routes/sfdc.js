@@ -119,21 +119,21 @@ module.exports = ({
         })
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT totalusers FROM profiles where orgid = $1",[ctx.session.orgId])
+                const result = await global.pool.query("SELECT profile_user FROM orginformation where orgid = $1",[ctx.session.orgId])
 
-                const range = _.partition(result.rows[0]["totalusers"]["undefined"], function (item) {
+                const range = _.partition(result.rows[0]["profile_user"]["undefined"], function (item) {
                     return item.Total >= 10;
                 })
 
-                const profileWithOnly_1User = _.partition(result.rows[0]["totalusers"]["undefined"], function (item) {
+                const profileWithOnly_1User = _.partition(result.rows[0]["profile_user"]["undefined"], function (item) {
                     return item.Total == 1;
                 })
 
                 return ctx.render('show_profiles', {
-                    profiles: result.rows[0]["totalusers"]["undefined"],
+                    profiles: result.rows[0]["profile_user"]["undefined"],
                     morethan10: range[0].length,
                     lessthan10: range[1].length,
-                    totalObject: result.rows[0]["totalusers"]["undefined"].length,
+                    totalObject: result.rows[0]["profile_user"]["undefined"].length,
                     singleuser: profileWithOnly_1User[0].length
                 })
             } catch (error) {
@@ -142,7 +142,7 @@ module.exports = ({
         })
         .get('showApexTrigger', '/getApexTrigger', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apextrigger FROM apextriggers WHERE orgid = $1", [ctx.session.orgId])
+                const result = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid = $1", [ctx.session.orgId])
 
                 const range = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').value()
                 const rangeCondition = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').partition(function (item) {
@@ -167,7 +167,7 @@ module.exports = ({
         })
         .get('showApexComponent', '/getApexComponent', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apexcomponent FROM apexcomponents WHERE orgid = $1", [ctx.session.orgId])
+                const result = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1", [ctx.session.orgId])
                 return ctx.render('show_apexComponent', {
                     apex: result.rows[0]["apextrigger"].records,
                 })
@@ -177,7 +177,7 @@ module.exports = ({
         })
         .get('showApexPage', '/getApexPage', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apexpage FROM apexpages WHERE orgid=$1", [ctx.session.orgId])
+                const result = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
                 return ctx.render('show_apexPage', {
                     apex: result.rows[0]["apexpage"].records
                 })

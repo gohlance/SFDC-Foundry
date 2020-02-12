@@ -1,9 +1,6 @@
-SELECT Active, Description,  ManageableState, NamespacePrefix, ValidationName FROM ValidationRule
+1. Need to retest the background task to pull Data, seems like apex section is not pull!
 
 
-
-1. are there users in the profile? -done
-2. record types active vs not active - do the chart thing on the page - done
 3. records created for particular record type -> select count() from account 
     - Have to be objects level
 
@@ -21,22 +18,6 @@ For point 3, need background svc for this.
 
 6. Sharing Settings
 - This is how they can debug.
-
-
--DONE
-4. License Usage
-
-Object {Name: "Salesforce", Status: "Active", attributes: Object, MasterLabel: "Salesforce", UsedLicenses: 96, …}
-attributes:Object {url: "/services/data/v42.0/sobjects/UserLicense/10046000…", type: "UserLicense"}
-LicenseDefinitionKey:"SFDC"
-MasterLabel:"Salesforce"
-MonthlyLoginsEntitlement:null
-MonthlyLoginsUsed:null
-Name:"Salesforce"
-Status:"Active"
-TotalLicenses:550
-UsedLicenses:96
-UsedLicensesLastUpdated:"2020-01-13T13:13:35.000+0000"
 
 
 - DONE

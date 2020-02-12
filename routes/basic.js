@@ -37,7 +37,7 @@ module.exports = ({
     ctx.body = "About US..."
   })
   .get('contact', '/contact', (ctx) => {
-    ctx.session.accesscode = "00D46000001Uq6O!AQoAQOmaZktD3oNGSoBRNAXQppLHFDsW4ocqkFgiXffmQiemtKH2cHKbyynijwpSfBK7mpvh6MYAOIH.uNlodgX2r4fQ_h5Q"
+    ctx.session.accesscode = "00D46000001Uq6O!AQoAQLhrRfDSY7ujQ3BcS2uK79gCr1q0RL9LrqRLDNeRjYT4_o5F.7a34d18OixvV2pYJxGGtGcE85x.oNM4XDpWgOHsF.15"
     ctx.session.orgId = "588"
     ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
     ctx.body = "Contact US...."
@@ -45,10 +45,13 @@ module.exports = ({
   .get('payment', '/payment', (ctx) => {
     return ctx.render('payment')
   })
+<<<<<<< HEAD
   .get('register','/auth/register', (ctx) => {
     return ctx.render('/auth/register')
   })
   .post('register','/auth/register',  async (ctx)=>{
     const user = await global.pool.query("INSERT INTO Users (user_name, user_email, user_password) VALUES ($1, $2, $3)",[ctx.request.body.username, ctx.request.body.useremail, ctx.request.body.userpassword])
   })
+=======
+>>>>>>> master
 }
