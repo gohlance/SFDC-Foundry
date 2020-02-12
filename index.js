@@ -2,11 +2,13 @@
 
 const Koa = require('koa')
 const session = require('koa-session')
-const path = require('path')
 const render = require('koa-ejs')
 const koa_router = require('koa-router')
-
 const logger = require('koa-logger')
+const serve = require('koa-static')
+const passport = require('koa-passport')
+
+const path = require('path')
 const app = new Koa()
 
 //*** Only for Development */
@@ -32,7 +34,7 @@ global.pool = new Pool({
 global.pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'Beaver',
+    database: 'Beaver2',
     password: 'P@ssw0rd1',
     port: 5432,
     max: 20, // set pool max size to 20
@@ -46,7 +48,7 @@ render(app, {
   cache: false,
   debug: true
 })
-var serve = require('koa-static');
+
 
 app.keys = ['82a5193f-37e4-4dba-bf9c-750389f80699']
 //Session for App
@@ -66,6 +68,35 @@ const CONFIG = {
 
 app.use(session(CONFIG,app))
 
+passport.serializeUser((user, done)=>{done(null, user.id)})
+passport.deserializeUser((id, done)=>{
+  global.pool.query("SELECT user_id, user_name, user_email FROM users WHERE user_id = $1", [id])
+             .then((user)=>{
+                done(null, user);  
+             })
+             .catch((err)=>{
+               done(new Error ('User with the id ${id} does not exist'))
+             })
+})
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const options = {};
+passport.use(new LocalStrategy(options, (username, password, done) => {
+  global.pool.query("SELECT user_id, user_name, user_email FROM users WHERE user_id = $1", [id])
+  .then((user) => {
+    if (!user) {
+      done({ type: 'email', message: 'No such user found' }, false);
+      return;
+    }
+    if (bcrypt.compareSync(password, user.password)) {
+      done(null, { id: user.id, email: user.email, userName: user.userName });
+    } else {
+      done({ type: 'password', message: 'Passwords did not match' }, false);
+    }
+  })
+}))
+
+//Serving File from public folder
 app.use(serve('./public'))
 
 //log all events to the terminal
@@ -84,6 +115,7 @@ app.use(async (ctx, next) => {
 
 //router configuration
 const router = new koa_router()
+
 require('./routes/basic')({
   router
 })
