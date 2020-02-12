@@ -69,7 +69,10 @@ const CONFIG = {
 app.use(session(CONFIG,app))
 // body parser
 const bodyParser = require('koa-bodyparser')
-app.use(bodyParser());
+app.use(bodyParser())
+//Passport
+app.use(passport.initialize())
+app.use(passport.session())
 
 passport.serializeUser((user, done)=>{done(null, user.id)})
 passport.deserializeUser((id, done)=>{
@@ -83,8 +86,8 @@ passport.deserializeUser((id, done)=>{
 })
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-const options = {};
-passport.use(new LocalStrategy(options, (username, password, done) => {
+
+passport.use(new LocalStrategy({}, (username, password, done) => {
   global.pool.query("SELECT user_id, user_name, user_email, user_password FROM users WHERE user_name = $1", [username])
   .then((user_result) => {
     let user = user_result.rows[0]
