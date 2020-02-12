@@ -2,11 +2,13 @@
 
 const Koa = require('koa')
 const session = require('koa-session')
-const path = require('path')
 const render = require('koa-ejs')
 const koa_router = require('koa-router')
-
 const logger = require('koa-logger')
+const serve = require('koa-static')
+const passport = require('koa-passport')
+
+const path = require('path')
 const app = new Koa()
 
 //*** Only for Development */
@@ -30,14 +32,14 @@ global.pool = new Pool({
 
 //DEV
 global.pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Beaver2',
-    password: 'P@ssw0rd1',
-    port: 5432,
-    max: 20, // set pool max size to 20
-    min: 4
-}) 
+  user: 'postgres',
+  host: 'localhost',
+  database: 'Beaver2',
+  password: 'P@ssw0rd1',
+  port: 5432,
+  max: 20, // set pool max size to 20
+  min: 4
+})
 
 render(app, {
   root: path.join(__dirname, 'views'),
@@ -46,26 +48,75 @@ render(app, {
   cache: false,
   debug: true
 })
-var serve = require('koa-static');
+
 
 app.keys = ['82a5193f-37e4-4dba-bf9c-750389f80699']
 //Session for App
 const CONFIG = {
-  key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
+  key: 'koa:sess',
+  /** (string) cookie key (default is koa:sess) */
   /** (number || 'session') maxAge in ms (default is 1 days) */
   /** 'session' will result in a cookie that expires when session/browser is closed */
   /** Warning: If a session cookie is stolen, this cookie will never expire */
   maxAge: 86400000,
-  autoCommit: true, /** (boolean) automatically commit headers (default true) */
-  overwrite: true, /** (boolean) can overwrite or not (default true) */
-  httpOnly: true, /** (boolean) httpOnly or not (default true) */
-  signed: true, /** (boolean) signed or not (default true) */
-  rolling: false, /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. (default is false) */
-  renew: false, /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false)*/
+  autoCommit: true,
+  /** (boolean) automatically commit headers (default true) */
+  overwrite: true,
+  /** (boolean) can overwrite or not (default true) */
+  httpOnly: true,
+  /** (boolean) httpOnly or not (default true) */
+  signed: true,
+  /** (boolean) signed or not (default true) */
+  rolling: false,
+  /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. (default is false) */
+  renew: false,
+  /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false)*/
 };
 
-app.use(session(CONFIG,app))
+app.use(session(CONFIG, app))
+// body parser
+const bodyParser = require('koa-bodyparser')
+app.use(bodyParser())
+//Passport
+app.use(passport.initialize())
+app.use(passport.session())
 
+passport.serializeUser((user, done) => {
+  done(null, user)
+})
+passport.deserializeUser((user, done) => {
+  done(null, user);
+})
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+
+passport.use(new LocalStrategy({}, (username, password, done) => {
+  global.pool.query("SELECT user_id, user_name, user_email, user_password FROM users WHERE user_name = $1", [username])
+    .then((user_result) => {
+      let user = user_result.rows[0]
+      if (!user) {
+        done({
+          type: 'email',
+          message: 'No such user found'
+        }, false);
+        return;
+      }
+      if (bcrypt.compareSync(password, user.user_password)) {
+        done(null, {
+          id: user.user_id,
+          email: user.user_email,
+          userName: user.user_name
+        });
+      } else {
+        done({
+          type: 'password',
+          message: 'Passwords did not match'
+        }, false);
+      }
+    })
+}))
+
+//Serving File from public folder
 app.use(serve('./public'))
 
 //log all events to the terminal
@@ -84,6 +135,7 @@ app.use(async (ctx, next) => {
 
 //router configuration
 const router = new koa_router()
+
 require('./routes/basic')({
   router
 })
