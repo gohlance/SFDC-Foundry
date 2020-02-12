@@ -21,6 +21,7 @@ CREATE TABLE public.orginformation (
 	apexclass jsonb NULL,
 	apexcomponent jsonb NULL,
 	profile jsonb NULL,
+	profile_user jsonb NULL,
 	layout jsonb NULL,
 	profileslayout jsonb NULL,
 	customAppn jsonb NULL,
