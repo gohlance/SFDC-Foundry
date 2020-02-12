@@ -75,7 +75,7 @@ module.exports = ({
             try {
                 var result = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1', [ctx.session.orgId])
 
-                return ctx.render('show_objects', {
+                return ctx.render('/show/show_objects', {
                     allObject: result.rows[0]["objectinfo"]["allObject"],
                     totalObject: result.rows[0]["objectinfo"]["allObject"].length,
                     moreObject: result.rows[0]["objectinfo"].morethan100,
@@ -106,7 +106,7 @@ module.exports = ({
 
                 const recordType_NotActive = _.partition(result.rows, 'active')
 
-                return ctx.render('show_recordType', {
+                return ctx.render('/show/show_recordType', {
                     recordType: result.rows,
                     morethan: range[0].length,
                     lessthan: range[1].length,
@@ -129,7 +129,7 @@ module.exports = ({
                     return item.Total == 1;
                 })
 
-                return ctx.render('show_profiles', {
+                return ctx.render('/show/show_profiles', {
                     profiles: result.rows[0]["profile_user"]["undefined"],
                     morethan10: range[0].length,
                     lessthan10: range[1].length,
@@ -152,7 +152,7 @@ module.exports = ({
                 const notActive = _.partition(result.rows[0]["apextrigger"].records, function (item) {
                     return item.Status == "Active"
                 })
-                return ctx.render('show_apexTrigger', {
+                return ctx.render('/show/show_apexTrigger', {
                     type: "ApexTrigger",
                     apex: result.rows[0]["apextrigger"].records,
                     subheader: Object.keys(range),
@@ -168,7 +168,7 @@ module.exports = ({
         .get('showApexComponent', '/getApexComponent', async (ctx) => {
             try {
                 const result = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1", [ctx.session.orgId])
-                return ctx.render('show_apexComponent', {
+                return ctx.render('/show/show_apexComponent', {
                     apex: result.rows[0]["apextrigger"].records,
                 })
             } catch (error) {
@@ -178,7 +178,7 @@ module.exports = ({
         .get('showApexPage', '/getApexPage', async (ctx) => {
             try {
                 const result = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
-                return ctx.render('show_apexPage', {
+                return ctx.render('/show/show_apexPage', {
                     apex: result.rows[0]["apexpage"].records
                 })
             } catch (error) {
@@ -187,14 +187,14 @@ module.exports = ({
         })
         .get('showSecurityRisk', '/showSecurityRisk', async (ctx) => {
             const result = await sfdcmethods.getSecurityRisk('', ctx.session)
-            return ctx.render('show_securityrisk', {
+            return ctx.render('/show/show_securityrisk', {
                 highrisk: result[1],
                 otherrisk: result[0]
             })
         })
         .get('showCustomApp', '/showCustomApp', async (ctx) => {
             const result = await sfdcmethods.getCustomApps('', ctx.session)
-            return ctx.render('show_customapp', {
+            return ctx.render('/show/show_customapp', {
                 result: result
             })
         })
@@ -203,7 +203,7 @@ module.exports = ({
             var abc = "classDiagram\n" + "Animal <|-- Duck"
             console.log(ctx.query)
             const result = await sfdcmethods.get_childRelationship(ctx.query["t"], ctx.session)
-            return ctx.render('show_chart', {
+            return ctx.render('/show/show_chart', {
                 chart: result
             })
         })
