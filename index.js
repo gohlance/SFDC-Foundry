@@ -67,6 +67,9 @@ const CONFIG = {
 };
 
 app.use(session(CONFIG,app))
+// body parser
+const bodyParser = require('koa-bodyparser')
+app.use(bodyParser());
 
 passport.serializeUser((user, done)=>{done(null, user.id)})
 passport.deserializeUser((id, done)=>{
@@ -82,7 +85,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const options = {};
 passport.use(new LocalStrategy(options, (username, password, done) => {
-  global.pool.query("SELECT user_id, user_name, user_email FROM users WHERE user_id = $1", [id])
+  global.pool.query("SELECT user_id, user_name, user_email FROM users WHERE user_name = $1", [username])
   .then((user) => {
     if (!user) {
       done({ type: 'email', message: 'No such user found' }, false);

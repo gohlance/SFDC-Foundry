@@ -31,3 +31,13 @@ CREATE TABLE public.orginformation (
 	recordtype jsonb NULL,
 	CONSTRAINT orginformation_pkey PRIMARY KEY (id)
 );
+
+-- DROP TABLE public.users;
+
+CREATE TABLE public.users (
+	user_id serial NOT NULL,
+	user_name text NULL,
+	user_email text NULL,
+	user_password text NULL,
+	CONSTRAINT users_pkey PRIMARY KEY (user_id)
+);
