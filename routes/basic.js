@@ -1,6 +1,7 @@
 const sfdcmethods = require('../sfdc-api')
 const _ = require('lodash')
 const passport = require('koa-passport');
+const bcrypt = require('bcrypt');
 module.exports = ({
     router
   }) => {
@@ -49,7 +50,8 @@ module.exports = ({
     return ctx.render('/auth/register')
   })
   .post('register','/auth/register',  async (ctx)=>{
-    const user = await global.pool.query("INSERT INTO Users (user_name, user_email, user_password) VALUES ($1, $2, $3)",[ctx.request.body.username, ctx.request.body.useremail, ctx.request.body.userpassword])
+    let hash = bcrypt.hashSync(ctx.request.body.password, 10);
+    const user = await global.pool.query("INSERT INTO Users (user_name, user_email, user_password) VALUES ($1, $2, $3)",[ctx.request.body.username, ctx.request.body.useremail, hash])
     return passport.authenticate('local', (err, user, info, status) => {
       if (user) {
         ctx.login(user);

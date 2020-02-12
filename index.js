@@ -85,14 +85,15 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const options = {};
 passport.use(new LocalStrategy(options, (username, password, done) => {
-  global.pool.query("SELECT user_id, user_name, user_email FROM users WHERE user_name = $1", [username])
-  .then((user) => {
+  global.pool.query("SELECT user_id, user_name, user_email, user_password FROM users WHERE user_name = $1", [username])
+  .then((user_result) => {
+    let user = user_result.rows[0]
     if (!user) {
       done({ type: 'email', message: 'No such user found' }, false);
       return;
     }
-    if (bcrypt.compareSync(password, user.password)) {
-      done(null, { id: user.id, email: user.email, userName: user.userName });
+    if (bcrypt.compareSync(password, user.user_password)) {
+      done(null, { id: user.id, email: user.user_email, userName: user.user_name });
     } else {
       done({ type: 'password', message: 'Passwords did not match' }, false);
     }
