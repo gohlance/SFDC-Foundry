@@ -2,9 +2,6 @@ psql -h localhost -p 5432 -U my_user -d my_database -f INSTALL_PGMEMENTO.sql
 
 psql -h localhost -p 5432 -U my_user -d my_database -f INIT.sql
 
-
--- -- DROP table
-
 -- DROP TABLE public.orginformation;
 
 CREATE TABLE public.orginformation (
@@ -40,4 +37,13 @@ CREATE TABLE public.users (
 	user_email text NULL,
 	user_password text NULL,
 	CONSTRAINT users_pkey PRIMARY KEY (user_id)
+);
+
+CREATE TABLE public.orgs (
+	id serial NOT NULL,
+	orgid text NULL,
+	orgURL text NULL,
+	orgType text NULL,
+	user_id INTEGER REFERENCES users(id)
+	CONSTRAINT orgs_pkey PRIMARY KEY (id)
 );

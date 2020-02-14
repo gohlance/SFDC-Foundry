@@ -16,7 +16,8 @@ module.exports = {
     display_Homepage_Layouts,
     display_Homepage_Objects,
     display_Homepage_Profiles,
-    display_Homepage_RecordTypes
+    display_Homepage_RecordTypes,
+    getAllOrgsByUserId
 }
 
 async function check_firstTime_Login(session){
@@ -223,5 +224,15 @@ async function display_Homepage_Objects(session) {
     } catch (error) {
       console.error("Error [getUserLicenseDetails]: " + error)
       return 0
+    }
+  }
+ 
+  // TODO: not tested
+  async function getAllOrgsByUserId(user_id){
+    try {
+      const result = await global.pool.query("SELECT orgid, orgURL FROM orgs WHERE user_id = $1", [user_id])
+      return result.rows[0]["orgid"]
+    } catch (error) {
+        console.error("Error [getAllOrgsByUserId] : " + error)
     }
   }

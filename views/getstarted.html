@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-5">
+                <h5 class="card-title">Your Salesforce Org Information</h5>
+                <% if (!session.accesscode || !session.instanceUrl) { %>
+                <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.</p>
+                <button class="btn btn-primary" id="btnConnect" type="button">
+                    Connect
+                </button>
+                <% } else {%>
+                <p class="card-text">Instance Connected : <%- session.instanceUrl %></p>
+                <button class="btn btn-primary" id="btnRefresh" type="button">
+                    Refresh
+                </button>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+            <% _.forEach(<%- allOrgs%>, function(value){ %>
+                <div class="card-body">
+                  <a href='/welcome?org='+ <%- value %> > <%- value %> </a>
+                </div>
+            <% })%>
+            
+        </div>
+    </div>
+</div>

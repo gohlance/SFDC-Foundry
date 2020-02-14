@@ -46,9 +46,7 @@ module.exports = ({
     .get('payment', '/payment', (ctx) => {
       return ctx.render('payment')
     })
-    .get('register', '/auth/register', (ctx) => {
-      return ctx.render('/auth/register')
-    })
+    
     .post('register', '/auth/register', async (ctx) => {
       let hash = bcrypt.hashSync(ctx.request.body.password, 10);
       const user = await global.pool.query("INSERT INTO Users (user_name, user_email, user_password) VALUES ($1, $2, $3)", [ctx.request.body.username, ctx.request.body.useremail, hash])
@@ -64,9 +62,7 @@ module.exports = ({
         }
       })(ctx);
     })
-    .get('login', '/auth/login', (ctx) => {
-      return ctx.render('/auth/login')
-    })
+    
     .post('login','/auth/login', async (ctx) => {
       return passport.authenticate('local', (err, user, info, status) => {
         if (user) {
@@ -89,9 +85,12 @@ module.exports = ({
         ctx.throw(401)
       }
     })
-    .get('status-auth','/auth/status', (ctx)=>{
+    .get('getStarted','/getstarted', (ctx) => {
       if (ctx.isAuthenticated()){
-        return ctx.render('/auth/status')
+        //Call a method to get all the orgs with the userid
+        return ctx.render('getstarted',{
+          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(session.user_id),0)
+        })
       }
     })
 }
