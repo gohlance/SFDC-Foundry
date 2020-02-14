@@ -1,37 +1,91 @@
 <div class="container">
   <div class="jumbotron">
     <div class="container for-about">
-    <h1 style="color:whitesmoke">Sign Up</h1>
-    <form action="/oauth2/auth" method="GET">
-      <div class="form-group">
+      <h1 style="color:whitesmoke">Sign Up</h1>
+      <form action="/oauth2/auth" method="GET">
+        <div class="form-group">
           <button type="submit" class="btn btn-primary">Let's go</button>
+          <button type="button" class="btn btn-primary" id="btnLetsgo">Sign Up / Login</button>
           <label for="colFormLabelLg" class="col-md-12 col-form-label col-form-label-lg" style="color:whitesmoke">
             Get more insight into your salesforce org now!</label>
-      </div>
-    </form>
+        </div>
+      </form>
     </div>
- </div>
- <div class="row">
-   <div class="col-md-4">
-    Benefit 1
-   </div>
-   <div class="col-md-4">
-    Benefit 2
   </div>
-  <div class="col-md-4">
-    Benefit 3
+  <div class="row">
+    <div class="col-md-4">
+      Benefit 1
+    </div>
+    <div class="col-md-4">
+      Benefit 2
+    </div>
+    <div class="col-md-4">
+      Benefit 3
+    </div>
   </div>
- </div>
 </div>
 
+<div class="modal" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Account Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a href="#signupTab" class="nav-link active" aria-controls="signupTab" role="tab"
+                data-toggle="tab">Sign Up</a>
+            </li>
+            <li class="nav-item"><a href="#loginTab" aria-controls="loginTab"  class="nav-link" role="tab" data-toggle="tab">Login</a>
+            </li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="signupTab">
+             </br>
+              <form action="/auth/register" method="post">
+                <p><label>Username: <input type="text" name="username" /></label></p>
+                <p><label>Password: <input type="password" name="password" /></label></p>
+                <p><button type="submit" class="btn btn-primary">Register</button> <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></p>
+              </form>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="loginTab">
+            </br>
+              <form action="/auth/login" method="post">
+                <p><label>Username: <input type="text" name="username" /></label></p>
+                <p><label>Password: <input type="password" name="password" /></label></p>
+                <p><button type="submit" class="btn btn-primary">Login</button> <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></p>
+              </form>
+            </div>
+          </div>
+      </div>
+    </div> 
+  </div>
+</div>
+</div>
+
+<script>
+  $(function () {
+    $('#btnLetsgo').click(function () {
+      $('#myModal').modal('show');
+    });
+
+  })
+</script>
+
 <style>
-  .jumbotron{
-    background: url("jumbotronbg.jpg") no-repeat center center; 
+  .jumbotron {
+    background: url("jumbotronbg.jpg") no-repeat center center;
     -webkit-background-size: 100% 100%;
     -moz-background-size: 100% 100%;
     -o-background-size: 100% 100%;
     background-size: 100% 100%;
     min-height: 500px;
-    max-height:3727px;
-}
+    max-height: 3727px;
+  }
 </style>

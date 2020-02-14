@@ -207,7 +207,6 @@
 
 <script>
     $(function (){
-
         $("#btnRefresh").click(function () {
             //console.log($(this).attr('id'));
             $(this).prop("disabled", true);
@@ -233,7 +232,6 @@
             });
         });
         $("#btnConnect, #btnConnect2").click(function () {
-            console.log("Hello");
             $(this).prop("disabled", true);
             $(this).html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'

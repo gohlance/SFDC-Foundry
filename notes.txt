@@ -1,5 +1,3 @@
-1. Need to retest the background task to pull Data, seems like apex section is not pull!
-
 
 3. records created for particular record type -> select count() from account 
     - Have to be objects level
