@@ -89,7 +89,7 @@ module.exports = ({
       if (ctx.isAuthenticated()){
         //Call a method to get all the orgs with the userid
         return ctx.render('getstarted',{
-          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(session.user_id),0)
+          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.user_id),0)
         })
       }
     })

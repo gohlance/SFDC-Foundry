@@ -17,7 +17,8 @@ module.exports = {
     display_Homepage_Objects,
     display_Homepage_Profiles,
     display_Homepage_RecordTypes,
-    getAllOrgsByUserId
+    getAllOrgsByUserId,
+    saveUserOrg
 }
 
 async function check_firstTime_Login(session){
@@ -227,6 +228,7 @@ async function display_Homepage_Objects(session) {
     }
   }
  
+
   // TODO: not tested
   async function getAllOrgsByUserId(user_id){
     try {
@@ -234,5 +236,13 @@ async function display_Homepage_Objects(session) {
       return result.rows[0]["orgid"]
     } catch (error) {
         console.error("Error [getAllOrgsByUserId] : " + error)
+    }
+  }
+//TODO: check if org exist if not then save
+  function saveUserOrg(user_id, orgId, orgUrl){
+    try {
+      const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgURL) VALUES ($1, $2, $3)", orgId, user_id, orgUrl)
+    } catch (error) {
+      console.error("Error [saveUserOrg] : " + error)
     }
   }

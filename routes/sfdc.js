@@ -58,6 +58,9 @@ module.exports = ({
                 ctx.session.instanceUrl = decrypt[1]
                 ctx.session.orgId = decrypt[3]
                 ctx.redirect('/welcome')
+
+                //TODO : missing validation if the org already exist.
+                sfdcmethods.saveUserOrg(ctx.session.user_id, decrypt[3],decrypt[1])
             }else{
                 ctx.redirect('/index')
             }
@@ -87,6 +90,7 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
+                
                 const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
                 console.log("***  : "  +result)
                 ctx.redirect('/welcome')
