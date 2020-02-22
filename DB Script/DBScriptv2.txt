@@ -36,8 +36,11 @@ CREATE TABLE public.users (
 	user_name text NULL,
 	user_email text NULL,
 	user_password text NULL,
-	CONSTRAINT users_pkey PRIMARY KEY (user_id)
+	CONSTRAINT users_pkey PRIMARY KEY (user_id),
+	CONSTRAINT unique_email UNIQUE(user_email)
 );
+
+-- DROP TABLE public.orgs;
 
 CREATE TABLE public.orgs (
 	id serial NOT NULL,

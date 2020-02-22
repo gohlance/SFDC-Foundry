@@ -38,7 +38,7 @@ module.exports = ({
       ctx.body = "About US..."
     })
     .get('contact', '/contact', (ctx) => {
-      ctx.session.accesscode = "00D46000001Uq6O!AQoAQLhrRfDSY7ujQ3BcS2uK79gCr1q0RL9LrqRLDNeRjYT4_o5F.7a34d18OixvV2pYJxGGtGcE85x.oNM4XDpWgOHsF.15"
+      ctx.session.accesscode = "00D46000001Uq6O!AQoAQCwYy0PL7kuxyBbh8NxdLUCOzJSUZPg4gfhYCiJt_YeIt8S51rh6gdQhbd7AAQ2EiqHomxqc2PNoHnet3b5hd6Qgt3MS"
       ctx.session.orgId = "588"
       ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
       ctx.body = "Contact US...."
@@ -53,7 +53,7 @@ module.exports = ({
       return passport.authenticate('local', (err, user, info, status) => {
         if (user) {
           ctx.login(user);
-          ctx.redirect('/auth/status');
+          ctx.redirect('/getstarted');
         } else {
           ctx.status = 400;
           ctx.body = {
@@ -67,7 +67,7 @@ module.exports = ({
       return passport.authenticate('local', (err, user, info, status) => {
         if (user) {
           ctx.login(user);
-          ctx.redirect('/auth/status');
+          ctx.redirect('/getstarted');
         } else {
           ctx.status = 400;
           ctx.body = {
@@ -85,11 +85,11 @@ module.exports = ({
         ctx.throw(401)
       }
     })
-    .get('getStarted','/getstarted', (ctx) => {
+    .get('getStarted','/getstarted',async (ctx) => {
       if (ctx.isAuthenticated()){
         //Call a method to get all the orgs with the userid
         return ctx.render('getstarted',{
-          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.user_id),0)
+          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0)
         })
       }
     })

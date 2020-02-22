@@ -238,8 +238,9 @@ async function display_Homepage_Objects(session) {
         console.error("Error [getAllOrgsByUserId] : " + error)
     }
   }
+
 //TODO: check if org exist if not then save
-  function saveUserOrg(user_id, orgId, orgUrl){
+  async function saveUserOrg(user_id, orgId, orgUrl){
     try {
       const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgURL) VALUES ($1, $2, $3)", orgId, user_id, orgUrl)
     } catch (error) {

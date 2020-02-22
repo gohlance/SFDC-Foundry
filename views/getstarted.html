@@ -21,12 +21,8 @@
     </div>
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
-            <% _.forEach(<%- allOrgs%>, function(value){ %>
-                <div class="card-body">
-                  <a href='/welcome?org='+ <%- value %> > <%- value %> </a>
-                </div>
-            <% })%>
-            
+            <% allOrgs%>
+          
         </div>
     </div>
 </div>
