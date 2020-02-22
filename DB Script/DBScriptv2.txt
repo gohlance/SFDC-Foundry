@@ -44,6 +44,7 @@ CREATE TABLE public.orgs (
 	orgid text NULL,
 	orgURL text NULL,
 	orgType text NULL,
-	user_id INTEGER REFERENCES users(id)
-	CONSTRAINT orgs_pkey PRIMARY KEY (id)
+	user_id INTEGER REFERENCES users(user_id),
+	CONSTRAINT orgs_pkey PRIMARY KEY (id),
+	CONSTRAINT user_orgs UNIQUE (user_id, orgid)
 );

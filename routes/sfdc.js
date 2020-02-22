@@ -54,13 +54,12 @@ module.exports = ({
             var code = ctx.request.query["code"]
             let decrypt = await private_gettoken(code)
             if (decrypt[0] == true) {
+                 //TODO : missing validation if the org already exist.
+                sfdcmethods.saveUserOrg(ctx.session.user_id, decrypt[3],decrypt[1])
                 ctx.session.accesscode = decrypt[2]
                 ctx.session.instanceUrl = decrypt[1]
                 ctx.session.orgId = decrypt[3]
                 ctx.redirect('/welcome')
-
-                //TODO : missing validation if the org already exist.
-                sfdcmethods.saveUserOrg(ctx.session.user_id, decrypt[3],decrypt[1])
             }else{
                 ctx.redirect('/index')
             }
