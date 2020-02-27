@@ -38,7 +38,7 @@ module.exports = ({
       ctx.body = "About US..."
     })
     .get('contact', '/contact', (ctx) => {
-      ctx.session.accesscode = "00D46000001Uq6O!AQoAQCwYy0PL7kuxyBbh8NxdLUCOzJSUZPg4gfhYCiJt_YeIt8S51rh6gdQhbd7AAQ2EiqHomxqc2PNoHnet3b5hd6Qgt3MS"
+      ctx.session.accesscode = "00D46000001Uq6O!AQoAQPs0Y0REbp2vbGHPsdnXJUQM9sVXX4DEqFTyzHt05fCks0h0QlIHLN.CIvmuMAbAdaMBfhLcbQjfH0drcj00.284Hkmx"
       ctx.session.orgId = "588"
       ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
       ctx.body = "Contact US...."
@@ -89,7 +89,8 @@ module.exports = ({
       if (ctx.isAuthenticated()){
         //Call a method to get all the orgs with the userid
         return ctx.render('getstarted',{
-          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0)
+          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0),
+          session: ctx.session
         })
       }
     })
