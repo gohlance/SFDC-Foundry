@@ -11,9 +11,11 @@ module.exports = ({
     })
     .get('welcome', '/welcome', async (ctx) => {
       console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
-      if (!ctx.session.accesscode || !ctx.session.instanceUrl) {
-        return ctx.render('index')
-      } else {
+      console.log("QueryString : " + ctx.request.query["org"])
+      if (ctx.isAuthenticated){
+        if (!ctx.session.orgId){
+          ctx.session.orgId = ctx.request.query["org"]
+        }
 
         return ctx.render('welcome', {
           result_objects: _.defaultTo(await sfdcmethods.display_Homepage_Objects(ctx.session), 0),
@@ -29,6 +31,9 @@ module.exports = ({
           result_customapp: _.defaultTo(await sfdcmethods.getCustomApps("HOME", ctx.session), [0, 0, 0]),
           session: ctx.session
         })
+
+      }else{
+        return ctx.render('index')
       }
     })
     .get('index', '/index', (ctx) => {
