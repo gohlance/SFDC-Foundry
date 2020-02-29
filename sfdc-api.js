@@ -58,17 +58,17 @@ async function getCustomApps(type, session){
     }
   }
 
-async function getSecurityRisk(type, session){
+async function orgsecurityrisk(type, session){
     try {
-      const result = await global.pool.query("SELECT orgSecurityRisk FROM orginformation WHERE orgid=$1", [session.orgId])
-      if (result.rows[0]["orgSecurityRisk"].length > 0){
-        const highrisk = _.partition(result.rows[0]["orgSecurityRisk"], function (item){
+      const result = await global.pool.query("SELECT orgsecurityrisk FROM orginformation WHERE orgid=$1", [session.orgId])
+      if (result.rows[0]["orgsecurityrisk"].length > 0){
+        const highrisk = _.partition(result.rows[0]["orgsecurityrisk"], function (item){
           return item.RiskType == "HIGH_RISK"
         })
         if (type == "HOME")
-            return [result.rows[0]["orgSecurityRisk"].length, highrisk[0].length]
+            return [result.rows[0]["orgsecurityrisk"].length, highrisk[0].length]
         else
-            return [result.rows[0]["orgSecurityRisk"], highrisk[0]]
+            return [result.rows[0]["orgsecurityrisk"], highrisk[0]]
       }else{
         return 0
       }
