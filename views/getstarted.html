@@ -24,14 +24,12 @@
     </div>
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
-            <% allOrgs%>
-            <% _.forEach(<%- allOrgs%>, function(value){ %>
+            <% allOrgs.forEach(element => { %>
                 <div class="card-body">
-                  <a href='/welcome?org='+ <%- value %> > <%- value %> </a>
+                    <a href='/welcome?org=<%= element.orgid %>'> <%= element.orgurl %> </a>
                 </div>
-            <% })%>
-            
-
-                    </div>
-                </div>
-            </div>
+            <%});%>
+           
+        </div>
+    </div>
+       
