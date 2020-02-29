@@ -216,9 +216,9 @@ async function display_Homepage_Objects(session) {
   async function getUserLicenseDetails(session) {
     try {
       // BUG - TypeError: Cannot read property 'license' of undefined
-      const result = await global.pool.query("SELECT orgLicenseInformation FROM orginformation WHERE orgid=$1", [session.orgId])
-      if (result.rows[0]["orgLicenseInformation"].length > 0)
-        return result.rows[0]["orgLicenseInformation"]
+      const result = await global.pool.query("SELECT orglicenseinformation FROM orginformation WHERE orgid=$1 ORDER BY id DESC limit 1", [session.orgId])
+      if (result.rows[0]["orglicenseinformation"].length > 0)
+        return result.rows[0]["orglicenseinformation"]
       else {
         return 0
       }
