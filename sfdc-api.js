@@ -101,7 +101,7 @@ async function display_Homepage_Objects(session) {
     try {
       const result_object = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1', [session.orgId])
       if (result_object.rows[0]["objectinformation"] != null)
-        return return_Object = result_object.rows[0]["objectinformation"]["allObject"].length
+        return return_Object = result_object.rows[0]["objectinformation"].length
       else
         return return_Object = 0
     } catch (error) {
@@ -201,10 +201,10 @@ async function display_Homepage_Objects(session) {
   
   async function getMoreOrgDetails(session) {
     try {
-      const result = await global.pool.query("SELECT orgLimitsInformation FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result = await global.pool.query("SELECT orglimitsinformation FROM orginformation WHERE orgid=$1", [session.orgId])
       // BUG  - TypeError: Cannot read property 'orglimit' of undefined
-      if (result.rows[0]["orgLimitsInformation"].size > 0)
-        return result.rows[0]["orgLimitsInformation"]
+      if (result.rows[0]["orglimitsinformation"].size > 0)
+        return result.rows[0]["orglimitsinformation"]
       else
         return 0
     } catch (error) {
