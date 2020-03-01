@@ -12,7 +12,8 @@ module.exports = ({
     .get('welcome', '/welcome', async (ctx) => {
       console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
       console.log("QueryString : " + ctx.request.query["org"])
-      if (ctx.isAuthenticated){
+      console.log("Authenticated : " + ctx.isAuthenticated())
+      if (ctx.isAuthenticated()){
         if (!ctx.session.orgId){
           ctx.session.orgId = ctx.request.query["org"]
         }

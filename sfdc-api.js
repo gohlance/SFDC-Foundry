@@ -58,7 +58,7 @@ async function getCustomApps(type, session){
     }
   }
 
-async function orgsecurityrisk(type, session){
+async function getSecurityRisk(type, session){
     try {
       const result = await global.pool.query("SELECT orgsecurityrisk FROM orginformation WHERE orgid=$1", [session.orgId])
       if (result.rows[0]["orgsecurityrisk"].length > 0){
