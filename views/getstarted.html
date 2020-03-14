@@ -23,13 +23,14 @@
         </div>
     </div>
     <div class="row">
+        <% if (allOrgs > 0) {%>
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
             <% allOrgs.forEach(element => { %>
                 <div class="card-body">
                     <a href='/welcome?org=<%= element.orgid %>'> <%= element.orgurl %> </a>
                 </div>
             <%});%>
-           
         </div>
+        <%}%>
     </div>
        
