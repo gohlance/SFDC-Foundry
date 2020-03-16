@@ -33,4 +33,53 @@
         </div>
         <%}%>
     </div>
-       
+
+    <script>
+        $(function (){
+            $("#btnRefresh").click(function () {
+                //console.log($(this).attr('id'));
+                $(this).prop("disabled", true);
+                $(this).html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+                    );
+                var btn = $(this);
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    url: '/everything',
+                    contentType: "application/json",
+                    dataType: "text",
+                    success: function (data) {
+                        console.log("Success");
+                        console.log(data);
+                    },
+                    complete: function (response, status) {
+                        btn.removeAttr("disabled");
+                        btn.remove(".spinner-border.spinner-border-sm");
+                        btn.html('Refresh');
+                    }
+                });
+            });
+            $("#btnConnect, #btnConnect2").click(function () {
+                $(this).prop("disabled", true);
+                $(this).html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+                    );
+                var btn = $(this);
+                $.ajax({
+                    type: 'GET',
+                    cache: false,
+                    url: '/oauth2/auth',
+                    contentType: "application/json",
+                    success: function (data) {
+                        console.log("Success");
+                    },
+                    complete: function () {
+                        btn.removeAttr("disabled");
+                        btn.remove(".spinner-border.spinner-border-sm");
+                        btn.html('Connect');
+                    }
+                });
+            })
+        });
+    </script>
