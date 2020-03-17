@@ -60,8 +60,8 @@
                     }
                 });
             });
-            $("#btnConnect, #btnConnect2").click(function (event) {
-                event.preventDefault();
+            $("#btnConnect, #btnConnect2").click(function () {
+                
                 $(this).prop("disabled", true);
                 $(this).html(
                     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
@@ -69,7 +69,6 @@
                 var btn = $(this);
                 $.ajax({
                     type: 'GET',
-                    cache: false,
                     url: '/oauth2/auth/',
                     contentType: "application/json",
                     success: function (data) {
