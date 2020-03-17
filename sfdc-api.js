@@ -232,7 +232,7 @@ async function display_Homepage_Objects(session) {
   // TODO: not tested
   async function getAllOrgsByUserId(user_id){
     try {
-      const result = await global.pool.query("SELECT orgid, orgURL FROM orgs WHERE user_id = $1", [user_id])
+      const result = await global.pool.query("SELECT orgid, orgurl FROM orgs WHERE user_id = $1", [user_id])
       if (result.rowCount == 0)
         return 0
       else
