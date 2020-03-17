@@ -95,7 +95,7 @@ async function letsGetEverything(session) {
             console.log("Worker Started")
             worker.on('message', (message) => {
                 console.log("Completed !!!! I am here " + message.status);
-                resolve("Success")
+                //resolve("Success")
             });
             worker.on('error', reject);
             worker.on('exit', (code) => {
