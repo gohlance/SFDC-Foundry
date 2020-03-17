@@ -55,8 +55,8 @@ module.exports = ({
             let decrypt = await private_gettoken(code)
             if (decrypt[0] == true) {
                  //TODO : missing validation if the org already exist.
-                console.log("CTX session : " + ctx.session.userid)
-                sfdcmethods.saveUserOrg(ctx.session.user_id, decrypt[3],decrypt[1])
+                console.log("CTX session : " + ctx.session.passport.user.id)
+                sfdcmethods.saveUserOrg(tx.session.passport.user.id, decrypt[3],decrypt[1])
                 ctx.session.accesscode = decrypt[2]
                 ctx.session.instanceUrl = decrypt[1]
                 ctx.session.orgId = decrypt[3]
