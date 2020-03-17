@@ -8,9 +8,7 @@
                         <% if (!session.accesscode || !session.instanceUrl) { %>
                         <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.
                         </p>
-                        <button class="btn btn-primary" id="btnConnect" type="button">
-                            Connect
-                        </button>
+                        <a href="/oauth2/auth" class="btn btn-primary">Connect</a>
                         <% } else {%>
                         <p class="card-text">Instance Connected : <%- session.instanceUrl %></p>
                         <button class="btn btn-primary" id="btnRefresh" type="button">
