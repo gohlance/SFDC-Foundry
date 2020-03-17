@@ -25,7 +25,7 @@ var conn = new jsforce.Connection({
 //#endregion
 
 const Pool = require('pg-pool')
-/**
+
 const pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -35,7 +35,8 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 })
- */
+
+/**
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -45,7 +46,7 @@ const pool = new Pool({
   max: 20, // set pool max size to 20
   min: 4
 }) 
-
+ */
 module.exports = {
     getAllMeta,
     getAllLayout,
