@@ -95,7 +95,7 @@ module.exports = ({
       if (ctx.isAuthenticated()){
         //Call a method to get all the orgs with the userid
         let something = _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0)
-        console.log("What is something : " + something)
+        console.log("What is something : " + JSON.stringify(something))
         return ctx.render('getstarted',{
           allOrgs: something,
           session: ctx.session
