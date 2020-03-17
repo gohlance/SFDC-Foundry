@@ -233,6 +233,7 @@ async function display_Homepage_Objects(session) {
   async function getAllOrgsByUserId(user_id){
     try {
       const result = await global.pool.query("SELECT orgid, orgurl FROM orgs WHERE user_id = $1", [user_id])
+      console.log("Count : " + result.rowCount)
       if (result.rowCount == 0)
         return 0
       else
