@@ -98,6 +98,8 @@ module.exports = ({
           allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0),
           session: ctx.session
         })
+      }else{
+        ctx.redirect('index');
       }
     })
 }
