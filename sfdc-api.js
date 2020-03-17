@@ -227,14 +227,9 @@ async function display_Homepage_Objects(session) {
       return 0
     }
   }
- 
-
-  // TODO: not tested
   async function getAllOrgsByUserId(user_id){
     try {
       const result = await global.pool.query("SELECT orgid, orgurl FROM orgs WHERE user_id = $1", [user_id])
-      console.log("Count : " + result.rowCount)
-      console.log("Result : " + JSON.stringify(result.rows))
       if (result.rowCount == 0)
         return 0
       else
@@ -243,8 +238,6 @@ async function display_Homepage_Objects(session) {
         console.error("Error [getAllOrgsByUserId] : " + error)
     }
   }
-
-//TODO: check if org exist if not then save, Error: Query values must be an array
   async function saveUserOrg(user_id, orgId, orgUrl){
     try {
       const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgurl) VALUES ($1, $2, $3)", [orgId, user_id, orgUrl])

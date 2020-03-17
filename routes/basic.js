@@ -94,11 +94,8 @@ module.exports = ({
     .get('getStarted','/getstarted',async (ctx) => {
       if (ctx.isAuthenticated()){
         //Call a method to get all the orgs with the userid
-        let something = _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0)
-        console.log("What is something : " + JSON.stringify(something))
-       
         return ctx.render('getstarted',{
-          allOrgs: something,
+          allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0),
           session: ctx.session
         })
       }else{
