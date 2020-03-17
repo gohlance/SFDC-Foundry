@@ -244,9 +244,8 @@ async function display_Homepage_Objects(session) {
 
 //TODO: check if org exist if not then save, Error: Query values must be an array
   async function saveUserOrg(user_id, orgId, orgUrl){
-    console.log("**** uusdid : " + user_id)
     try {
-      const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgurl) VALUES ($1, $2, $3)", orgId, user_id, orgUrl)
+      const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgurl) VALUES ($1, $2, $3)", [orgId, user_id, orgUrl])
     } catch (error) {
       console.error("Error [saveUserOrg] : " + error)
     }
