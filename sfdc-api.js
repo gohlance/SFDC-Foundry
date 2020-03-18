@@ -248,7 +248,7 @@ async function display_Homepage_Objects(session) {
   }
   async function deleteUserOrg(orgId){
     try{
-
+      const reuslt = await global.pool.query("DELETE FROM orgs WHERE orgid = $1",[orgId])
     }catch (error){
       console.error("Error  [deleteUserOrg] : "+ error)
     }
