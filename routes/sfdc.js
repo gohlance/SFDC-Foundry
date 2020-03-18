@@ -212,7 +212,7 @@ module.exports = ({
         })
 
         .post('deleteConnectedOrg','/deleteOrg', async (ctx) => {
-            console.log(ctx.request.body.data)
+            console.log(ctx.request.body)
             //const result = await sfdcmethods.deleteUserOrg()
         })
 
