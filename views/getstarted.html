@@ -22,17 +22,27 @@
     </div>
     <div class="row">
         <% if (allOrgs != 0) {%>
-        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
-            <% allOrgs.forEach(element => { %>
-                <div class="card-body">
-                    <a href='/welcome?org=<%= element.orgid %>'> <%= element.orgurl %> </a>
-                </div>
-            <%});%>
-        </div>
-        <%}%>
+                        <div class="container">
+                            <table class="table" id="dtObjects">
+                                <thead> Org Information </thead>
+                                <th> Org Name </th>
+                                <% allOrgs.forEach(element => { %>
+                                <tr>
+                                    <td>
+                                        <a href='/welcome?org=<%= element.orgid %>'> <%= element.orgurl %> </a>
+                                    </td>
+                                    <td>
+                                        <a href="" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                <%});%>
+                            </table>
+                        </div>
+                        <%}%>
     </div>
 
     <script>
+        var editor;
         $(function (){
             $("#btnRefresh").click(function () {
                 //console.log($(this).attr('id'));
@@ -79,5 +89,16 @@
                     }
                 });
             })
+
+            editor = new $.fn.dataTable.Editor();
+            $('#dtObjects').on('click', 'a.btn.btn-danger', function (e) {
+                e.preventDefault();
+    
+                editor.remove( $(this).closest('tr'), {
+                    title: 'Delete record',
+                    message: 'Are you sure you wish to remove this record?',
+                    buttons: 'Delete'
+                } );
+            });
         });
     </script>
