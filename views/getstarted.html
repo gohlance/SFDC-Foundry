@@ -95,7 +95,7 @@
                 $.ajax({
                     type: 'POST',
                     url: '/deleteOrg',
-                    data: [orgid],
+                    data: JSON.stringify(orgid),
                     contentType: "application/json",
                     success: function (data) {
                         console.log("Success");
