@@ -28,7 +28,7 @@
                                 <% allOrgs.forEach(element => { %>
                                 <tr>
                                     <td>
-                                        <a href='/welcome?org=<%= element.orgid %>'> <%= element.orgurl %> </a>
+                                        <a id="connectedOrg" href='/welcome?org=<%= element.orgid %>'> <%= element.orgurl %> </a>
                                     </td>
                                     <td>
                                         <a href="" class="btn btn-danger">Delete</a>
@@ -68,7 +68,6 @@
                 });
             });
             $("#btnConnect, #btnConnect2").click(function () {
-                
                 $(this).prop("disabled", true);
                 $(this).html(
                     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
@@ -91,6 +90,8 @@
 
             $('#dtObjects').on('click', 'a.btn.btn-danger', function (e) {
                 e.preventDefault();
+                var ID = $(this).attr('id');
+                console.log(ID);
                 $(this).parent().parent().remove();
             });
         });

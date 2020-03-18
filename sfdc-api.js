@@ -18,7 +18,8 @@ module.exports = {
     display_Homepage_Profiles,
     display_Homepage_RecordTypes,
     getAllOrgsByUserId,
-    saveUserOrg
+    saveUserOrg,
+    deleteUserOrg
 }
 
 async function check_firstTime_Login(session){
@@ -243,5 +244,12 @@ async function display_Homepage_Objects(session) {
       const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgurl) VALUES ($1, $2, $3)", [orgId, user_id, orgUrl])
     } catch (error) {
       console.error("Error [saveUserOrg] : " + error)
+    }
+  }
+  async function deleteUserOrg(orgId){
+    try{
+
+    }catch (error){
+      console.error("Error  [deleteUserOrg] : "+ error)
     }
   }
