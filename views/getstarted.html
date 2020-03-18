@@ -90,9 +90,17 @@
 
             $('#dtObjects').on('click', 'a.btn.btn-danger', function (e) {
                 e.preventDefault();
-                var ID = $(this).attr('id');
-                console.log(ID);
+                var orgid = $(this).attr('id');
                 $(this).parent().parent().remove();
+                $.ajax({
+                    type: 'POST',
+                    url: '/deleteOrg',
+                    data: orgid,
+                    contentType: "application/json",
+                    success: function (data) {
+                        console.log("Success");
+                    }
+                });
             });
         });
     </script>
