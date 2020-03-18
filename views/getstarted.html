@@ -24,8 +24,7 @@
         <% if (allOrgs != 0) {%>
                         <div class="container">
                             <table class="table" id="dtObjects">
-                                <thead> Org Information </thead>
-                                <th> Org Name </th>
+                                <thead> Connected Org Information </thead>
                                 <% allOrgs.forEach(element => { %>
                                 <tr>
                                     <td>
@@ -90,15 +89,9 @@
                 });
             })
 
-            editor = new $.fn.dataTable.Editor();
             $('#dtObjects').on('click', 'a.btn.btn-danger', function (e) {
                 e.preventDefault();
-    
-                editor.remove( $(this).closest('tr'), {
-                    title: 'Delete record',
-                    message: 'Are you sure you wish to remove this record?',
-                    buttons: 'Delete'
-                } );
+                $(this).parent().parent().remove();
             });
         });
     </script>
