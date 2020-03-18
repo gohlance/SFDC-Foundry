@@ -75,7 +75,7 @@ module.exports = ({
         })
         .get('showObjects', '/showObject', async (ctx) => {
             try {
-                var result = await global.pool.query('SELECT objectinfo FROM objects WHERE orgid = $1', [ctx.session.orgId])
+                var result = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1', [ctx.session.orgId])
 
                 return ctx.render('/show/show_objects', {
                     allObject: result.rows[0]["objectinfo"]["allObject"],
