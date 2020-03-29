@@ -1,10 +1,14 @@
 <div class="row">
     <div class="container">
+        Apex Component ( <%-apex.length%> )
+    </div>
+    <div class="container">
         <table class="table" id="dtObjects">
-            <thead> Apex Component ( <%-apex.length%> )</thead>
+            <thead> 
             <th>Name</th>
             <th>API Version </th>
             <th>NamespacePrefix</th>
+        </thead><tbody>
             <% for(var i =0; i< apex.length; i ++){ %>
             <tr>
                 <td><%- apex[i].Name%></td>
@@ -12,6 +16,7 @@
                 <td><%- apex[i].NamspacePrefix%></td>
             </tr>
             <%}%> <!--End of For Loop-->
+        </tbody>
         </table>
     </div>
 </div>
