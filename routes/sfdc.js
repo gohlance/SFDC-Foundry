@@ -171,6 +171,8 @@ module.exports = ({
         .get('showApexComponent', '/getApexComponent', async (ctx) => {
             try {
                 const result = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1", [ctx.session.orgId])
+                console.log(JSON.stringify(result))
+
                 return ctx.render('/show/show_apexComponent', {
                     apex: result.rows[0]["apextrigger"].records,
                 })
