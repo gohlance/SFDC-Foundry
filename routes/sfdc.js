@@ -191,9 +191,8 @@ module.exports = ({
         })
         .get('showlayout','/getLayout', async (ctx)=>{
             const result = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
-            console.dir(JSON.stringify(result.rows[0]["size"]))
-
-            console.log(JSON.stringify(result.size))
+            
+            console.log(JSON.stringify(result.rows[0]["layout"].size))
             console.log(JSON.stringify(result.records))
             //console.log(JSON.stringify(result["records"]))
         })
