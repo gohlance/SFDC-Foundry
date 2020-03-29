@@ -155,9 +155,6 @@ module.exports = ({
                     return item.Status == "Active"
                 })
 
-              // console.log("subheader : " + Object.keys(range))
-              // console.log("subcontent : " + Object.values(range))
-
                 return ctx.render('/show/show_apexTrigger', {
                     type: "ApexTrigger",
                     apex: result.rows[0]["apextrigger"].records,

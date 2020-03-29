@@ -16,15 +16,15 @@
     <div class="container">   
         <table id="dtObjects" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead> 
+                <th>Category</th>
                 <th>Name</th>
                 <th>Status</th>
                 </thead>
                 <tbody>
                 <% for(var i =0; i< subheader.length; i ++){ %>
-                <tr><td colspan="2"> <%-subheader[i]%> ( <%- subcontent[i].length %> )</td></tr>
-                <% for(var j = 0; j < subcontent[i].length; j ++){%>
-                        <tr><td><%-subcontent[i][j].Name%></td><td><%-subcontent[i][j].Status%></td></tr>
-                <%}%>
+                        <% for(var j = 0; j < subcontent[i].length; j ++){%>
+                                <tr><td><%-subheader[i]%></td><td><%-subcontent[i][j].Name%></td><td><%-subcontent[i][j].Status%></td></tr>
+                        <%}%>
                 <%}%>
                 </tbody>
         </table>
