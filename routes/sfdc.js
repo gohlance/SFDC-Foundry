@@ -189,6 +189,12 @@ module.exports = ({
                 console.error("Error [showApexPage]: " + error)
             }
         })
+        .get('showlayout','/getLayout', async (ctx)=>{
+            const result = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
+
+            console.log(JSON.stringify(result.records))
+        })
+
         .get('showSecurityRisk', '/showSecurityRisk', async (ctx) => {
             const result = await sfdcmethods.getSecurityRisk('', ctx.session)
             return ctx.render('/show/show_securityrisk', {
