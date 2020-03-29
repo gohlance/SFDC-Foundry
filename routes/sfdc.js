@@ -190,11 +190,14 @@ module.exports = ({
             }
         })
         .get('showlayout','/getLayout', async (ctx)=>{
-            const result = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
-            
-            console.log(JSON.stringify(result.rows[0]["layout"].size))
-            console.log(JSON.stringify(result.records))
-            //console.log(JSON.stringify(result["records"]))
+            try {
+                const result = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
+                return ctx.render('/show/show_layouts',{
+                    layouts:  result.rows[0]["layout"].records
+                })
+            } catch (error) {
+                console.error("Error [showlayout]: " +error )
+            }
         })
 
         .get('showSecurityRisk', '/showSecurityRisk', async (ctx) => {
