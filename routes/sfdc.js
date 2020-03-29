@@ -146,8 +146,8 @@ module.exports = ({
         .get('showApexTrigger', '/getApexTrigger', async (ctx) => {
             try {
                 const result = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid = $1", [ctx.session.orgId])
-                const range = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').value()
-                const rangeCondition = _(result.rows[0]["apextrigger"].records).groupBy('TableEnumOrId').partition(function (item) {
+                const range = _(result.rows[0]["apextrigger"].records).groupBy('EntityDefinitionId').value()
+                const rangeCondition = _(result.rows[0]["apextrigger"].records).groupBy('EntityDefinitionId').partition(function (item) {
                     return item.length > 5
                 }).value()
 
@@ -155,8 +155,8 @@ module.exports = ({
                     return item.Status == "Active"
                 })
 
-               console.log("subheader : " + Object.keys(range))
-               console.log("subcontent : " + Object.values(range))
+              // console.log("subheader : " + Object.keys(range))
+              // console.log("subcontent : " + Object.values(range))
 
                 return ctx.render('/show/show_apexTrigger', {
                     type: "ApexTrigger",
