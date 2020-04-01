@@ -28,7 +28,7 @@
                                 <% allOrgs.forEach(element => { %>
                                 <tr>
                                     <td>
-                                        <a id="connectedOrg" href='/welcome?org=<%= element.orgid %>'> <%= element.orgurl %> </a>
+                                        <a id="connectedOrg" href='/welcome?org=<%= element.orgid %>&n=<%= element.orgurl %>'> <%= element.orgurl %> </a>
                                     </td>
                                     <td>
                                         <a href="" class="btn btn-danger" id='<%= element.orgid %>'>Delete</a>

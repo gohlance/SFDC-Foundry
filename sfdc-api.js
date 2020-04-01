@@ -239,6 +239,7 @@ async function display_Homepage_Objects(session) {
         console.error("Error [getAllOrgsByUserId] : " + error)
     }
   }
+
   async function saveUserOrg(user_id, orgId, orgUrl){
     try {
       const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgurl) VALUES ($1, $2, $3)", [orgId, user_id, orgUrl])
