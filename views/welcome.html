@@ -62,68 +62,69 @@
                     </table>
                 </div>
             </div>
+        </div>
+        <% } %>
+       <% } %>
     </div>
-        <% }} %>
-    </div> 
-    //end of first section
-                    <div class="row">
-                        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Objects
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><%- result_objects %></h5>
-                                <p class="card-text">Your total objects are <%- result_objects %>.</p>
-                                <a href="/showObject" class="btn btn-primary">Dive In</a>
-                            </div>
-                        </div>
+   
+    <div class="row">
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Objects
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%- result_objects %></h5>
+                <p class="card-text">Your total objects are <%- result_objects %>.</p>
+                <a href="/showObject" class="btn btn-primary">Dive In</a>
+            </div>
+        </div>
 
-                        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Profiles
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><%- result_profiles %></h5>
-                                <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
-                                <a href="/showProfiles" class="btn btn-primary">See More Details</a>
-                            </div>
-                        </div>
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Profiles
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%- result_profiles %></h5>
+                <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+                <a href="/showProfiles" class="btn btn-primary">See More Details</a>
+            </div>
+        </div>
 
-                        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Layouts
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><%- result_layouts %></h5>
-                                <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
-                                <a href="/getLayout" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Layouts
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%- result_layouts %></h5>
+                <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
+                <a href="/getLayout" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
 
-                        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Records Types
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><%- result_recordTypes %></h5>
-                                <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
-                                <a href="/showRecordType" class="btn btn-primary">Show More Details</a>
-                            </div>
-                        </div>
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Records Types
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%- result_recordTypes %></h5>
+                <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
+                <a href="/showRecordType" class="btn btn-primary">Show More Details</a>
+            </div>
+        </div>
 
-                        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Custom Application(s)
-                            </div>
-                            <div class="card-body">
-                                <% if (result_customapp == 0) {%>
-                                <h5 class="card-title">0></h5>
-                                <p class="card-text">There are 0 custom app in Classic (Consider Migration).</p>
-                                <%}else{%>
-                                <h5 class="card-title"><%- result_customapp[0] %></h5>
-                                <p class="card-text">There are <%- result_customapp[1] %> custom app in Classic
-                                    (Consider Migration).</p>
-                                <%}%>
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Custom Application(s)
+            </div>
+            <div class="card-body">
+                <% if (result_customapp == 0) {%>
+                <h5 class="card-title">0></h5>
+                <p class="card-text">There are 0 custom app in Classic (Consider Migration).</p>
+                <%}else{%>
+                <h5 class="card-title"><%- result_customapp[0] %></h5>
+                <p class="card-text">There are <%- result_customapp[1] %> custom app in Classic
+                    (Consider Migration).</p>
+                <%}%>
                 <a href="/showCustomApp" class="btn btn-primary">Show More Details</a>
             </div>
         </div>
@@ -145,7 +146,6 @@
             </div>
         </div>
         
-        <!-- Apex -->
         <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Apex Pages
@@ -154,102 +154,104 @@
                 <h5 class="card-title"><%- result_apexPages %></h5>
                                 <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
                                 <a href="/getApexPage" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-                        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Apex Trigger
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><%- result_apexTriggers %></h5>
-                                <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
-                                <a href="/getApexTrigger" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-                        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Apex Components
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><%- result_ApexComponents %></h5>
-                                <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
-                                <a href="/getApexComponent" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+        </div>
 
-                <div class="modal" id="myModal" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance...
-                                </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p class="card-text">You dont have an instance connected 😞, click Connect below to get
-                                    started.</p>
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Apex Trigger
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%- result_apexTriggers %></h5>
+                <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
+                <a href="/getApexTrigger" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                Total Apex Components
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%- result_ApexComponents %></h5>
+                <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
+                <a href="/getApexComponent" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-primary" id="btnConnect2" type="button">
-                                    Connect
-                                </button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+</div>
 
-                <script>
-                    $(function () {
-                        $("#btnRefresh").click(function () {
-                            //console.log($(this).attr('id'));
-                            $(this).prop("disabled", true);
-                            $(this).html(
-                                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
-                            );
-                            var btn = $(this);
-                            $.ajax({
-                                type: 'POST',
-                                cache: false,
-                                url: '/everything',
-                                contentType: "application/json",
-                                dataType: "text",
-                                success: function (data) {
-                                    console.log("Success");
-                                    console.log(data);
-                                },
-                                complete: function (response, status) {
-                                    btn.removeAttr("disabled");
-                                    btn.remove(".spinner-border.spinner-border-sm");
-                                    btn.html('Refresh');
-                                }
-                            });
-                        });
-                        $("#btnConnect, #btnConnect2").click(function () {
-                            $(this).prop("disabled", true);
-                            $(this).html(
-                                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
-                            );
-                            var btn = $(this);
-                            $.ajax({
-                                type: 'GET',
-                                cache: false,
-                                url: '/oauth2/auth',
-                                contentType: "application/json",
-                                success: function (data) {
-                                    console.log("Success");
-                                },
-                                complete: function () {
-                                    btn.removeAttr("disabled");
-                                    btn.remove(".spinner-border.spinner-border-sm");
-                                    btn.html('Connect');
-                                }
-                            });
-                        })
-                    });
-                </script>
+<div class="modal" id="myModal" tabindex="-1" role="dialog">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance...
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="card-text">You dont have an instance connected 😞, click Connect below to get
+                started.</p>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" id="btnConnect2" type="button">
+                Connect
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+$(function () {
+    $("#btnRefresh").click(function () {
+        //console.log($(this).attr('id'));
+        $(this).prop("disabled", true);
+        $(this).html(
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+        );
+        var btn = $(this);
+        $.ajax({
+            type: 'POST',
+            cache: false,
+            url: '/everything',
+            contentType: "application/json",
+            dataType: "text",
+            success: function (data) {
+                console.log("Success");
+                console.log(data);
+            },
+            complete: function (response, status) {
+                btn.removeAttr("disabled");
+                btn.remove(".spinner-border.spinner-border-sm");
+                btn.html('Refresh');
+            }
+        });
+    });
+    $("#btnConnect, #btnConnect2").click(function () {
+        $(this).prop("disabled", true);
+        $(this).html(
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+        );
+        var btn = $(this);
+        $.ajax({
+            type: 'GET',
+            cache: false,
+            url: '/oauth2/auth',
+            contentType: "application/json",
+            success: function (data) {
+                console.log("Success");
+            },
+            complete: function () {
+                btn.removeAttr("disabled");
+                btn.remove(".spinner-border.spinner-border-sm");
+                btn.html('Connect');
+            }
+        });
+    })
+});
+</script>
