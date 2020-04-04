@@ -204,8 +204,8 @@ async function display_Homepage_Objects(session) {
     try {
       const result = await global.pool.query("SELECT orglimitsinformation FROM orginformation WHERE orgid=$1", [session.orgId])
       // BUG  - TypeError: Cannot read property 'orglimit' of undefined
-      console.log(JSON.stringify(result))
-      if (result.rows[0]["orglimitsinformation"].size > 0)
+      console.log(JSON.stringify(result.rowCount))
+      if (result.rowCount > 0)
         return result.rows[0]["orglimitsinformation"]
       else
         return 0
