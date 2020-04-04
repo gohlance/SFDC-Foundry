@@ -10,14 +10,15 @@ module.exports = ({
       return ctx.render('index')
     })
     .get('welcome', '/welcome', async (ctx) => {
-      console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
       console.log("QueryString : " + ctx.request.query["org"])
       console.log("Authenticated : " + ctx.isAuthenticated())
-      console.log("Orginformation : " + _.defaultTo(await sfdcmethods.getMoreOrgDetails(ctx.session), 0))
       if (ctx.isAuthenticated()){
         if (!ctx.session.orgId){
           ctx.session.orgId = ctx.request.query["org"]
         }
+        console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
+        console.log("Orginformation : " + _.defaultTo(await sfdcmethods.getMoreOrgDetails(ctx.session), 0))
+     
         return ctx.render('welcome', {
           result_objects: _.defaultTo(await sfdcmethods.display_Homepage_Objects(ctx.session), 0),
           result_profiles: _.defaultTo(await sfdcmethods.display_Homepage_Profiles(ctx.session), 0),
@@ -45,10 +46,7 @@ module.exports = ({
       ctx.body = "About US..."
     })
     .get('contact', '/contact', (ctx) => {
-      ctx.session.accesscode = "00D46000001Uq6O!AQoAQPs0Y0REbp2vbGHPsdnXJUQM9sVXX4DEqFTyzHt05fCks0h0QlIHLN.CIvmuMAbAdaMBfhLcbQjfH0drcj00.284Hkmx"
-      ctx.session.orgId = "588"
-      ctx.session.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-      ctx.body = "Contact US...."
+      return ctx.render('contactus')
     })
     .get('payment', '/payment', (ctx) => {
       return ctx.render('payment')
