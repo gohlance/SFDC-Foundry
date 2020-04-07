@@ -24,7 +24,7 @@ module.exports = {
 
 async function check_firstTime_Login(session){
     try {
-        let result = await global.pool.query("SELECT * FROM orginformation WHERE orgid=$1",[session.orgId])
+        let result = await global.pool.query("SELECT * FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY;",[session.orgId])
         //console.log("************ " + result.rowCount )
         if (result.rowCount > 0){
             return true
@@ -36,7 +36,7 @@ async function check_firstTime_Login(session){
         return false //this is for first time
     }
 }
-
+//TODO :This potential have issue because of the orderby 
 async function selectAll_RecordTypesByOrder(session){
     let result = await global.pool.query("select elem-> 'Name' as name, elem -> 'SobjectType' as objectType, elem->'IsActive' as active, elem->'Description' as description, elem -> 'BusinessProcessId' as businessprocessid from public.orginformation, lateral jsonb_array_elements(recordtype -> 'records') elem where orgid = $1 order by 2",[session.orgId])
     return result
@@ -44,7 +44,7 @@ async function selectAll_RecordTypesByOrder(session){
 
 async function getCustomApps(type, session){
     try {
-      const result = await global.pool.query("SELECT customappn FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result = await global.pool.query("SELECT customappn FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       const classicInterface = _.partition(result.rows[0]["customappn"].records, function(item){
           return item.UiType == null
       })
@@ -61,7 +61,7 @@ async function getCustomApps(type, session){
 
 async function getSecurityRisk(type, session){
     try {
-      const result = await global.pool.query("SELECT orgsecurityrisk FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result = await global.pool.query("SELECT orgsecurityrisk FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       if (result.rows[0]["orgsecurityrisk"].length > 0){
         const highrisk = _.partition(result.rows[0]["orgsecurityrisk"], function (item){
           return item.RiskType == "HIGH_RISK"
@@ -79,7 +79,8 @@ async function getSecurityRisk(type, session){
     }
   }
 
-//unique_object[item] - get key value - which is an array to get the fields that is linked
+//TODO :unique_object[item] - get key value - which is an array to get the fields that is linked
+//TODO : orderby issue with createdDate 
 async function get_childRelationship(objectName, session){
     let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.orginformation , lateral jsonb_array_elements(objectinformation -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,session.orgId])
 
@@ -100,7 +101,7 @@ async function get_childRelationship(objectName, session){
 
 async function display_Homepage_Objects(session) {
     try {
-      const result_object = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1', [session.orgId])
+      const result_object = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [session.orgId])
       if (result_object.rows[0]["objectinformation"] != null)
         return return_Object = result_object.rows[0]["objectinformation"].length
       else
@@ -114,7 +115,7 @@ async function display_Homepage_Objects(session) {
   }
   async function display_Homepage_Profiles(session) {
     try {
-      const result_profile = await global.pool.query("SELECT profile FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result_profile = await global.pool.query("SELECT profile FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       if (result_profile.rows[0]["profile"].size > 0)
         return result_profile.rows[0]["profile"].size
       else
@@ -128,7 +129,7 @@ async function display_Homepage_Objects(session) {
   }
   async function display_Homepage_Layouts(session) {
     try {
-      const result_profile = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result_profile = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       if (result_profile.rows[0]["layout"].size > 0)
         return result_profile.rows[0]["layout"].size
       else
@@ -142,7 +143,7 @@ async function display_Homepage_Objects(session) {
   }
   async function display_Homepage_RecordTypes(session) {
     try {
-      const result_profile = await global.pool.query("SELECT recordtype FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result_profile = await global.pool.query("SELECT recordtype FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       if (result_profile.rows[0]["recordtype"].size > 0)
         return result_profile.rows[0]["recordtype"].size
       else
@@ -156,7 +157,7 @@ async function display_Homepage_Objects(session) {
   }
   async function display_Homepage_ApexComponents(session) {
     try {
-      const result_apexcomponent = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result_apexcomponent = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
   
       if (result_apexcomponent.rows[0]["apexcomponent"].size > 0)
         return result_apexcomponent.rows[0]["apexcomponent"].size
@@ -172,7 +173,7 @@ async function display_Homepage_Objects(session) {
   }
   async function display_Homepage_ApexTrigger(session) {
     try {
-      const result_apextrigger = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result_apextrigger = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       if (result_apextrigger.rows[0]["apextrigger"].size > 0)
         return result_apextrigger.rows[0]["apextrigger"].size
       else
@@ -186,7 +187,7 @@ async function display_Homepage_Objects(session) {
   }
   async function display_Homepage_ApexPages(session) {
     try {
-      const result_apexpages = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result_apexpages = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
   
       if (result_apexpages.rows[0]["apexpage"].size > 0)
         return result_apexpages.rows[0]["apexpage"].size
@@ -202,7 +203,7 @@ async function display_Homepage_Objects(session) {
   
   async function getMoreOrgDetails(session) {
     try {
-      const result = await global.pool.query("SELECT orglimitsinformation FROM orginformation WHERE orgid=$1", [session.orgId])
+      const result = await global.pool.query("SELECT orglimitsinformation FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       // BUG  - TypeError: Cannot read property 'orglimit' of undefined
       if (result.rowCount > 0)
         return result.rows[0]["orglimitsinformation"]
@@ -217,7 +218,7 @@ async function display_Homepage_Objects(session) {
   async function getUserLicenseDetails(session) {
     try {
       // BUG - TypeError: Cannot read property 'license' of undefined
-      const result = await global.pool.query("SELECT orglicenseinformation FROM orginformation WHERE orgid=$1 ORDER BY id DESC limit 1", [session.orgId])
+      const result = await global.pool.query("SELECT orglicenseinformation FROM orginformation WHERE orgid=$1 ORDER BY id, createdDate DESC limit 1", [session.orgId])
       if (result.rows[0]["orglicenseinformation"].length > 0)
         return result.rows[0]["orglicenseinformation"]
       else {
@@ -230,7 +231,7 @@ async function display_Homepage_Objects(session) {
   }
   async function getAllOrgsByUserId(user_id){
     try {
-      const result = await global.pool.query("SELECT orgid, orgurl FROM orgs WHERE user_id = $1", [user_id])
+      const result = await global.pool.query("SELECT orgid, orgurl FROM orgs WHERE user_id = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [user_id])
       if (result.rowCount == 0)
         return 0
       else

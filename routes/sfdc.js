@@ -75,7 +75,7 @@ module.exports = ({
         })
         .get('showObjects', '/showObject', async (ctx) => {
             try {
-                var result = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1', [ctx.session.orgId])
+                var result = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
 
                 return ctx.render('/show/show_objects', {
                     allObject: result.rows[0]["objectinfo"]["allObject"],
@@ -122,7 +122,7 @@ module.exports = ({
         })
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT profile_user FROM orginformation where orgid = $1",[ctx.session.orgId])
+                const result = await global.pool.query("SELECT profile_user FROM orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",[ctx.session.orgId])
 
                 const range = _.partition(result.rows[0]["profile_user"]["undefined"], function (item) {
                     return item.Total >= 10;
@@ -145,7 +145,7 @@ module.exports = ({
         })
         .get('showApexTrigger', '/getApexTrigger', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid = $1", [ctx.session.orgId])
+                const result = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
                 const range = _(result.rows[0]["apextrigger"].records).groupBy('EntityDefinitionId').value()
                 const rangeCondition = _(result.rows[0]["apextrigger"].records).groupBy('EntityDefinitionId').partition(function (item) {
                     return item.length > 5
@@ -170,7 +170,7 @@ module.exports = ({
         })
         .get('showApexComponent', '/getApexComponent', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1", [ctx.session.orgId])
+                const result = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
                
                 return ctx.render('/show/show_apexComponent', {
                     apex: result.rows[0]["apexcomponent"].records,
@@ -181,7 +181,7 @@ module.exports = ({
         })
         .get('showApexPage', '/getApexPage', async (ctx) => {
             try {
-                const result = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
+                const result = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
                 return ctx.render('/show/show_apexPage', {
                     apex: result.rows[0]["apexpage"].records
                 })
@@ -191,7 +191,7 @@ module.exports = ({
         })
         .get('showlayout','/getLayout', async (ctx)=>{
             try {
-                const result = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1", [ctx.session.orgId])
+                const result = await global.pool.query("SELECT layout FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
                 return ctx.render('/show/show_layouts',{
                     layouts:  result.rows[0]["layout"].records
                 })
