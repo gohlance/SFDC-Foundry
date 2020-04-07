@@ -26,6 +26,7 @@ CREATE TABLE public.orginformation (
 	workflowrule jsonb NULL,
 	validationrule jsonb NULL,
 	recordtype jsonb NULL,
+	Date timestamp not null default CURRENT_TIMESTAMP, 
 	CONSTRAINT orginformation_pkey PRIMARY KEY (id)
 );
 
