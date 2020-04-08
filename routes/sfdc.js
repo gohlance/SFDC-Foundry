@@ -73,10 +73,11 @@ module.exports = ({
             });
             return ctx.render('index')
         })
+        //TODO : Eror on all OBject
         .get('showObjects', '/showObject', async (ctx) => {
             try {
                 var result = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
-
+                console.log(JSON.stringify(result))
                 return ctx.render('/show/show_objects', {
                     allObject: result.rows[0]["objectinfo"]["allObject"],
                     totalObject: result.rows[0]["objectinfo"]["allObject"].length,

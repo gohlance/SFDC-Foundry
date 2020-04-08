@@ -231,7 +231,7 @@ async function display_Homepage_Objects(session) {
   }
   async function getAllOrgsByUserId(user_id){
     try {
-      const result = await global.pool.query("SELECT orgid, orgurl FROM orgs WHERE user_id = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [user_id])
+      const result = await global.pool.query("SELECT orgid, orgurl FROM orgs WHERE user_id = $1", [user_id])
       if (result.rowCount == 0)
         return 0
       else
