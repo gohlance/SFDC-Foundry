@@ -4,17 +4,11 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-5">
-                        <h5 class="card-title">Your Salesforce Org Information</h5>
-                        <% if (!session.accesscode || !session.instanceUrl) { %>
-                        <p class="card-text">You dont have an instance connected 😞, click Connect below to get started.
+                        <h5 class="card-title">Add a new Salesforce Org</h5>
+                        <p class="card-text">Click Connect and login with your Salesforce Credentials
                         </p>
                         <a href="/oauth2/auth" class="btn btn-primary">Connect</a>
-                        <% } else {%>
-                        <p class="card-text">Instance Connected : <%- session.instanceUrl %></p>
-                        <button class="btn btn-primary" id="btnRefresh" type="button">
-                            Refresh
-                        </button>
-                        <%}%>
+                       
                     </div>
                 </div>
                 </div>
@@ -43,31 +37,7 @@
     <script>
         var editor;
         $(function (){
-            $("#btnRefresh").click(function () {
-                //console.log($(this).attr('id'));
-                $(this).prop("disabled", true);
-                $(this).html(
-                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
-                    );
-                var btn = $(this);
-                $.ajax({
-                    type: 'POST',
-                    cache: false,
-                    url: '/everything',
-                    contentType: "application/json",
-                    dataType: "text",
-                    success: function (data) {
-                        console.log("Success");
-                        console.log(data);
-                    },
-                    complete: function (response, status) {
-                        btn.removeAttr("disabled");
-                        btn.remove(".spinner-border.spinner-border-sm");
-                        btn.html('Refresh');
-                    }
-                });
-            });
-            $("#btnConnect, #btnConnect2").click(function () {
+            $("#btnConnect").click(function () {
                 $(this).prop("disabled", true);
                 $(this).html(
                     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
