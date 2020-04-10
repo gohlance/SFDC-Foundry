@@ -76,14 +76,13 @@ module.exports = ({
         //TODO : Eror on all OBject
         .get('showObjects', '/showObject', async (ctx) => {
             try {
-                var result = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
-                console.log("Total Object : " + result.rows[0]["objectinformation"].length)
-                console.log("more object : " + result.rows[0]["objectinformation"].morethan100)
+                var result = await global.pool.query('SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
+                console.log(JSON.stringify(result).substring(1, 500))
                 return ctx.render('/show/show_objects', {
-                    allObject: result.rows[0]["objectinformation"],
-                    totalObject: result.rows[0]["objectinformation"].length,
-                    moreObject: result.rows[0]["objectinformation"].morethan100,
-                    lessObject: result.rows[0]["objectinformation"].lessthan100
+                    allObject: result.rows[0]["objectinfo"]["allObject"],
+                    totalObject: result.rows[0]["objectinfo"]["allObject"].length,
+                    moreObject: result.rows[0]["objectinfo"].morethan100,
+                    lessObject: result.rows[0]["objectinfo"].lessthan100
                 })
             } catch (err) {
                 console.error("Error [getAllObjects] " + err)
