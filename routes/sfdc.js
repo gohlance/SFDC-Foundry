@@ -79,10 +79,10 @@ module.exports = ({
                 var result = await global.pool.query('SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
                 console.log(JSON.stringify(result).substring(1, 500))
                 return ctx.render('/show/show_objects', {
-                    allObject: result.rows[0]["objectinfo"]["allObject"],
-                    totalObject: result.rows[0]["objectinfo"]["allObject"].length,
-                    moreObject: result.rows[0]["objectinfo"].morethan100,
-                    lessObject: result.rows[0]["objectinfo"].lessthan100
+                    allObject: result.rows[0]["sobjectdescribe"]["allObject"],
+                    totalObject: result.rows[0]["sobjectdescribe"]["allObject"].length,
+                    moreObject: result.rows[0]["sobjectdescribe"].morethan100,
+                    lessObject: result.rows[0]["sobjectdescribe"].lessthan100
                 })
             } catch (err) {
                 console.error("Error [getAllObjects] " + err)
