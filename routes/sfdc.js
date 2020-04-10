@@ -92,7 +92,8 @@ module.exports = ({
                 
                 const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
                 console.log("***  : "  +result)
-                ctx.redirect('/welcome')
+                ctx.body ={ data: result}
+                //ctx.redirect('/welcome')
                 // TODO : Refresh this page
 
             } catch (err) {
