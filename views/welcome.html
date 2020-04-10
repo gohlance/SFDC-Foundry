@@ -224,6 +224,7 @@ $(function () {
             success: function (data) {
                 console.log("Success");
                 console.log(data);
+                location.reload(true);
             },
             complete: function (response, status) {
                 btn.removeAttr("disabled");
@@ -232,26 +233,6 @@ $(function () {
             }
         });
     });
-    $("#btnConnect, #btnConnect2").click(function () {
-        $(this).prop("disabled", true);
-        $(this).html(
-            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
-        );
-        var btn = $(this);
-        $.ajax({
-            type: 'GET',
-            cache: false,
-            url: '/oauth2/auth',
-            contentType: "application/json",
-            success: function (data) {
-                console.log("Success");
-            },
-            complete: function () {
-                btn.removeAttr("disabled");
-                btn.remove(".spinner-border.spinner-border-sm");
-                btn.html('Connect');
-            }
-        });
-    })
+    
 });
 </script>
