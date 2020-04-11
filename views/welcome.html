@@ -14,61 +14,20 @@
                             <br><small>Get the latest data </small>
                         </button>
                     </div>
-                    <div class="col-lg-5">
-                        <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
-                        <div class="card-body">
-                            <table>
-                                <% for(var i =0; i< result_userLicense.length; i ++){ %>
-                                <tr>
-                                    <td><%- result_userLicense[i].Name %></td>
-                                    <td>
-                                        <%- result_userLicense[i].UsedLicenses%> /
-                                        <%- result_userLicense[i].TotalLicenses%></td>
-                                </tr>
-                                <%}%>
-                            </table>
-                        </div>
-                        <%}%>
-                    </div>
                 </div>
             </div>
         </div>
-
-        <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
-        <% 
-                array1 = Object.keys(result_orgInformation)
-                array2 = Object.values(result_orgInformation)            
-                if (array1.length > 0 && array2.length > 0) {
-        %>
-        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Additional Information <button class="btn btn-primary" type="button" data-toggle="collapse"
-                    data-target="#multiCollapseExample2" aria-expanded="false"
-                    aria-controls="multiCollapseExample2">👇</button>
-            </div>
-            <div class="collapse multi-collapse" id="multiCollapseExample2">
-                <div class="card-body">
-                    <table>
-                        <th>Setting</th>
-                        <th>Max</th>
-                        <th>Remaining</th>
-                        <% for(var i =0; i< array1.length; i ++){ %>
-                        <tr>
-                            <td><%- array1[i]%></td>
-                            <td><%- array2[i]["Max"] %></td>
-                            <td><%- array2[i]["Remaining"] %></td>
-                        </tr>
-                        <%}%>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <% } %>
-       <% } %>
     </div>
    
     <div class="row">
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#orgHome">Instance Information</a></li>
+            <li><a data-toggle="tab" href="#license">License</a></li>
+            <li><a data-toggle="tab" href="#limit"> Limits</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="orgHome">
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Total Objects
             </div>
@@ -177,8 +136,60 @@
                 <a href="/getApexComponent" class="btn btn-primary">Go somewhere</a>
             </div>
         </div>
+            </div>
+            <div class="tab-pane fade" id="license">
+                <div class="col-lg-5">
+            <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
+            <div class="card-body">
+                <table>
+                    <% for(var i =0; i< result_userLicense.length; i ++){ %>
+                    <tr>
+                        <td><%- result_userLicense[i].Name %></td>
+                        <td>
+                            <%- result_userLicense[i].UsedLicenses%> /
+                            <%- result_userLicense[i].TotalLicenses%></td>
+                    </tr>
+                    <%}%>
+                </table>
+            </div>
+            <%}%>
+        </div>
+            </div>
+            <div class="tab-pane fade" id="limit">
+                <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
+                    <% 
+                            array1 = Object.keys(result_orgInformation)
+                            array2 = Object.values(result_orgInformation)            
+                            if (array1.length > 0 && array2.length > 0) {
+                    %>
+                    <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+                        <div class="badge badge-primary text-wrap" style="width: 100%;">
+                            Additional Information <button class="btn btn-primary" type="button" data-toggle="collapse"
+                                data-target="#multiCollapseExample2" aria-expanded="false"
+                                aria-controls="multiCollapseExample2">👇</button>
+                        </div>
+                        <div class="collapse multi-collapse" id="multiCollapseExample2">
+                            <div class="card-body">
+                                <table>
+                                    <th>Setting</th>
+                                    <th>Max</th>
+                                    <th>Remaining</th>
+                                    <% for(var i =0; i< array1.length; i ++){ %>
+                                    <tr>
+                                        <td><%- array1[i]%></td>
+                                        <td><%- array2[i]["Max"] %></td>
+                                        <td><%- array2[i]["Remaining"] %></td>
+                                    </tr>
+                                    <%}%>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                   <% } %>
+            </div>
+        </div>
     </div>
-
 </div>
 
 <div class="modal" id="myModal" tabindex="-1" role="dialog">

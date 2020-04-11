@@ -84,7 +84,7 @@ async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, 
 
 async function letsGetEverything(session) {
     try {
-        
+        return new Promise((resolve, reject) => {
             const worker = new Worker('./svc_background/backgroundsvc.js', {
                 workerData: {
                     instance: session.instanceUrl,
@@ -94,16 +94,19 @@ async function letsGetEverything(session) {
             });
             
             console.log("Worker Started")
-            worker.on('message', (message) => {
-                console.log("Completed !!!! I am here " + message.status);
-                //resolve("Success")
-                return "Success"
-            });
+            worker.on ('message', resolve("Success"));
+            //worker.on('message', (message) => {
+            //    console.log("Completed !!!! I am here " + message.status);
+            //    //resolve("Success")
+            //    return "Success"
+            //});
             worker.on('error', reject);
             worker.on('exit', (code) => {
                 if (code !== 0)
                     reject(new Error(`Worker stopped with exit code ${code}`));
             })
+        })
+            
       
     } catch (error) {
         console.log("Error [sfdc-api/letsGetEverything] : " + error)
