@@ -21,122 +21,123 @@
    
     <div class="row">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#orgHome">Instance Information</a></li>
-            <li><a data-toggle="tab" href="#license">License</a></li>
-            <li><a data-toggle="tab" href="#limit"> Limits</a></li>
+            <li class="active"><a class="nav-link active" data-toggle="tab" href="#orgHome">Instance Information</a></li>
+            <li><a class="nav-link" data-toggle="tab" href="#license">License</a></li>
+            <li><a class="nav-link" data-toggle="tab" href="#limit"> Limits</a></li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade in active" id="orgHome">
+            <div class="tab-pane fade active show" id="orgHome">
+                <div class="card mt-10 my-2 mx-2" style="width: 100%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Total Objects
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%- result_objects %></h5>
+                        <p class="card-text">Your total objects are <%- result_objects %>.</p>
+                        <a href="/showObject" class="btn btn-primary">Dive In</a>
+                    </div>
+                </div>
+
                 <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Objects
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%- result_objects %></h5>
-                <p class="card-text">Your total objects are <%- result_objects %>.</p>
-                <a href="/showObject" class="btn btn-primary">Dive In</a>
-            </div>
-        </div>
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Total Profiles
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%- result_profiles %></h5>
+                        <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+                        <a href="/showProfiles" class="btn btn-primary">See More Details</a>
+                    </div>
+                </div>
 
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Profiles
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%- result_profiles %></h5>
-                <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
-                <a href="/showProfiles" class="btn btn-primary">See More Details</a>
-            </div>
-        </div>
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Total Layouts
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%- result_layouts %></h5>
+                        <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
+                        <a href="/getLayout" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
 
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Layouts
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%- result_layouts %></h5>
-                <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
-                <a href="/getLayout" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Total Records Types
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%- result_recordTypes %></h5>
+                        <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
+                        <a href="/showRecordType" class="btn btn-primary">Show More Details</a>
+                    </div>
+                </div>
 
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Records Types
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%- result_recordTypes %></h5>
-                <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
-                <a href="/showRecordType" class="btn btn-primary">Show More Details</a>
-            </div>
-        </div>
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Custom Application(s)
+                    </div>
+                    <div class="card-body">
+                        <% if (result_customapp == 0) {%>
+                        <h5 class="card-title">0></h5>
+                        <p class="card-text">There are 0 custom app in Classic (Consider Migration).</p>
+                        <%}else{%>
+                        <h5 class="card-title"><%- result_customapp[0] %></h5>
+                        <p class="card-text">There are <%- result_customapp[1] %> custom app in Classic
+                            (Consider Migration).</p>
+                        <%}%>
+                        <a href="/showCustomApp" class="btn btn-primary">Show More Details</a>
+                    </div>
+                </div>
 
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Custom Application(s)
-            </div>
-            <div class="card-body">
-                <% if (result_customapp == 0) {%>
-                <h5 class="card-title">0></h5>
-                <p class="card-text">There are 0 custom app in Classic (Consider Migration).</p>
-                <%}else{%>
-                <h5 class="card-title"><%- result_customapp[0] %></h5>
-                <p class="card-text">There are <%- result_customapp[1] %> custom app in Classic
-                    (Consider Migration).</p>
-                <%}%>
-                <a href="/showCustomApp" class="btn btn-primary">Show More Details</a>
-            </div>
-        </div>
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Security Risk
+                    </div>
+                    <div class="card-body">
+                        <%if (result_securityRisk == 0) {%>
+                                        <h5 class="card-title">0</h5>
+                                        <p class="card-text">There are 0 High Security Risk</p>
+                                        <%}else{%>
+                                        <h5 class="card-title"><%- result_securityRisk[0] %></h5>
+                                        <p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
+                                        <%}%>
+                            
+                        <a href="/showSecurityRisk" class="btn btn-primary">Show More Details</a>
+                    </div>
+                </div>
+                
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Total Apex Pages
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%- result_apexPages %></h5>
+                                        <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
+                                        <a href="/getApexPage" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
 
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Security Risk
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Total Apex Trigger
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%- result_apexTriggers %></h5>
+                        <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
+                        <a href="/getApexTrigger" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
+                    <div class="badge badge-primary text-wrap" style="width: 100%;">
+                        Total Apex Components
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%- result_ApexComponents %></h5>
+                        <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
+                        <a href="/getApexComponent" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <%if (result_securityRisk == 0) {%>
-                                <h5 class="card-title">0</h5>
-                                <p class="card-text">There are 0 High Security Risk</p>
-                                <%}else{%>
-                                <h5 class="card-title"><%- result_securityRisk[0] %></h5>
-                                <p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
-                                <%}%>
-                     
-                <a href="/showSecurityRisk" class="btn btn-primary">Show More Details</a>
-            </div>
-        </div>
-        
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Apex Pages
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%- result_apexPages %></h5>
-                                <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
-                                <a href="/getApexPage" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
 
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Apex Trigger
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%- result_apexTriggers %></h5>
-                <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
-                <a href="/getApexTrigger" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-        <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Total Apex Components
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%- result_ApexComponents %></h5>
-                <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
-                <a href="/getApexComponent" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-            </div>
             <div class="tab-pane fade" id="license">
                 <div class="col-lg-5">
             <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
