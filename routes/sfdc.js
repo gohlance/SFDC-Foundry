@@ -89,10 +89,17 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
+                if (ctx.session.instanceUrl == null && ctx.session.accesscode == null ){
+                    //TODO : route to oauth
+                    ctx.response.redirect(global.oauth2.getAuthorizationUrl({
+                        scope: 'api web'
+                    }))
+                }else{
+                    const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
+                    console.log("***  : "  +result)
+                    ctx.body ={ data: result}
+                }
                 
-                const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
-                console.log("***  : "  +result)
-                ctx.body ={ data: result}
                 //ctx.redirect('/welcome')
                 // TODO : Refresh this page
 
