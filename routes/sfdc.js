@@ -90,8 +90,9 @@ module.exports = ({
         .post('everything', '/everything', async (ctx) => {
             try {
                 console.log("Session : " + ctx.session.instanceUrl + " : " + ctx.session.accesscode)
-                if (ctx.session.instanceUrl == null && ctx.session.accesscode == null ){
+                if (ctx.session.instanceUrl === null || ctx.session.instanceUrl === undefined || ctx.session.accesscode == undefined | ctx.session.accesscode == null ){
                     //TODO : route to oauth
+                    console.log("Iam in here")
                     ctx.response.redirect(global.oauth2.getAuthorizationUrl({
                         scope: 'api web'
                     }))
