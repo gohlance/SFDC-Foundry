@@ -219,10 +219,15 @@
 $(function () {
     var a = <%- session.instanceURL %>;
     var b = <%- session.accesscode %>;
+    var c = $("#btnRefresh");
     if (a === null || a === undefined || b === null || b === undefined){
-        $("#btnRefresh").prop('disabled', true);
+        c.prop('disabled', true);
+        c.removeClass('btn btn-primary');
+        c.addClass('btn btn-secondary');
     }else{
-        $("#btnRefresh").prop('disabled', false);
+        c.prop('disabled', false);
+        c.addClass('btn btn-primary');
+        c.removeClass('btn btn-secondary');
     }
     $("#btnRefresh").click(function () {
         //console.log($(this).attr('id'));
