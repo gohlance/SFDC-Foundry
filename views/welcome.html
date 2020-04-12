@@ -218,8 +218,8 @@
 <script>
 $(function () {
     var _ = require('lodash');
-    var a = _.defaultTo(<%- session.instanceURL %>,0);
-    var b = _.defaultTo(<%- session.accesscode %>,0);
+    var a = _.defaultTo("<%- session.instanceURL %>",0);
+    var b = _.defaultTo("<%- session.accesscode %>",0);
     var c = $("#btnRefresh");
     if (a == 0 || b == 0){
         c.prop('disabled', true);
