@@ -93,6 +93,7 @@ module.exports = ({
                 if (ctx.session.instanceUrl === null || ctx.session.instanceUrl === undefined || ctx.session.accesscode == undefined | ctx.session.accesscode == null ){
                     //TODO : route to oauth
                     console.log("Iam in here")
+                    ctx.status = 308;
                    ctx.redirect('/oauth2/auth');
                 }else{
                     const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
