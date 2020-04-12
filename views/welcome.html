@@ -9,9 +9,12 @@
                     <div class="col-lg-5">
                         <h5 class="card-title">Your Salesforce Org Information</h5>
                         <p class="card-text">Instance Connected : <%- orgname %></p>
-                        <button class="btn btn-primary" id="btnRefresh" type="button">
-                            Refresh
-                            <br><small>Get the latest data </small>
+                        <button class="btn btn-primary" id="btnRefresh" type="button" data-toggle="tooltip" data-placement="top" title="If this is greyed out, we will need to connect to Salesforce with the Connect button on the right.">
+                            Refresh Data
+                        </button>
+
+                        <button class="btn btn-primary" id="btnConnect" type="button">
+                            Connect
                         </button>
                     </div>
                 </div>
@@ -254,6 +257,25 @@ $(function () {
             }
         });
     });
-    
+    $("#btnConnect").click(function () {
+                $(this).prop("disabled", true);
+                $(this).html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+                    );
+                var btn = $(this);
+                $.ajax({
+                    type: 'GET',
+                    url: '/oauth2/auth/',
+                    contentType: "application/json",
+                    success: function (data) {
+                        console.log("Success");
+                    },
+                    complete: function () {
+                        btn.removeAttr("disabled");
+                        btn.remove(".spinner-border.spinner-border-sm");
+                        btn.html('Connect');
+                    }
+                });
+            })
 });
 </script>
