@@ -16,7 +16,7 @@ module.exports = ({
         if (!ctx.session.orgId){
           ctx.session.orgId = ctx.request.query["org"]
         }
-        //console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
+        console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
         return ctx.render('welcome', {
           result_objects: _.defaultTo(await sfdcmethods.display_Homepage_Objects(ctx.session), 0),
           result_profiles: _.defaultTo(await sfdcmethods.display_Homepage_Profiles(ctx.session), 0),
