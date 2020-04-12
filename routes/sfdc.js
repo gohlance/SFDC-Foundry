@@ -73,7 +73,6 @@ module.exports = ({
             });
             return ctx.render('index')
         })
-        //TODO : Eror on all OBject
         .get('showObjects', '/showObject', async (ctx) => {
             try {
                 var result = await global.pool.query('SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
@@ -89,21 +88,9 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
-                console.log("Session : " + ctx.session.instanceUrl + " : " + ctx.session.accesscode)
-                if (ctx.session.instanceUrl === null || ctx.session.instanceUrl === undefined || ctx.session.accesscode == undefined | ctx.session.accesscode == null ){
-                    //TODO : route to oauth
-                    console.log("Iam in here")
-                    ctx.status = 308;
-                   ctx.redirect('/oauth2/auth');
-                }else{
-                    const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
-                    console.log("***  : "  +result)
-                    ctx.body ={ data: result}
-                }
-                
-                //ctx.redirect('/welcome')
-                // TODO : Refresh this page
-
+                const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
+                console.log("***  : "  +result)
+                ctx.body ={ data: result}
             } catch (err) {
                 console.error("Error [everything]:" + err)
             }
