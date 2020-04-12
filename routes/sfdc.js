@@ -89,6 +89,7 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
+                console.log("Session : " + ctx.session.instanceUrl + " : " + ctx.session.accesscode)
                 if (ctx.session.instanceUrl == null && ctx.session.accesscode == null ){
                     //TODO : route to oauth
                     ctx.response.redirect(global.oauth2.getAuthorizationUrl({
