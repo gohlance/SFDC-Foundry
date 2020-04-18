@@ -446,7 +446,7 @@ async function getAllSecurityRisk() {
                     console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
                 }
                 console.log("[sfdc-api/getAllSecurityRisk] : " + result)
-                resolve(result)
+                resolve(_.defaultTo(result.records, "{0}"))
             })
         })
     } catch (error) {
