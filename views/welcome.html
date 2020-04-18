@@ -218,7 +218,7 @@
 
 <script>
 $(function () {
-    var a = _.defaultTo("<%- session.instanceURL %>",0);
+    var a = _.defaultTo("<%- session.instanceUrl %>",0);
     var b = _.defaultTo("<%- session.accesscode %>",0);
     var c = $("#btnRefresh");
     if (a == 0 || b == 0){
