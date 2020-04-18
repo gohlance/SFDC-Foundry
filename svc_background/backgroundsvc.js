@@ -4,6 +4,7 @@ const {
 } = require('worker_threads')
 
 const sfdcmethod = require('./sfdc-api_background.js')
+const _ = require('lodash')
 
 async function start_background_call() {
     try {
@@ -55,7 +56,7 @@ async function start_background_call() {
                         JSON.stringify(objectinfo[0]),
                         JSON.stringify(license),
                         JSON.stringify(orglimit.data), 
-                        JSON.stringify(securityrisk.records), 
+                        JSON.stringify(_.defaultTo(securityrisk.records,0), 
                         JSON.stringify(objectinfo[1]), 
                         JSON.stringify(apextrigger), 
                         JSON.stringify(apexpage), 
