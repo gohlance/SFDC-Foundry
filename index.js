@@ -20,7 +20,7 @@ global.orgId = "288"
 
 //global DB Connection
 const Pool = require('pg-pool')
-/*
+
 global.pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -30,10 +30,10 @@ global.pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 }) 
-*/
+
 
 //DEV
-
+/*
 global.pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -43,7 +43,7 @@ global.pool = new Pool({
   max: 20, // set pool max size to 20
   min: 4
 })
-
+*/
 render(app, {
   root: path.join(__dirname, 'views'),
   layout: 'layout',
