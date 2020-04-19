@@ -191,14 +191,16 @@
                                   <thead>
                                       <tr>
                                           <th>License Type</th>
-                                          <th>Allocated / Total</th>
+                                          <th>Allocated</th>
+                                          <th>Total</th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                   <% for(var i =0; i< result_userLicense.length; i ++){ %>
                                   <tr>
                                       <td ><%- result_userLicense[i].Name %></td>
-                                      <td><%- result_userLicense[i].UsedLicenses%> / <%- result_userLicense[i].TotalLicenses%></td>
+                                      <td><%- result_userLicense[i].UsedLicenses%></td>
+                                      <td><%- result_userLicense[i].TotalLicenses%></td>
                                   </tr>
                                   <%}%>
                                 </tbody>
@@ -221,16 +223,16 @@
                             <thead>
                                 <tr>
                                     <th>Setting</th>
-                                    <th>Max</th>
                                     <th>Remaining</th>
+                                    <th>Max</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% for(var i =0; i< array1.length; i ++){ %>
                                 <tr>
                                     <td><%- array1[i]%></td>
-                                    <td><%- array2[i]["Max"] %></td>
                                     <td><%- array2[i]["Remaining"] %></td>
+                                    <td><%- array2[i]["Max"] %></td>
                                 </tr>
                                 <%}%>
                             </tbody>
