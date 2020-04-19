@@ -194,12 +194,14 @@
                                           <th class="col-lg-7">Allocated / Total</th>
                                       </tr>
                                   </thead>
+                                  <tbody>
                                   <% for(var i =0; i< result_userLicense.length; i ++){ %>
                                   <tr>
                                       <td ><%- result_userLicense[i].Name %></td>
                                       <td><%- result_userLicense[i].UsedLicenses%> / <%- result_userLicense[i].TotalLicenses%></td>
                                   </tr>
                                   <%}%>
+                                </tbody>
                               </table>
                             </div>
                             <%}%>
