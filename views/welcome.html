@@ -180,7 +180,7 @@
             </div> <!-- End of Org Home Tab-->
 
             <div class="tab-pane fade" id="license">
-                <div class="col-lg-5">
+                <div class="col-lg-14">
                     <div class="card">
                         <div class="badge badge-primary text-wrap" style="width: 100%;">
                             License Information
@@ -188,9 +188,15 @@
                         <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
                             <div class="card-body">
                               <table>
+                                  <thead>
+                                      <tr class="row">
+                                          <th class="col-lg-7">Name</th>
+                                          <th class="col-lg-7">Allocated / Total</th>
+                                      </tr>
+                                  </thead>
                                   <% for(var i =0; i< result_userLicense.length; i ++){ %>
                                   <tr>
-                                      <td><%- result_userLicense[i].Name %></td>
+                                      <td ><%- result_userLicense[i].Name %></td>
                                       <td><%- result_userLicense[i].UsedLicenses%> / <%- result_userLicense[i].TotalLicenses%></td>
                                   </tr>
                                   <%}%>
