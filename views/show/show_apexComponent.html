@@ -1,21 +1,25 @@
 <div class="row">
-    <div class="container">
-        <button class="btn btn-info" onclick="history.back(-1)">Back</button> Apex Component ( <%-apex.length%> )
+    <div class="row">
+        <div class="col-md-4">
+            <button class="btn btn-info" onclick="history.back(-1)">Back</button>
+        </div>
+        <div class="col-md-6">Apex Component ( <%-apex.length%> )</div>
     </div>
-    <div class="container">
-        <table class="table" id="dtObjects">
-            <thead> 
-            <th>Name</th>
-            <th>API Version </th>
-            <th>NamespacePrefix</th>
-        </thead><tbody>
-            <% for(var i =0; i< apex.length; i ++){ %>
-            <tr>
-                <td><%- apex[i].Name%></td>
-                <td><%- apex[i].ApiVersion%></td>
-                <td><%- apex[i].NamspacePrefix%></td>
-            </tr>
-            <%}%> <!--End of For Loop-->
+    <div class="row">
+        <table class="table table-striped table-bordered table-sm" id="dtObjects">
+            <thead>
+                <th>Name</th>
+                <th>API Version </th>
+                <th>NamespacePrefix</th>
+            </thead>
+            <tbody>
+                <% for(var i =0; i< apex.length; i ++){ %>
+                <tr>
+                    <td><%- apex[i].Name%></td>
+                    <td><%- apex[i].ApiVersion%></td>
+                    <td><%- apex[i].NamspacePrefix%></td>
+                </tr>
+                <%}%> <!--End of For Loop-->
         </tbody>
         </table>
     </div>
