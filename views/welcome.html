@@ -217,17 +217,23 @@
                 %>
                 <div class="row">
                     <div class="card-body">
-                        <table>
-                            <th>Setting</th>
-                            <th>Max</th>
-                            <th>Remaining</th>
-                            <% for(var i =0; i< array1.length; i ++){ %>
-                            <tr>
-                                <td><%- array1[i]%></td>
-                                <td><%- array2[i]["Max"] %></td>
-                                <td><%- array2[i]["Remaining"] %></td>
-                            </tr>
-                            <%}%>
+                        <table class="table table-striped w-100">
+                            <thead>
+                                <tr>
+                                    <th>Setting</th>
+                                    <th>Max</th>
+                                    <th>Remaining</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i =0; i< array1.length; i ++){ %>
+                                <tr>
+                                    <td><%- array1[i]%></td>
+                                    <td><%- array2[i]["Max"] %></td>
+                                    <td><%- array2[i]["Remaining"] %></td>
+                                </tr>
+                                <%}%>
+                            </tbody>
                           </table>
                       </div>
                   </div>
