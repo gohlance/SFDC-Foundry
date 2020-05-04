@@ -12,15 +12,14 @@ const path = require('path')
 const app = new Koa()
 
 //** Only for Development 
-/*
-global.instanceUrl = "https://singaporeexchangelimited.my.salesforce.com"
-global.accesscode = "00D46000001Uq6O!AQoAQIK77cN8ZIUqL7Sfrve3cvxXPLn1Ay_27.02njogezuxOAUbqAxQfWEt8DEmKUAeZoh5Ivr5HEh07KIGmMwSFmp8Uo.L"
+
+global.instanceUrl = "https://lgoh-isos2020.my.salesforce.com"
+global.accesscode = "00D2x000000D8Li!AQ8AQC6W2q_65GR9imo2NMOLYNRJmYKtCYu2QQ9QewLbGPGuIt5g8i7TlJZvp4AANK_vDaawWuWMPFy0j8.D4zzw3QEnTJY3"
 global.orgId = "288"
-*/
 
 //global DB Connection
 const Pool = require('pg-pool')
-
+/*
 global.pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -30,10 +29,10 @@ global.pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 }) 
-
+*/
 
 //DEV
-/*
+
 global.pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -43,7 +42,7 @@ global.pool = new Pool({
   max: 20, // set pool max size to 20
   min: 4
 })
-*/
+
 render(app, {
   root: path.join(__dirname, 'views'),
   layout: 'layout',

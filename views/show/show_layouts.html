@@ -29,6 +29,29 @@
             </tbody>
         </table>
     </div>
+    <div class="row">
+        <table id="dtObjects2" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead>
+                <th>Name</th>
+                <th>Layout Type</th>
+                <th>Object</th>
+                <th>Managed State</th>
+            </thead>
+            <tbody>
+                <% 
+                        layouts.map(function(layout){
+                %>
+                <tr>
+                    <td><%-layout.Name%></td>
+                    <td><%-layout.LayoutType%></td>
+                    <td><%-layout.TableEnumOrId%></td>
+                    <td><%-layout.ManageableState%></td>
+                </tr>
+                <% })%>
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>

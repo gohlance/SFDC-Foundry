@@ -1,0 +1,1092 @@
+{
+	"size": 1,
+	"totalSize": 1,
+	"done": true,
+	"queryLocator": null,
+	"entityTypeName": "Flow",
+	"records": [{
+		"attributes": {
+			"type": "Flow",
+			"url": "/services/data/v48.0/tooling/sobjects/Flow/3012x000000bpn9AAA"
+		},
+		"FullName": "Case_Updated",
+		"Metadata": {
+			"actionCalls": [{
+				"actionName": "sendSurveyInvitation",
+				"actionType": "sendSurveyInvitation",
+				"connector": null,
+				"dataTypeMappings": [],
+				"description": null,
+				"faultConnector": null,
+				"inputParameters": [{
+					"name": "surveyName",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "customer_satisfaction_survey"
+					}
+				}, {
+					"name": "emailTemplateName",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "Embed_a_Survey_Question"
+					}
+				}, {
+					"name": "isUnauthenticatedResponse",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": true,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": null
+					}
+				}, {
+					"name": "autoExpiryDays",
+					"processMetadataValues": [],
+					"value": null
+				}, {
+					"name": "surveySubjectEntity",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "{!myVariable_current.Id}"
+					}
+				}, {
+					"name": "surveyQuestionName",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "page_1192937796_question_94576075"
+					}
+				}, {
+					"name": "personalInvitation",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": true,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": null
+					}
+				}, {
+					"name": "anonymousReponse",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": false,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": null
+					}
+				}, {
+					"name": "recipientType",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "Contact"
+					}
+				}, {
+					"name": "recipient",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "{!myVariable_current.Contact.Id}"
+					}
+				}],
+				"label": "Send Survey",
+				"locationX": 100,
+				"locationY": 300,
+				"name": "myRule_1_A2",
+				"outputParameters": [],
+				"processMetadataValues": [],
+				"storeOutputAutomatically": null
+			}, {
+				"actionName": "sendSurveyInvitation",
+				"actionType": "sendSurveyInvitation",
+				"connector": null,
+				"dataTypeMappings": [],
+				"description": null,
+				"faultConnector": null,
+				"inputParameters": [{
+					"name": "surveyName",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "customer_satisfaction_survey"
+					}
+				}, {
+					"name": "emailTemplateName",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "Embed_a_Survey_Question"
+					}
+				}, {
+					"name": "isUnauthenticatedResponse",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": true,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": null
+					}
+				}, {
+					"name": "autoExpiryDays",
+					"processMetadataValues": [],
+					"value": null
+				}, {
+					"name": "surveySubjectEntity",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "{!myVariable_current.Id}"
+					}
+				}, {
+					"name": "surveyQuestionName",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "page_1192937796_question_94576075"
+					}
+				}, {
+					"name": "personalInvitation",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": true,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": null
+					}
+				}, {
+					"name": "anonymousReponse",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": false,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": null
+					}
+				}, {
+					"name": "recipientType",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "Contact"
+					}
+				}, {
+					"name": "recipient",
+					"processMetadataValues": [],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "{!myVariable_current.Contact.Id}"
+					}
+				}],
+				"label": "Send Survey",
+				"locationX": 500,
+				"locationY": 200,
+				"name": "myRule_5_A1",
+				"outputParameters": [],
+				"processMetadataValues": [],
+				"storeOutputAutomatically": null
+			}],
+			"apexPluginCalls": [],
+			"assignments": [],
+			"choices": [],
+			"constants": [],
+			"decisions": [{
+				"defaultConnector": {
+					"processMetadataValues": [],
+					"targetReference": "isChangedDecision6_myRule_5_Status"
+				},
+				"defaultConnectorLabel": "default",
+				"description": null,
+				"label": "isChangedDecision2_myRule_1_Status",
+				"locationX": 0,
+				"locationY": 0,
+				"name": "isChangedDecision2_myRule_1_Status",
+				"processMetadataValues": [],
+				"rules": [{
+					"conditionLogic": "and",
+					"conditions": [{
+						"leftValueReference": "myVariable_old",
+						"operator": "IsNull",
+						"processMetadataValues": [],
+						"rightValue": {
+							"booleanValue": false,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}, {
+						"leftValueReference": "myVariable_old.Status",
+						"operator": "NotEqualTo",
+						"processMetadataValues": [],
+						"rightValue": {
+							"booleanValue": null,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": "myVariable_current.Status",
+							"numberValue": null,
+							"stringValue": null
+						}
+					}],
+					"connector": {
+						"processMetadataValues": [],
+						"targetReference": "isChangedDecision6_myRule_5_Status"
+					},
+					"description": null,
+					"label": "isChangedRule_2_myRule_1_Status",
+					"name": "isChangedRule_2_myRule_1_Status",
+					"processMetadataValues": []
+				}]
+			}, {
+				"defaultConnector": {
+					"processMetadataValues": [],
+					"targetReference": "myDecision"
+				},
+				"defaultConnectorLabel": "default",
+				"description": null,
+				"label": "isChangedDecision6_myRule_5_Status",
+				"locationX": 0,
+				"locationY": 0,
+				"name": "isChangedDecision6_myRule_5_Status",
+				"processMetadataValues": [],
+				"rules": [{
+					"conditionLogic": "and",
+					"conditions": [{
+						"leftValueReference": "myVariable_old",
+						"operator": "IsNull",
+						"processMetadataValues": [],
+						"rightValue": {
+							"booleanValue": false,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}, {
+						"leftValueReference": "myVariable_old.Status",
+						"operator": "NotEqualTo",
+						"processMetadataValues": [],
+						"rightValue": {
+							"booleanValue": null,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": "myVariable_current.Status",
+							"numberValue": null,
+							"stringValue": null
+						}
+					}],
+					"connector": {
+						"processMetadataValues": [],
+						"targetReference": "myDecision"
+					},
+					"description": null,
+					"label": "isChangedRule_6_myRule_5_Status",
+					"name": "isChangedRule_6_myRule_5_Status",
+					"processMetadataValues": []
+				}]
+			}, {
+				"defaultConnector": {
+					"processMetadataValues": [],
+					"targetReference": "myDecision4"
+				},
+				"defaultConnectorLabel": "default",
+				"description": null,
+				"label": "myDecision",
+				"locationX": 50,
+				"locationY": 0,
+				"name": "myDecision",
+				"processMetadataValues": [{
+					"name": "index",
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": 0,
+						"stringValue": null
+					}
+				}],
+				"rules": [{
+					"conditionLogic": "and",
+					"conditions": [{
+						"leftValueReference": "myVariable_current.IsClosed",
+						"operator": "EqualTo",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}],
+						"rightValue": {
+							"booleanValue": true,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}, {
+						"leftValueReference": "myVariable_current.EntitlementId",
+						"operator": "NotEqualTo",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "ID"
+							}
+						}, {
+							"name": "leftHandSideReferenceTo",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Entitlement"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "ID"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "String"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "GlobalConstant"
+							}
+						}],
+						"rightValue": null
+					}, {
+						"leftValueReference": "myVariable_current.SlaExitDate",
+						"operator": "EqualTo",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "DateTime"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "DateTime"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "DateTime"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "GlobalConstant"
+							}
+						}],
+						"rightValue": null
+					}, {
+						"leftValueReference": "isChangedRule_2_myRule_1_Status",
+						"operator": "EqualTo",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Picklist"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "String"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}],
+						"rightValue": {
+							"booleanValue": true,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}, {
+						"leftValueReference": "myVariable_current.ContactId",
+						"operator": "IsNull",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "leftHandSideReferenceTo",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Contact"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "ID"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "String"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}],
+						"rightValue": {
+							"booleanValue": false,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}],
+					"connector": {
+						"processMetadataValues": [],
+						"targetReference": "myRule_1_A1"
+					},
+					"description": null,
+					"label": "Case Closed, Has Entitlement, Entitlement Active",
+					"name": "myRule_1",
+					"processMetadataValues": []
+				}]
+			}, {
+				"defaultConnector": null,
+				"defaultConnectorLabel": "default",
+				"description": null,
+				"label": "myDecision4",
+				"locationX": 50,
+				"locationY": 0,
+				"name": "myDecision4",
+				"processMetadataValues": [{
+					"name": "index",
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": 1,
+						"stringValue": null
+					}
+				}],
+				"rules": [{
+					"conditionLogic": "and",
+					"conditions": [{
+						"leftValueReference": "myVariable_current.IsClosed",
+						"operator": "EqualTo",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}],
+						"rightValue": {
+							"booleanValue": true,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}, {
+						"leftValueReference": "isChangedRule_6_myRule_5_Status",
+						"operator": "EqualTo",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Picklist"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "String"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}],
+						"rightValue": {
+							"booleanValue": true,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}, {
+						"leftValueReference": "myVariable_current.ContactId",
+						"operator": "IsNull",
+						"processMetadataValues": [{
+							"name": "inputDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}, {
+							"name": "leftHandSideReferenceTo",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Contact"
+							}
+						}, {
+							"name": "leftHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "ID"
+							}
+						}, {
+							"name": "operatorDataType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "String"
+							}
+						}, {
+							"name": "rightHandSideType",
+							"value": {
+								"booleanValue": null,
+								"dateTimeValue": null,
+								"dateValue": null,
+								"elementReference": null,
+								"numberValue": null,
+								"stringValue": "Boolean"
+							}
+						}],
+						"rightValue": {
+							"booleanValue": false,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}],
+					"connector": {
+						"processMetadataValues": [],
+						"targetReference": "myRule_5_A1"
+					},
+					"description": null,
+					"label": "Case is closed without entitlement",
+					"name": "myRule_5",
+					"processMetadataValues": []
+				}]
+			}],
+			"description": "Process launch point for updated Cases.  Initially used to Complete Milestones upon Case Close.",
+			"dynamicChoiceSets": [],
+			"formulas": [{
+				"dataType": "DateTime",
+				"description": null,
+				"expression": "NOW()",
+				"name": "formula_3_myRule_1_A1_3726241356",
+				"processMetadataValues": [{
+					"name": "originalFormula",
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "NOW()"
+					}
+				}],
+				"scale": null
+			}],
+			"interviewLabel": "Case_Updated-7_InterviewLabel",
+			"isAdditionalPermissionRequiredToRun": null,
+			"isTemplate": null,
+			"label": "Case Updated",
+			"loops": [],
+			"processMetadataValues": [{
+				"name": "ObjectType",
+				"value": {
+					"booleanValue": null,
+					"dateTimeValue": null,
+					"dateValue": null,
+					"elementReference": null,
+					"numberValue": null,
+					"stringValue": "Case"
+				}
+			}, {
+				"name": "ObjectVariable",
+				"value": {
+					"booleanValue": null,
+					"dateTimeValue": null,
+					"dateValue": null,
+					"elementReference": "myVariable_current",
+					"numberValue": null,
+					"stringValue": null
+				}
+			}, {
+				"name": "OldObjectVariable",
+				"value": {
+					"booleanValue": null,
+					"dateTimeValue": null,
+					"dateValue": null,
+					"elementReference": "myVariable_old",
+					"numberValue": null,
+					"stringValue": null
+				}
+			}, {
+				"name": "TriggerType",
+				"value": {
+					"booleanValue": null,
+					"dateTimeValue": null,
+					"dateValue": null,
+					"elementReference": null,
+					"numberValue": null,
+					"stringValue": "onAllChanges"
+				}
+			}],
+			"processType": "Workflow",
+			"recordCreates": [],
+			"recordDeletes": [],
+			"recordLookups": [],
+			"recordUpdates": [{
+				"connector": {
+					"processMetadataValues": [],
+					"targetReference": "myRule_1_A2"
+				},
+				"description": null,
+				"faultConnector": null,
+				"filters": [{
+					"field": "CaseId",
+					"operator": "EqualTo",
+					"processMetadataValues": [{
+						"name": "implicit",
+						"value": {
+							"booleanValue": true,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": "myVariable_current.Id",
+						"numberValue": null,
+						"stringValue": null
+					}
+				}],
+				"inputAssignments": [{
+					"field": "CompletionDate",
+					"processMetadataValues": [{
+						"name": "dataType",
+						"value": {
+							"booleanValue": null,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": "DateTime"
+						}
+					}, {
+						"name": "isRequired",
+						"value": {
+							"booleanValue": false,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": null
+						}
+					}, {
+						"name": "leftHandSideLabel",
+						"value": {
+							"booleanValue": null,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": "Completion Date"
+						}
+					}, {
+						"name": "leftHandSideReferenceTo",
+						"value": {
+							"booleanValue": null,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": ""
+						}
+					}, {
+						"name": "rightHandSideType",
+						"value": {
+							"booleanValue": null,
+							"dateTimeValue": null,
+							"dateValue": null,
+							"elementReference": null,
+							"numberValue": null,
+							"stringValue": "Formula"
+						}
+					}],
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": "formula_3_myRule_1_A1_3726241356",
+						"numberValue": null,
+						"stringValue": null
+					}
+				}],
+				"inputReference": null,
+				"label": "Complete Milestones",
+				"locationX": 100,
+				"locationY": 200,
+				"name": "myRule_1_A1",
+				"object": "CaseMilestone",
+				"processMetadataValues": [{
+					"name": "evaluationType",
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "always"
+					}
+				}, {
+					"name": "extraTypeInfo",
+					"value": null
+				}, {
+					"name": "isChildRelationship",
+					"value": {
+						"booleanValue": true,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": null
+					}
+				}, {
+					"name": "reference",
+					"value": {
+						"booleanValue": null,
+						"dateTimeValue": null,
+						"dateValue": null,
+						"elementReference": null,
+						"numberValue": null,
+						"stringValue": "[Case].CaseMilestones"
+					}
+				}, {
+					"name": "referenceTargetField",
+					"value": null
+				}]
+			}],
+			"runInMode": null,
+			"screens": [],
+			"start": null,
+			"startElementReference": "isChangedDecision2_myRule_1_Status",
+			"status": "Active",
+			"steps": [],
+			"subflows": [],
+			"textTemplates": [],
+			"urls": null,
+			"variables": [{
+				"apexClass": null,
+				"dataType": "SObject",
+				"description": null,
+				"isCollection": false,
+				"isInput": true,
+				"isOutput": true,
+				"name": "myVariable_current",
+				"objectType": "Case",
+				"processMetadataValues": [],
+				"scale": null,
+				"value": null
+			}, {
+				"apexClass": null,
+				"dataType": "SObject",
+				"description": null,
+				"isCollection": false,
+				"isInput": true,
+				"isOutput": false,
+				"name": "myVariable_old",
+				"objectType": "Case",
+				"processMetadataValues": [],
+				"scale": null,
+				"value": null
+			}],
+			"waits": []
+		}
+	}]
+}

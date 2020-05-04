@@ -16,16 +16,24 @@ var oauth2 = new jsforce.OAuth2({
 });
 
 const axios = require('axios')
-
+/*
 var conn = new jsforce.Connection({
     oauth2: oauth2
     // instanceUrl: global.instanceUrl,
     // accessToken: global.accesscode
+})*/
+
+//DEV
+var conn = new jsforce.Connection({
+    oauth2: oauth2,
+    instanceUrl: global.instanceUrl,
+    accessToken: global.accesscode,
+    version: '48.0'
 })
 //#endregion
 
 const Pool = require('pg-pool')
-
+/**
 const pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -34,9 +42,9 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})
+}) */
 
-/**
+
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -46,7 +54,7 @@ const pool = new Pool({
   max: 20, // set pool max size to 20
   min: 4
 }) 
- */
+
 module.exports = {
     getAllMeta,
     getAllLayout,
@@ -69,7 +77,9 @@ module.exports = {
     getAllSecurityRisk,
     letsGetEverything,
     set_ConnObject,
-    insertBackgroundData
+    insertBackgroundData,
+    getAllProcessBuilderANDFlow,
+    getMoreDetails,getEachProcessDefinition
 }
 
 async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype){
@@ -106,8 +116,6 @@ async function letsGetEverything(session) {
                     reject(new Error(`Worker stopped with exit code ${code}`));
             })
         })
-            
-      
     } catch (error) {
         console.log("Error [sfdc-api/letsGetEverything] : " + error)
     }
@@ -454,7 +462,66 @@ async function getAllSecurityRisk() {
     }
 }
 
+async function insertDataDebugMode(result){
+    await pool.query("Update orginformation SET ProcessFlow = $1 WHERE id = 2", [JSON.stringify(result)])
+}
 
+//TODO : nEed to add this to background svc
+async function getAllProcessBuilderANDFlow() {
+    try {
+        return new Promise((resolve, reject) => {
+            conn.tooling.query("SELECT DefinitionId, Description, IsTemplate, ManageableState, MasterLabel, ProcessType, RunInMode, Status, VersionNumber FROM FLOW", function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllProcessBuilder - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllProcessBuilder] : " + result)
+                resolve(result)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllProcessBuilder] : " + error)
+    }
+}
+//BUG : Order of Async & Await not correct
+async function getMoreDetails() {
+    try {
+        return new Promise((resolve, reject) => {
+           await conn.tooling.query("SELECT DefinitionId, VersionNumber, Status FROM FLOW WHERE Status = 'Active' GROUP BY DefinitionId, VersionNumber, Status ORDER BY DefinitionId ",async function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllProcessBuilder - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllProcessBuilder] : " + result)
+                var tempArray = await result.records.map(item => {
+                    await conn.tooling.query("SELECT FullName, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber, function(error, result){
+                        if (error) {
+                            console.log("Error [sfdc-api/getAllProcessBuilder sub - conn.tooling] : " + error)
+                        }
+                        console.log(result.records[0].FullName + " " + result.records[0].Metadata)
+                        return {
+                            fullname: result.records[0].fullname,
+                            metadata: result.records[0].Metadata
+                        }
+                    })
+                });
+                //TODO : Insert into database
+                console.log("TempArray : " + await tempArray)
+                resolve(await tempArray);
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllProcessBuilder] : " + error)
+    }
+}
+
+async function getEachProcessDefinition(result){
+    try {
+        return new Promise((resolve, reject) => {
+            
+        })
+    }catch (error){
+        console.error("Erro [axxx] " + error)
+    }   
+}
 //PRIVATE Methods
 
 function filter_BeforeCallingAPI(result) {

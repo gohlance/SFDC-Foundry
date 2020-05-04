@@ -22,7 +22,8 @@ conn = new jsforce.Connection({
     //oauth2: oauth2
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
-    accessToken: global.accesscode
+    accessToken: global.accesscode,
+    version: '48.0'
 })
 
 async function private_gettoken(code) {
@@ -221,6 +222,20 @@ module.exports = ({
 
         .post('deleteConnectedOrg','/deleteOrg', async (ctx) => {
             const result = await sfdcmethods.deleteUserOrg(ctx.request.body.id)
+        })
+
+        .get('showprocess', '/showprocess', async (ctx) => {    
+            const result = await sfdcmethods.getAllProcessAndFlowByType(ctx.session)
+           return ctx.render('/show/show_processflow',{
+               flows: result[0].flow,
+               processes: result[0].process
+           })
+        })
+
+        .get('testing', '/lance', async (ctx) => {
+            const result = await sfdcbackground_methods.getMoreDetails()
+            //const newResult = await sfdcbackground_methods.getEachProcessDefinition(await sfdcbackground_methods.getMoreDetails())
+            console.log("newResult : " +  result)
         })
 
 }

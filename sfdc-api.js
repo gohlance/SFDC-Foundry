@@ -18,6 +18,7 @@ module.exports = {
     display_Homepage_Profiles,
     display_Homepage_RecordTypes,
     getAllOrgsByUserId,
+    getAllProcessAndFlowByType,
     saveUserOrg,
     deleteUserOrg
 }
@@ -238,6 +239,23 @@ async function display_Homepage_Objects(session) {
         return result.rows
     } catch (error) {
         console.error("Error [getAllOrgsByUserId] : " + error)
+    }
+  }
+
+  async function getAllProcessAndFlowByType(session){
+    try {
+      const result = await global.pool.query("SELECT processflow FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC limit 1", [session.orgId])
+      var flows = _.filter(result.rows[0]["processflow"].records, function (o) {
+        if (o.ProcessType != "Workflow" && o.Status == "Active")
+            return o
+      })
+      var processbuilders = _.filter(result.rows[0]["processflow"].records, function (o) {
+        if (o.ProcessType == "Workflow" && o.Status == "Active")
+            return o
+      })
+      return [{"flow" : flows, "process": processbuilders}]
+    } catch (error) {
+      console.error("Error [getAllProcessAndFlowByType] : " + error)
     }
   }
 
