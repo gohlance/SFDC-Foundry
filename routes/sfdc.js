@@ -231,9 +231,9 @@ module.exports = ({
                processes: result[0].process
            })
         })
-
+        //TODO : Test insert into Database and then create UI for it
         .get('testing', '/lance', async (ctx) => {
-           
+           const result = await sfdcbackground_methods.getMoreDetails_ProcessbuilderAndFlow()
+           await sfdcbackground_methods.insertDataDebugMode(JSON.stringify(result))
         })
-
 }

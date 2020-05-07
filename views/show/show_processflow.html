@@ -32,7 +32,7 @@
                                     flows.map(function(a){
                             %>
                             <tr>
-                                <td><%-a.MasterLabel%></td>
+                                <td><a href='/show_processdetails?id=<%-a.DefinitionId%>'> <%-a.MasterLabel%></a></td>
                                 <td><%-a.Status%></td>
                                 <td><%-a.VersionNumber%></td>
                                 <td><%-a.ProcessType%></td>

@@ -79,7 +79,7 @@ module.exports = {
     set_ConnObject,
     insertBackgroundData,
     getAllProcessBuilderANDFlow,
-    getMoreDetails_ProcessbuilderAndFlow
+    getMoreDetails_ProcessbuilderAndFlow, insertDataDebugMode
 }
 
 async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype, processflow, processflow_meta){
@@ -463,7 +463,7 @@ async function getAllSecurityRisk() {
 }
 
 async function insertDataDebugMode(result){
-    await pool.query("Update orginformation SET ProcessFlow = $1 WHERE id = 2", [JSON.stringify(result)])
+    await pool.query("Update processflow_metadata SET ProcessFlow_metadata = $1 WHERE id = 2", [JSON.stringify(result)])
 }
 
 async function getAllProcessBuilderANDFlow() {
