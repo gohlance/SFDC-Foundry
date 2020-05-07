@@ -12,27 +12,12 @@ const path = require('path')
 const app = new Koa()
 
 //** Only for Development 
-
+/**
 global.instanceUrl = "https://lgoh-isos2020.my.salesforce.com"
 global.accesscode = "00D2x000000D8Li!AQ8AQGqZwpQ0wsEzMB2Kt.5wTavzhYUwotYWq6MbuOplSkFyUTzBhanQnc528Q2CfU2KqgP2CT8aKblKDT1iP_XvVrkEvBZ1"
 global.orgId = "288"
 
-//global DB Connection
 const Pool = require('pg-pool')
-/*
-global.pool = new Pool({
-    user: 'bxhbybpvxuyesk',
-    host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
-    database: 'detjik593i3enh',
-    password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
-    port: 5432,
-    max: 20, // set pool max size to 20
-    min: 4
-}) 
-*/
-
-//DEV
-
 global.pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -42,6 +27,20 @@ global.pool = new Pool({
   max: 20, // set pool max size to 20
   min: 4
 })
+ */
+
+ //global DB Connection
+const Pool = require('pg-pool')
+
+global.pool = new Pool({
+    user: 'bxhbybpvxuyesk',
+    host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
+    database: 'detjik593i3enh',
+    password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
+    port: 5432,
+    max: 20, // set pool max size to 20
+    min: 4
+}) 
 
 render(app, {
   root: path.join(__dirname, 'views'),
@@ -50,7 +49,6 @@ render(app, {
   cache: false,
   debug: true
 })
-
 
 app.keys = ['82a5193f-37e4-4dba-bf9c-750389f80699']
 //Session for App

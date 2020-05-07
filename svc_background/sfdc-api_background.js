@@ -16,24 +16,35 @@ var oauth2 = new jsforce.OAuth2({
 });
 
 const axios = require('axios')
-/*
-var conn = new jsforce.Connection({
-    oauth2: oauth2
-    // instanceUrl: global.instanceUrl,
-    // accessToken: global.accesscode
-})*/
-
+const Pool = require('pg-pool')
 //DEV
+/**
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
     accessToken: global.accesscode,
     version: '48.0'
 })
+
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Beaver2',
+    password: 'P@ssw0rd1',
+    port: 5432,
+    max: 20, // set pool max size to 20
+    min: 4
+  }) 
+*/
 //#endregion
 
-const Pool = require('pg-pool')
-/**
+var conn = new jsforce.Connection({
+    oauth2: oauth2,
+    version: '48.0'
+    // instanceUrl: global.instanceUrl,
+    // accessToken: global.accesscode
+})
+
 const pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -42,17 +53,6 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-}) */
-
-
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'Beaver2',
-  password: 'P@ssw0rd1',
-  port: 5432,
-  max: 20, // set pool max size to 20
-  min: 4
 }) 
 
 module.exports = {
