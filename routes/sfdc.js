@@ -233,9 +233,7 @@ module.exports = ({
         })
 
         .get('testing', '/lance', async (ctx) => {
-            const result = await sfdcbackground_methods.getMoreDetails()
-            //const newResult = await sfdcbackground_methods.getEachProcessDefinition(await sfdcbackground_methods.getMoreDetails())
-            console.log("newResult : " +  result)
+           
         })
 
 }

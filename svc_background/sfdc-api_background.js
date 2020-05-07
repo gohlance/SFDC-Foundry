@@ -79,12 +79,12 @@ module.exports = {
     set_ConnObject,
     insertBackgroundData,
     getAllProcessBuilderANDFlow,
-    getMoreDetails,getEachProcessDefinition
+    getMoreDetails_ProcessbuilderAndFlow
 }
 
-async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype){
+async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype, processflow, processflow_meta){
     try {
-        let sqlid = await pool.query("INSERT INTO orginformation (orgid, metainformation, objectinformation, orgLicenseInformation, orgLimitsInformation, orgSecurityRisk, sobjectdescribe, apextrigger, apexpage, apexclass, apexcomponent, profile, profile_user, layout, profileslayout, customAppn, businessprocess, workflowrule, validationrule, recordtype) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING id",[orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp, businessprocess, workflowrules, validationRules, recordtype])
+        let sqlid = await pool.query("INSERT INTO orginformation (orgid, metainformation, objectinformation, orgLicenseInformation, orgLimitsInformation, orgSecurityRisk, sobjectdescribe, apextrigger, apexpage, apexclass, apexcomponent, profile, profile_user, layout, profileslayout, customAppn, businessprocess, workflowrule, validationrule, recordtype, processflow, processflow_metadata) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22) RETURNING id",[orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp, businessprocess, workflowrules, validationRules, recordtype, processflow, processflow_meta])
 
         console.log("Returning ID from SQL insert : " + sqlid)
      } catch (error) {
@@ -466,7 +466,6 @@ async function insertDataDebugMode(result){
     await pool.query("Update orginformation SET ProcessFlow = $1 WHERE id = 2", [JSON.stringify(result)])
 }
 
-//TODO : nEed to add this to background svc
 async function getAllProcessBuilderANDFlow() {
     try {
         return new Promise((resolve, reject) => {
@@ -482,30 +481,18 @@ async function getAllProcessBuilderANDFlow() {
         console.error("Error [sfdc-api/getAllProcessBuilder] : " + error)
     }
 }
-//BUG : Order of Async & Await not correct
-async function getMoreDetails() {
+
+async function getMoreDetails_ProcessbuilderAndFlow() {
     try {
         return new Promise((resolve, reject) => {
-           await conn.tooling.query("SELECT DefinitionId, VersionNumber, Status FROM FLOW WHERE Status = 'Active' GROUP BY DefinitionId, VersionNumber, Status ORDER BY DefinitionId ",async function (error, result) {
+            conn.tooling.query("SELECT DefinitionId, VersionNumber, Status FROM FLOW WHERE Status = 'Active' GROUP BY DefinitionId, VersionNumber, Status ORDER BY DefinitionId ",async function (error, result) {
                 if (error) {
                     console.log("Error [sfdc-api/getAllProcessBuilder - conn.tooling] : " + error)
                 }
-                console.log("[sfdc-api/getAllProcessBuilder] : " + result)
-                var tempArray = await result.records.map(item => {
-                    await conn.tooling.query("SELECT FullName, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber, function(error, result){
-                        if (error) {
-                            console.log("Error [sfdc-api/getAllProcessBuilder sub - conn.tooling] : " + error)
-                        }
-                        console.log(result.records[0].FullName + " " + result.records[0].Metadata)
-                        return {
-                            fullname: result.records[0].fullname,
-                            metadata: result.records[0].Metadata
-                        }
-                    })
-                });
-                //TODO : Insert into database
-                console.log("TempArray : " + await tempArray)
-                resolve(await tempArray);
+                //console.log("[sfdc-api/getAllProcessBuilder] : " + result)
+                let finalJson = await getEachProcessDefinition(result)
+                //need to use JSON.parse to get back JSON object
+                resolve(finalJson)
             })
         })
     } catch (error) {
@@ -513,16 +500,21 @@ async function getMoreDetails() {
     }
 }
 
+//PRIVATE Methods Section
+
+//PRIVATE function for getMoreDetails_ProcessbuilderAndFlow
 async function getEachProcessDefinition(result){
     try {
-        return new Promise((resolve, reject) => {
-            
-        })
+        var tempArray = await Promise.all( result.records.map(async item => {
+
+            var something = await conn.tooling.query("SELECT FullName, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber)
+            return  JSON.stringify(something.records[0])
+        }))
+        return tempArray 
     }catch (error){
         console.error("Erro [axxx] " + error)
     }   
-}
-//PRIVATE Methods
+te}
 
 function filter_BeforeCallingAPI(result) {
     console.log("result : " + result.length)
