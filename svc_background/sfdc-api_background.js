@@ -16,16 +16,24 @@ var oauth2 = new jsforce.OAuth2({
 });
 
 const axios = require('axios')
-
+/*
 var conn = new jsforce.Connection({
     oauth2: oauth2
     // instanceUrl: global.instanceUrl,
     // accessToken: global.accesscode
+})*/
+
+//DEV
+var conn = new jsforce.Connection({
+    oauth2: oauth2,
+    instanceUrl: global.instanceUrl,
+    accessToken: global.accesscode,
+    version: '48.0'
 })
 //#endregion
 
 const Pool = require('pg-pool')
-
+/**
 const pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
@@ -34,9 +42,9 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})
+}) */
 
-/**
+
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -46,7 +54,7 @@ const pool = new Pool({
   max: 20, // set pool max size to 20
   min: 4
 }) 
- */
+
 module.exports = {
     getAllMeta,
     getAllLayout,
@@ -69,12 +77,14 @@ module.exports = {
     getAllSecurityRisk,
     letsGetEverything,
     set_ConnObject,
-    insertBackgroundData
+    insertBackgroundData,
+    getAllProcessBuilderANDFlow,
+    getMoreDetails_ProcessbuilderAndFlow, insertDataDebugMode
 }
 
-async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype){
+async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype, processflow, processflow_meta){
     try {
-        let sqlid = await pool.query("INSERT INTO orginformation (orgid, metainformation, objectinformation, orgLicenseInformation, orgLimitsInformation, orgSecurityRisk, sobjectdescribe, apextrigger, apexpage, apexclass, apexcomponent, profile, profile_user, layout, profileslayout, customAppn, businessprocess, workflowrule, validationrule, recordtype) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING id",[orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp, businessprocess, workflowrules, validationRules, recordtype])
+        let sqlid = await pool.query("INSERT INTO orginformation (orgid, metainformation, objectinformation, orgLicenseInformation, orgLimitsInformation, orgSecurityRisk, sobjectdescribe, apextrigger, apexpage, apexclass, apexcomponent, profile, profile_user, layout, profileslayout, customAppn, businessprocess, workflowrule, validationrule, recordtype, processflow, processflow_metadata) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22) RETURNING id",[orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp, businessprocess, workflowrules, validationRules, recordtype, processflow, processflow_meta])
 
         console.log("Returning ID from SQL insert : " + sqlid)
      } catch (error) {
@@ -106,8 +116,6 @@ async function letsGetEverything(session) {
                     reject(new Error(`Worker stopped with exit code ${code}`));
             })
         })
-            
-      
     } catch (error) {
         console.log("Error [sfdc-api/letsGetEverything] : " + error)
     }
@@ -446,7 +454,7 @@ async function getAllSecurityRisk() {
                     console.log("Error [sfdc-api/getAllCustomApplication] : " + err)
                 }
                 console.log("[sfdc-api/getAllSecurityRisk] : " + result)
-                resolve(result)
+                resolve(_.defaultTo(result.records, "{0}"))
             })
         })
     } catch (error) {
@@ -454,8 +462,59 @@ async function getAllSecurityRisk() {
     }
 }
 
+async function insertDataDebugMode(result){
+    await pool.query("Update processflow_metadata SET ProcessFlow_metadata = $1 WHERE id = 2", [JSON.stringify(result)])
+}
 
-//PRIVATE Methods
+async function getAllProcessBuilderANDFlow() {
+    try {
+        return new Promise((resolve, reject) => {
+            conn.tooling.query("SELECT DefinitionId, Description, IsTemplate, ManageableState, MasterLabel, ProcessType, RunInMode, Status, VersionNumber FROM FLOW", function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllProcessBuilder - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllProcessBuilder] : " + result)
+                resolve(result)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllProcessBuilder] : " + error)
+    }
+}
+
+async function getMoreDetails_ProcessbuilderAndFlow() {
+    try {
+        return new Promise((resolve, reject) => {
+            conn.tooling.query("SELECT DefinitionId, VersionNumber, Status FROM FLOW WHERE Status = 'Active' GROUP BY DefinitionId, VersionNumber, Status ORDER BY DefinitionId ",async function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllProcessBuilder - conn.tooling] : " + error)
+                }
+                //console.log("[sfdc-api/getAllProcessBuilder] : " + result)
+                let finalJson = await getEachProcessDefinition(result)
+                //need to use JSON.parse to get back JSON object
+                resolve(finalJson)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllProcessBuilder] : " + error)
+    }
+}
+
+//PRIVATE Methods Section
+
+//PRIVATE function for getMoreDetails_ProcessbuilderAndFlow
+async function getEachProcessDefinition(result){
+    try {
+        var tempArray = await Promise.all( result.records.map(async item => {
+
+            var something = await conn.tooling.query("SELECT FullName, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber)
+            return  JSON.stringify(something.records[0])
+        }))
+        return tempArray 
+    }catch (error){
+        console.error("Erro [axxx] " + error)
+    }   
+te}
 
 function filter_BeforeCallingAPI(result) {
     console.log("result : " + result.length)

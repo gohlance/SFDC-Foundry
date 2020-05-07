@@ -22,7 +22,8 @@ conn = new jsforce.Connection({
     //oauth2: oauth2
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
-    accessToken: global.accesscode
+    accessToken: global.accesscode,
+    version: '48.0'
 })
 
 async function private_gettoken(code) {
@@ -209,12 +210,11 @@ module.exports = ({
                 result: result
             })
         })
-
+//BUG : Wrong Routing 
         .get('showChart', '/getChart', async (ctx) => {
-            var abc = "classDiagram\n" + "Animal <|-- Duck"
             //console.log(ctx.query)
             const result = await sfdcmethods.get_childRelationship(ctx.query["t"], ctx.session)
-            return ctx.render('/show/show_chart', {
+            return ctx.render('/show_chart', {
                 chart: result
             })
         })
@@ -223,4 +223,16 @@ module.exports = ({
             const result = await sfdcmethods.deleteUserOrg(ctx.request.body.id)
         })
 
+        .get('showprocess', '/showprocess', async (ctx) => {    
+            const result = await sfdcmethods.getAllProcessAndFlowByType(ctx.session)
+           return ctx.render('/show/show_processflow',{
+               flows: result[0].flow,
+               processes: result[0].process
+           })
+        })
+        //TODO : Test insert into Database and then create UI for it
+        .get('testing', '/lance', async (ctx) => {
+           const result = await sfdcbackground_methods.getMoreDetails_ProcessbuilderAndFlow()
+           await sfdcbackground_methods.insertDataDebugMode(JSON.stringify(result))
+        })
 }

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+        <div class="card mx-auto" style="width: 100%;">
             <div class="badge badge-primary text-wrap" style="width: 100%;">
                 Salesforce Org Information
             </div>
@@ -9,251 +9,326 @@
                     <div class="col-lg-5">
                         <h5 class="card-title">Your Salesforce Org Information</h5>
                         <p class="card-text">Instance Connected : <%- orgname %></p>
-                        <button class="btn btn-primary" id="btnRefresh" type="button" data-toggle="tooltip" data-placement="top" title="If this is greyed out, we will need to connect to Salesforce with the Connect button on the right.">
+                        <button class="btn btn-primary" id="btnRefresh" type="button" data-toggle="tooltip"
+                            data-placement="top"
+                            title="If this is greyed out, we will need to connect to Salesforce with the Connect button on the right.">
                             Refresh Data
                         </button>
-
                         <a href="/oauth2/auth" class="btn btn-primary">Connect</a>
+                    </div>
+                    <div class="col-lg-4">
+                        If Refresh Data button is grey out, you need to reconnect your salesforce instance, with the Connect button.
                     </div>
                 </div>
             </div>
         </div>
     </div>
-   
+    <div class="row"><br></div>
     <div class="row">
         <ul class="nav nav-pills" style="width: 100%;">
-            <li class="active"><a class="nav-link active" data-toggle="tab" href="#orgHome">Instance Information</a></li>
-            <li><a class="nav-link" data-toggle="tab" href="#license">License</a></li>
+            <li class="active"><a class="nav-link active" data-toggle="tab" href="#orgHome">Instance Information</a>
+            </li>
+            <li><a class="nav-link" data-toggle="tab" href="#license">Licenses</a></li>
             <li><a class="nav-link" data-toggle="tab" href="#limit"> Limits</a></li>
+            <li><a class="nav-link" data-toggle="tab" href="#others">Others</a></li>
         </ul>
+    </div>
+    <div class="row">
         <div class="tab-content" style="width: 100%;">
             <div class="tab-pane fade active show" id="orgHome">
                 <div class="row">
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Total Objects
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%- result_objects %></h5>
-                        <p class="card-text">Your total objects are <%- result_objects %>.</p>
-                        <a href="/showObject" class="btn btn-primary">Dive In</a>
-                    </div>
-                </div>
-
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Total Profiles
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%- result_profiles %></h5>
-                        <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
-                        <a href="/showProfiles" class="btn btn-primary">See More Details</a>
-                    </div>
-                </div>
-
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Total Layouts
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%- result_layouts %></h5>
-                        <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
-                        <a href="/getLayout" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Total Records Types
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%- result_recordTypes %></h5>
-                        <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
-                        <a href="/showRecordType" class="btn btn-primary">Show More Details</a>
-                    </div>
-                </div>
-
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Custom Application(s)
-                    </div>
-                    <div class="card-body">
-                        <% if (result_customapp == 0) {%>
-                        <h5 class="card-title">0></h5>
-                        <p class="card-text">There are 0 custom app in Classic (Consider Migration).</p>
-                        <%}else{%>
-                        <h5 class="card-title"><%- result_customapp[0] %></h5>
-                        <p class="card-text">There are <%- result_customapp[1] %> custom app in Classic
-                            (Consider Migration).</p>
-                        <%}%>
-                        <a href="/showCustomApp" class="btn btn-primary">Show More Details</a>
-                    </div>
-                </div>
-
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Security Risk
-                    </div>
-                    <div class="card-body">
-                        <%if (result_securityRisk == 0) {%>
-                                        <h5 class="card-title">0</h5>
-                                        <p class="card-text">There are 0 High Security Risk</p>
-                                        <%}else{%>
-                                        <h5 class="card-title"><%- result_securityRisk[0] %></h5>
-                                        <p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
-                                        <%}%>
-                            
-                        <a href="/showSecurityRisk" class="btn btn-primary">Show More Details</a>
-                    </div>
-                </div>
-                
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Total Apex Pages
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%- result_apexPages %></h5>
-                                        <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
-                                        <a href="/getApexPage" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Total Apex Trigger
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%- result_apexTriggers %></h5>
-                        <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
-                        <a href="/getApexTrigger" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-                <div class="card mt-10 my-2 mx-2" style="width: 30%;">
-                    <div class="badge badge-primary text-wrap" style="width: 100%;">
-                        Total Apex Components
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%- result_ApexComponents %></h5>
-                        <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
-                        <a href="/getApexComponent" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="license">
-                <div class="col-lg-5">
-            <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
-            <div class="card-body">
-                <table>
-                    <% for(var i =0; i< result_userLicense.length; i ++){ %>
-                    <tr>
-                        <td><%- result_userLicense[i].Name %></td>
-                        <td>
-                            <%- result_userLicense[i].UsedLicenses%> /
-                            <%- result_userLicense[i].TotalLicenses%></td>
-                    </tr>
-                    <%}%>
-                </table>
-            </div>
-            <%}%>
-        </div>
-            </div>
-            <div class="tab-pane fade" id="limit">
-                <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
-                    <% 
-                            array1 = Object.keys(result_orgInformation)
-                            array2 = Object.values(result_orgInformation)            
-                            if (array1.length > 0 && array2.length > 0) {
-                    %>
-                        <div class="row">
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Objects
+                            </div>
                             <div class="card-body">
-                                <table>
-                                    <th>Setting</th>
-                                    <th>Max</th>
-                                    <th>Remaining</th>
-                                    <% for(var i =0; i< array1.length; i ++){ %>
-                                    <tr>
-                                        <td><%- array1[i]%></td>
-                                        <td><%- array2[i]["Max"] %></td>
-                                        <td><%- array2[i]["Remaining"] %></td>
-                                    </tr>
-                                    <%}%>
-                                </table>
+                                <h5 class="card-title"><%- result_objects %></h5>
+                                <p class="card-text">Your total objects are <%- result_objects %>.</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/showObject" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Profiles
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_profiles %></h5>
+                                <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/showProfiles" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Layouts
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_layouts %></h5>
+                                <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/getLayout" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Records Types
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_recordTypes %></h5>
+                                <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/showRecordType" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Custom Application(s)
+                            </div>
+                            <div class="card-body">
+                                <% if (result_customapp == 0) {%>
+                                <h5 class="card-title">0></h5>
+                                <p class="card-text">0 custom app </p>
+                                <%}else{%>
+                                <h5 class="card-title"><%- result_customapp[0] %></h5>
+                                <p class="card-text"><%- result_customapp[1] %> app in Classic .</p>
+                                <%}%>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/showCustomApp" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Security Risk
+                            </div>
+                            <div class="card-body">
+                                <%if (result_securityRisk == 0) {%>
+                                    <h5 class="card-title">0</h5>
+                                    <p class="card-text">There are 0 High Security Risk</p>
+                                <%}else{%>
+                                    <h5 class="card-title"><%- result_securityRisk[0] %></h5>
+                                    <p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
+                                <%}%>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/showSecurityRisk" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Apex Pages
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_apexPages %></h5>
+                                <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/getApexPage" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Apex Trigger
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_apexTriggers %></h5>
+                                <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/getApexTrigger" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Apex Components
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_ApexComponents %></h5>
+                                <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/getApexComponent" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div> <!-- End of Org Home Tab-->
+
+            <div class="tab-pane fade" id="license">
+                <div class="col-lg-14">
+                    <div class="card">
+                        <div class="badge badge-primary text-wrap" style="width: 100%;">
+                            License Information
+                        </div>
+                        <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
+                            <div class="card-body">
+                              <table class="table table-striped w-100">
+                                  <thead>
+                                      <tr>
+                                          <th>License Type</th>
+                                          <th>Allocated</th>
+                                          <th>Total</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  <% for(var i =0; i< result_userLicense.length; i ++){ %>
+                                  <tr>
+                                      <td ><%- result_userLicense[i].Name %></td>
+                                      <td><%- result_userLicense[i].UsedLicenses%></td>
+                                      <td><%- result_userLicense[i].TotalLicenses%></td>
+                                  </tr>
+                                  <%}%>
+                                </tbody>
+                              </table>
+                            </div>
+                            <%}%>
+                    </div>    
+                </div>
+            </div> <!-- end of License Tab-->
+            <div class="tab-pane fade" id="limit">
+                <% if (result_orgInformation != 0 || result_orgInformation != undefined) {%>
+                <% 
+                        array1 = Object.keys(result_orgInformation)
+                        array2 = Object.values(result_orgInformation)            
+                        if (array1.length > 0 && array2.length > 0) {
+                %>
+                <div class="row">
+                    <div class="card-body">
+                        <table class="table table-striped w-100">
+                            <thead>
+                                <tr>
+                                    <th>Setting</th>
+                                    <th>Remaining</th>
+                                    <th>Max</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i =0; i< array1.length; i ++){ %>
+                                <tr>
+                                    <td><%- array1[i]%></td>
+                                    <td><%- array2[i]["Remaining"] %></td>
+                                    <td><%- array2[i]["Max"] %></td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                          </table>
+                      </div>
+                  </div>
+                <%}%>
+                <%}%>
+              </div> 
+
+            <div class="tab-pane fade" id="others">
+                <div class="col-lg-14">
+                    <div class="card">
+                        <div class="badge badge-primary text-wrap" style="width: 100%;">
+                            Others
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                See more information regarding all your Process Builder & Flows
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/showprocess" class="btn btn-primary">Process Builder / Flow </a>
+                            </div>
+                        </div>
+                    </div>
+
                     
-                    <% } %>
-                   <% } %>
+                </div>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
 </div>
 
-<div class="modal" id="myModal" tabindex="-1" role="dialog">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance...
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <p class="card-text">You dont have an instance connected 😞, click Connect below to get
-                started.</p>
+            <div class="modal" id="myModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance...
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="card-text">You dont have an instance connected 😞, click Connect below to get
+                                started.</p>
 
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" id="btnConnect2" type="button">
-                Connect
-            </button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-    </div>
-</div>
-</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="btnConnect2" type="button">
+                                Connect
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<script>
-$(function () {
-    var a = _.defaultTo("<%- session.instanceURL %>",0);
-    var b = _.defaultTo("<%- session.accesscode %>",0);
-    var c = $("#btnRefresh");
-    if (a == 0 || b == 0){
-        c.prop('disabled', true);
-        c.removeClass('btn btn-primary');
-        c.addClass('btn btn-secondary');
-    }else{
-        c.prop('disabled', false);
-        c.addClass('btn btn-primary');
-        c.removeClass('btn btn-secondary');
-    }
-    $("#btnRefresh").click(function () {
-        //console.log($(this).attr('id'));
-        $(this).prop("disabled", true);
-        $(this).html(
-            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
-        );
-        var btn = $(this);
-        $.ajax({
-            type: 'POST',
-            cache: false,
-            url: '/everything',
-            contentType: "application/json",
-            dataType: "text",
-            success: function (data) {
-                console.log("Success");
-                console.log(data);
-                location.reload(true);
-            },
-            complete: function (response, status) {
-                btn.removeAttr("disabled");
-                btn.remove(".spinner-border.spinner-border-sm");
-                btn.html('Refresh');
-            }
-        });
-    });
-});
-</script>
+            <script>
+                $(function () {
+                    var a = _.defaultTo("<%- session.instanceUrl %>", 0);
+                    var b = _.defaultTo("<%- session.accesscode %>", 0);
+                    var c = $("#btnRefresh");
+                    if (a == 0 || b == 0) {
+                        c.prop('disabled', true);
+                        c.removeClass('btn btn-primary');
+                        c.addClass('btn btn-secondary');
+                    } else {
+                        c.prop('disabled', false);
+                        c.removeClass('btn btn-secondary');
+                        c.addClass('btn btn-primary');
+                    }
+                    $("#btnRefresh").click(function () {
+                        //console.log($(this).attr('id'));
+                        $(this).prop("disabled", true);
+                        $(this).html(
+                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+                        );
+                        var btn = $(this);
+                        $.ajax({
+                            type: 'POST',
+                            cache: false,
+                            url: '/everything',
+                            contentType: "application/json",
+                            dataType: "text",
+                            success: function (data) {
+                                console.log("Success");
+                                console.log(data);
+                                location.reload(true);
+                            },
+                            complete: function (response, status) {
+                                btn.removeAttr("disabled");
+                                btn.remove(".spinner-border.spinner-border-sm");
+                            }
+                        });
+                    });
+                });
+            </script>
