@@ -210,12 +210,11 @@ module.exports = ({
                 result: result
             })
         })
-
+//BUG : Wrong Routing 
         .get('showChart', '/getChart', async (ctx) => {
-            var abc = "classDiagram\n" + "Animal <|-- Duck"
             //console.log(ctx.query)
             const result = await sfdcmethods.get_childRelationship(ctx.query["t"], ctx.session)
-            return ctx.render('/show/show_chart', {
+            return ctx.render('/show_chart', {
                 chart: result
             })
         })
