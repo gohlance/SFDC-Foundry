@@ -232,7 +232,19 @@ module.exports = ({
         })
         //TODO : Test insert into Database and then create UI for it
         .get('testing', '/lance', async (ctx) => {
-           const result = await sfdcbackground_methods.getMoreDetails_ProcessbuilderAndFlow()
-           await sfdcbackground_methods.insertDataDebugMode(JSON.stringify(result))
+           //const result = await sfdcbackground_methods.getMoreDetails_ProcessbuilderAndFlow()
+           //await sfdcbackground_methods.insertDataDebugMode(result)
+
+            const result = await sfdcmethods.debug_select()
+            console.log(result)
+            let caseupdated = _.find(result.rows[0].processflow_metadata, function (o) {
+                return o[0].FullName === "Case_Updated"
+            })
+            console.log(caseupdated)
+
+            let did = "3002x000000g2jmAAA"
+            let oid = "588"
+
+            sfdcmethods.sortTheData(did, oid)
         })
 }

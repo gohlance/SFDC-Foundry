@@ -20,7 +20,7 @@ module.exports = {
     getAllOrgsByUserId,
     getAllProcessAndFlowByType,
     saveUserOrg,
-    deleteUserOrg
+    deleteUserOrg,debug_select, sortTheData
 }
 
 async function check_firstTime_Login(session){
@@ -37,6 +37,7 @@ async function check_firstTime_Login(session){
         return false //this is for first time
     }
 }
+
 //TODO :This potential have issue because of the orderby 
 async function selectAll_RecordTypesByOrder(session){
     let result = await global.pool.query("select elem-> 'Name' as name, elem -> 'SobjectType' as objectType, elem->'IsActive' as active, elem->'Description' as description, elem -> 'BusinessProcessId' as businessprocessid from public.orginformation, lateral jsonb_array_elements(recordtype -> 'records') elem where orgid = $1 order by 2",[session.orgId])
@@ -100,7 +101,7 @@ async function get_childRelationship(objectName, session){
     return chart_schema
 }
 
-async function display_Homepage_Objects(session) {
+  async function display_Homepage_Objects(session) {
     try {
       const result_object = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [session.orgId])
       if (result_object.rows[0]["objectinformation"] != null)
@@ -201,7 +202,6 @@ async function display_Homepage_Objects(session) {
         console.error("Error [display_Homepage_ApexPages]: " + error)
     }
   }
-  
   async function getMoreOrgDetails(session) {
     try {
       const result = await global.pool.query("SELECT orglimitsinformation FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
@@ -214,7 +214,6 @@ async function display_Homepage_Objects(session) {
       return 0
     }
   }
-  
   async function getUserLicenseDetails(session) {
     try {
       const result = await global.pool.query("SELECT orglicenseinformation FROM orginformation WHERE orgid=$1 ORDER BY id, createdDate DESC limit 1", [session.orgId])
@@ -239,7 +238,6 @@ async function display_Homepage_Objects(session) {
         console.error("Error [getAllOrgsByUserId] : " + error)
     }
   }
-
   async function getAllProcessAndFlowByType(session){
     try {
       const result = await global.pool.query("SELECT processflow FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC limit 1", [session.orgId])
@@ -256,7 +254,6 @@ async function display_Homepage_Objects(session) {
       console.error("Error [getAllProcessAndFlowByType] : " + error)
     }
   }
-
   async function saveUserOrg(user_id, orgId, orgUrl){
     try {
       const result = await global.pool.query("INSERT INTO orgs (orgid, user_id, orgurl) VALUES ($1, $2, $3)", [orgId, user_id, orgUrl])
@@ -269,5 +266,38 @@ async function display_Homepage_Objects(session) {
       const reuslt = await global.pool.query("DELETE FROM orgs WHERE orgid = $1",[orgId])
     }catch (error){
       console.error("Error  [deleteUserOrg] : "+ error)
+    }
+  }
+// DEBUG Stuff
+  async function debug_select(){
+    try {
+      const result = await global.pool.query("SELECT processflow_metadata FROM orginformation WHERE id = 2")
+      console.log(result)
+      return result
+    } catch (error) {
+       console.log("Er : " + error)
+    }
+  }
+
+
+  async function sortTheData(definitionId, orgId){
+    //Grab the specific json records
+    const result = await global.pool.query("SELECT elem FROM orginformation o, jsonb_array_elements(processflow_metadata) elem where elem -> 0 ->> 'DefinitionId' = $1 and orgid = $2",[definitionId, orgId])
+
+    //Get Decision
+    let decision_array = []
+    let meta = result.rows[0].elem[0].Metadata
+    if (meta.decisions.length > 0){
+      meta.decisions.forEach(element => {
+        if (element.rules.length > 0){
+          let something = _.map(meta.decisions.rules)
+          
+         // console.log(element.rules.length)
+          element.rules.forEach(r => {
+            console.log(r.name)
+            console.log(r.name.startsWith("myRule"))
+          });
+        }
+      });
     }
   }

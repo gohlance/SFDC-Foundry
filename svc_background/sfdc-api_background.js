@@ -18,7 +18,7 @@ var oauth2 = new jsforce.OAuth2({
 const axios = require('axios')
 const Pool = require('pg-pool')
 //DEV
-/**
+
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
@@ -35,9 +35,9 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
   }) 
-*/
-//#endregion
 
+//#endregion
+/**
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     version: '48.0'
@@ -54,7 +54,7 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 }) 
-
+ */
 module.exports = {
     getAllMeta,
     getAllLayout,
@@ -463,7 +463,7 @@ async function getAllSecurityRisk() {
 }
 
 async function insertDataDebugMode(result){
-    await pool.query("Update processflow_metadata SET ProcessFlow_metadata = $1 WHERE id = 2", [JSON.stringify(result)])
+    await pool.query("Update orginformation SET processflow_metadata = $1 WHERE id = 2", [JSON.stringify(result)])
 }
 
 async function getAllProcessBuilderANDFlow() {
@@ -506,9 +506,9 @@ async function getMoreDetails_ProcessbuilderAndFlow() {
 async function getEachProcessDefinition(result){
     try {
         var tempArray = await Promise.all( result.records.map(async item => {
-
-            var something = await conn.tooling.query("SELECT FullName, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber)
-            return  JSON.stringify(something.records[0])
+            var something = await conn.tooling.query("SELECT FullName, DefinitionId, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber)
+            //return  JSON.stringify(something.records[0])
+            return something.records
         }))
         return tempArray 
     }catch (error){
