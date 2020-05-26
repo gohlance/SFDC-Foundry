@@ -20,7 +20,7 @@ module.exports = {
     getAllOrgsByUserId,
     getAllProcessAndFlowByType,
     saveUserOrg,
-    deleteUserOrg,debug_select, sortTheData
+    deleteUserOrg,debug_select
 }
 
 async function check_firstTime_Login(session){
@@ -279,25 +279,3 @@ async function get_childRelationship(objectName, session){
     }
   }
 
-
-  async function sortTheData(definitionId, orgId){
-    //Grab the specific json records
-    const result = await global.pool.query("SELECT elem FROM orginformation o, jsonb_array_elements(processflow_metadata) elem where elem -> 0 ->> 'DefinitionId' = $1 and orgid = $2",[definitionId, orgId])
-
-    //Get Decision
-    let decision_array = []
-    let meta = result.rows[0].elem[0].Metadata
-    if (meta.decisions.length > 0){
-      meta.decisions.forEach(element => {
-        if (element.rules.length > 0){
-          let something = _.map(meta.decisions.rules)
-          
-         // console.log(element.rules.length)
-          element.rules.forEach(r => {
-            console.log(r.name)
-            console.log(r.name.startsWith("myRule"))
-          });
-        }
-      });
-    }
-  }

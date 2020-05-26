@@ -7,7 +7,7 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', async (ctx) => {
-      return ctx.render('index')
+      return ctx.render('login_index')
     })
     .get('welcome', '/welcome', async (ctx) => {
       //console.log("QueryString : " + ctx.request.query["org"])
@@ -38,7 +38,7 @@ module.exports = ({
       }
     })
     .get('index', '/index', (ctx) => {
-      return ctx.render('index')
+      return ctx.render('login_index')
     })
     .get('about', '/about', (ctx) => {
       ctx.body = "About US..."
@@ -49,7 +49,6 @@ module.exports = ({
     .get('payment', '/payment', (ctx) => {
       return ctx.render('payment')
     })
-    
     .post('register', '/auth/register', async (ctx) => {
       let hash = bcrypt.hashSync(ctx.request.body.password, 10);
       const user = await global.pool.query("INSERT INTO Users (user_name, user_email, user_password) VALUES ($1, $2, $3)", [ctx.request.body.username, ctx.request.body.useremail, hash])
@@ -65,7 +64,6 @@ module.exports = ({
         }
       })(ctx);
     })
-    
     .post('login','/auth/login', async (ctx) => {
       return passport.authenticate('local', (err, user, info, status) => {
         if (user) {
