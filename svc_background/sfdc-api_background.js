@@ -18,7 +18,7 @@ var oauth2 = new jsforce.OAuth2({
 const axios = require('axios')
 const Pool = require('pg-pool')
 //DEV
-
+/**
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
@@ -35,9 +35,9 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
   }) 
-
+ */
 //#endregion
-/**
+
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     version: '48.0'
@@ -54,7 +54,7 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 }) 
- */
+
 module.exports = {
     getAllMeta,
     getAllLayout,
