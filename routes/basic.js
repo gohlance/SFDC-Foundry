@@ -71,6 +71,7 @@ module.exports = ({
           ctx.redirect('/getstarted');
         } else {
           ctx.status = 400;
+          //TODO : show error page.
           ctx.body = {
             status: 'error'
           };
