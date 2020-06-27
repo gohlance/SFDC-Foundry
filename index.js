@@ -12,7 +12,7 @@ const path = require('path')
 const app = new Koa()
 
 //** Only for Development 
-
+/**
 global.instanceUrl = "https://lgoh-isos2020.my.salesforce.com"
 global.accesscode = "00D2x000000D8Li!AQ8AQJIc1usxjN9rRdxjo31bQFjRpCmUOfHy2YzBZZjJSkk2KUv38eDzJZ1vup34qwafkC5gixz4RyrgbFQo86_DkgPfg7dp"
 global.orgId = "288"
@@ -27,8 +27,8 @@ global.pool = new Pool({
   max: 20, // set pool max size to 20
   min: 4
 })
+ */
 
-/**
  //global DB Connection
 const Pool = require('pg-pool')
 
@@ -41,7 +41,7 @@ global.pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
 }) 
- */
+
 render(app, {
   root: path.join(__dirname, 'views'),
   layout: 'layout',
