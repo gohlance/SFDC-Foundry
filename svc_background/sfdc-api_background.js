@@ -18,7 +18,7 @@ var oauth2 = new jsforce.OAuth2({
 const axios = require('axios')
 const Pool = require('pg-pool')
 //DEV
-/**
+
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
@@ -35,9 +35,9 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
   }) 
- */
+ 
 //#endregion
-
+/*
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     version: '48.0'
@@ -53,7 +53,7 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-}) 
+}) **/
 
 module.exports = {
     getAllMeta,
@@ -149,6 +149,7 @@ async function getAllObjectOnce() {
                 //resolve(res.sobjects)
                 console.log("GetAllObject Once : " + res)
                 jsonResult = await sObjectDescribe(res.sobjects)
+                
                 console.log("GetAllObject Once Returning")
                 resolve([res.sobjects, jsonResult])
             })
@@ -371,11 +372,10 @@ async function sObjectDescribe(result) {
 
         let allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
             var totalfields = await conn.sobject(item.name).describe().then(async response => {
-
                 return {
                     totalfields: response.fields.length,
                     layout: response.namedLayoutInfos.length,
-                    childRelatioship: response.childRelationships.length,
+                    childRelationships: response.childRelationships.length,
                     recordType: response.recordTypeInfos.length,
                     createable: response.createable,
                     deletable: response.deletable,
