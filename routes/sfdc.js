@@ -216,7 +216,7 @@ module.exports = ({
         .get('showChart', '/getChart', async (ctx) => {
             //console.log(ctx.query)
             const result = await sfdcmethods.get_childRelationship(ctx.query["t"], ctx.session)
-            return ctx.render('/show_chart', {
+            return ctx.render('/show/show_chart', {
                 chart: result
             })
         })
@@ -232,7 +232,12 @@ module.exports = ({
                processes: result[0].process
            })
         })
-       
+       .get ('testing', '/child', async (ctx) => {
+           const result = await sfdcmethods.get_childRelationshipDetails()
+           return ctx.render('/show/show_chart',{
+               allObject: result
+           })
+       })
         //TODO : Debug only New Features & created UX for it
         .get('testing', '/lance', async (ctx) => {
            //const result = await sfdcbackground_methods.getMoreDetails_ProcessbuilderAndFlow()

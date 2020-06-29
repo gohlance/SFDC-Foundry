@@ -20,7 +20,8 @@ module.exports = {
     getAllOrgsByUserId,
     getAllProcessAndFlowByType,
     saveUserOrg,
-    deleteUserOrg,debug_select
+    deleteUserOrg,debug_select,
+    get_childRelationshipDetails
 }
 
 async function check_firstTime_Login(session){
@@ -80,6 +81,16 @@ async function getSecurityRisk(type, session){
       return 0
     }
   }
+
+async function get_childRelationshipDetails(session){
+  try {
+    let result = await global.pool.query("select sobjectdescribe from orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",  [global.orgId])
+    return result.rows[0].sobjectdescribe["allObject"]
+  } catch (error) {
+    console.log("Error [get_childRelationshipDetails]: " + error)
+    return 0
+  } 
+}
 
 //TODO :unique_object[item] - get key value - which is an array to get the fields that is linked
 //TODO : orderby issue with createdDate 

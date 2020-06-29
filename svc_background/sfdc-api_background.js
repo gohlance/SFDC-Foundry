@@ -18,7 +18,7 @@ var oauth2 = new jsforce.OAuth2({
 const axios = require('axios')
 const Pool = require('pg-pool')
 //DEV
-/**
+
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
@@ -35,9 +35,9 @@ const pool = new Pool({
     max: 20, // set pool max size to 20
     min: 4
   }) 
-  */
-//#endregion
 
+//#endregion
+/**
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     version: '48.0'
@@ -53,7 +53,7 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-}) 
+})  */
 
 module.exports = {
     getAllMeta,
@@ -89,7 +89,7 @@ async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, 
         console.log("Returning ID from SQL insert : " + sqlid)
      } catch (error) {
          console.log("Error from SQL : " + error)
-     }
+     }B
 }
 
 async function letsGetEverything(session) {
