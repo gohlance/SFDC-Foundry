@@ -233,7 +233,7 @@ module.exports = ({
            })
         })
        .get ('testing', '/child', async (ctx) => {
-           const result = await sfdcmethods.get_childRelationshipDetails()
+           const result = await sfdcmethods.get_childRelationshipDetails(ctx.query["t"])
            return ctx.render('/show/show_chart',{
                allObject: result
            })

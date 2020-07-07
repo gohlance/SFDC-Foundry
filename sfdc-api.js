@@ -82,10 +82,13 @@ async function getSecurityRisk(type, session){
     }
   }
 
-async function get_childRelationshipDetails(session){
+async function get_childRelationshipDetails(objectname, session){
   try {
-    let result = await global.pool.query("select sobjectdescribe from orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",  [global.orgId])
-    return result.rows[0].sobjectdescribe["allObject"]
+   // let result = await global.pool.query("select sobjectdescribe from orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",  [global.orgId])
+
+    let result =  await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.orginformation , lateral jsonb_array_elements(sobjectdescribe -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2 ORDER BY createdDate DESC FETCH FIRST ROW only", [objectname, global.orgId])
+    let result_json = JSON.parse(result.rows[0].relationship)
+    return result_json
   } catch (error) {
     console.log("Error [get_childRelationshipDetails]: " + error)
     return 0

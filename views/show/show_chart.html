@@ -1,4 +1,4 @@
-
+<script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js" type="text/javascript"></script>   
 <div class="row">
     <div class="container">
             <button class="btn btn-info" onclick="history.back(-1)">Back</button>
@@ -10,24 +10,15 @@
                     cellspacing="0" width="100%">
                     <thead>
                             <th>Object</th>
-                            <th>ChildRelationship</th>
+                           
                     </thead>
                     <tbody>
                             <% for(var i =0; i< allObject.length; i ++){ %>
-                               
                             <tr>
-                                    <td><%- allObject[i].Objectname %></td>
-                                    
-                                    <td><% for (var j=0; j < allObject[i].childRelationship_details.length; j ++ ) {%>
-                                        <table>
-                                            <tr>
-                                                <td><%- allObject[i].childRelationship_details[j].field %> </td>
-                                            </tr>
-                                        </table>
-                                        <%}%>
-                                    </td>
+                                <td><%- allObject[i].field %>  / 
+                                    <%- allObject[i].childSObject %>
+                                </td>
                             </tr>
-                         
                             <%}%> 
                     </tbody>   
             </table>
