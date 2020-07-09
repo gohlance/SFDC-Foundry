@@ -12,6 +12,8 @@ const _ = require('lodash')
 
 const processbuilder = require('../processbuilder-api')
 
+const dot = require('../dotNotation')
+
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
     // loginUrl : 'https://test.salesforce.com',
@@ -234,8 +236,9 @@ module.exports = ({
         })
        .get ('testing', '/child', async (ctx) => {
            const result = await sfdcmethods.get_childRelationshipDetails(ctx.query["t"])
+           const dot_result = dot.convertToDOT(result, ctx.query["t"])
            return ctx.render('/show/show_chart',{
-               allObject: result
+               allObject: dot_result
            })
        })
         //TODO : Debug only New Features & created UX for it
