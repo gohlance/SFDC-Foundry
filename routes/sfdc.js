@@ -238,7 +238,8 @@ module.exports = ({
            const result = await sfdcmethods.get_childRelationshipDetails(ctx.query["t"])
            const dot_result = dot.convertToDOT(result, ctx.query["t"])
            return ctx.render('/show/show_chart',{
-               allObject: dot_result
+               dot_allObject: dot_result,
+               allObject : result
            })
        })
         //TODO : Debug only New Features & created UX for it
