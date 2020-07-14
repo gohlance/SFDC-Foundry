@@ -16,7 +16,7 @@ const app = new Koa()
 global.instanceUrl = "https://lgoh-isos2020.my.salesforce.com"
 global.accesscode = "00D2x000000D8Li!AQ8AQDK6C8Jqdm2WjtRNl_iCosqGpZxN7g0A43KhFemD_rJfL9gZj3aYhUPqHd.nvfTzpyGh.nsIms3zCOLXyH.2etxwXF2N"
 global.orgId = "588"
-
+/**
 const Pool = require('pg-pool')
 global.pool = new Pool({
   user: 'postgres',
@@ -26,9 +26,9 @@ global.pool = new Pool({
   port: 5432,
   max: 20, // set pool max size to 20
   min: 4
-})
+}) */
   
-/**
+
  //global DB Connection
 const Pool = require('pg-pool')
 
@@ -40,7 +40,7 @@ global.pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})  */
+})  
 
 render(app, {
   root: path.join(__dirname, 'views'),

@@ -543,3 +543,21 @@ function filter_BeforeCallingAPI(result) {
 
     return createable_is_true
 }
+
+//Testing
+async function getAllEntityDefinition() {
+    try {
+        return new Promise((resolve, reject) => {
+            console.log("Conn : " + conn.accessToken)
+            conn.tooling.query("SELECT FROM EntityDefinition", function (error, result) {
+                if (error) {
+                    console.log("Error [sfdc-api/getAllEntityDefinition - conn.tooling] : " + error)
+                }
+                console.log("[sfdc-api/getAllEntityDefinition] : " + result)
+                resolve(result)
+            })
+        })
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllEntityDefinition] : " + error)
+    }
+}
