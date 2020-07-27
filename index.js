@@ -12,11 +12,11 @@ const path = require('path')
 const app = new Koa()
 
 //** Only for Development 
-
+/**
 global.instanceUrl = "https://lgoh-isos2020.my.salesforce.com"
 global.accesscode = "00D2x000000D8Li!AQ8AQDK6C8Jqdm2WjtRNl_iCosqGpZxN7g0A43KhFemD_rJfL9gZj3aYhUPqHd.nvfTzpyGh.nsIms3zCOLXyH.2etxwXF2N"
 global.orgId = "588"
-/**
+
 const Pool = require('pg-pool')
 global.pool = new Pool({
   user: 'postgres',
@@ -58,7 +58,7 @@ const CONFIG = {
   /** (number || 'session') maxAge in ms (default is 1 days) */
   /** 'session' will result in a cookie that expires when session/browser is closed */
   /** Warning: If a session cookie is stolen, this cookie will never expire */
-  maxAge: 432000, // 5 days
+  maxAge: 86400, // 1 day
   autoCommit: true,
   /** (boolean) automatically commit headers (default true) */
   overwrite: false,

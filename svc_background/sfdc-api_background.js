@@ -18,7 +18,7 @@ var oauth2 = new jsforce.OAuth2({
 const axios = require('axios')
 const Pool = require('pg-pool')
 //DEV
-
+/** 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
@@ -26,7 +26,7 @@ var conn = new jsforce.Connection({
     version: '48.0'
 })
 
-/** 
+
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
