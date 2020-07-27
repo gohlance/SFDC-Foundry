@@ -52,6 +52,7 @@ module.exports = ({
     router
         .get('/oauth2/auth', (ctx) => {
             console.log(ctx);
+            console.log(global.instanceUrl);
             ctx.response.redirect(oauth2.getAuthorizationUrl({
                 scope: 'api web'
             }))
