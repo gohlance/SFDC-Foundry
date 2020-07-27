@@ -12,7 +12,8 @@ const _ = require('lodash')
 
 const processbuilder = require('../processbuilder-api')
 
-const dot = require('../dotNotation')
+const dot = require('../dotNotation');
+const { OAuth2 } = require('jsforce');
 
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
@@ -23,10 +24,7 @@ oauth2 = new jsforce.OAuth2({
 });
 
 conn = new jsforce.Connection({
-    //oauth2: oauth2
     oauth2: oauth2,
-    instanceUrl: global.instanceUrl,
-    accessToken: global.accesscode,
     version: '48.0'
 })
 
@@ -51,8 +49,7 @@ module.exports = ({
 }) => {
     router
         .get('/oauth2/auth', (ctx) => {
-            console.log(ctx);
-            console.log(global.instanceUrl);
+            OAuth2.
             ctx.response.redirect(oauth2.getAuthorizationUrl({
                 scope: 'api web'
             }))

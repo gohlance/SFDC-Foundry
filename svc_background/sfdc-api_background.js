@@ -90,7 +90,7 @@ async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, 
         console.log("Returning ID from SQL insert : " + sqlid)
      } catch (error) {
          console.log("Error from SQL : " + error)
-     }B
+     }
 }
 
 async function letsGetEverything(session) {
