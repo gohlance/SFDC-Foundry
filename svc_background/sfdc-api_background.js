@@ -26,6 +26,7 @@ var conn = new jsforce.Connection({
     version: '48.0'
 })
 
+/** 
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
@@ -34,10 +35,10 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-  }) 
+  }) */
 
 //#endregion
-/**
+
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     version: '48.0'
@@ -53,7 +54,7 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})  */
+})  
 
 module.exports = {
     getAllMeta,
