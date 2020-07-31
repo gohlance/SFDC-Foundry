@@ -14,7 +14,7 @@ const app = new Koa()
 //** Only for Development 
 /**
 global.instanceUrl = "https://lgoh-isos2020.my.salesforce.com"
-global.accesscode = "00D2x000000D8Li!AQ8AQDK6C8Jqdm2WjtRNl_iCosqGpZxN7g0A43KhFemD_rJfL9gZj3aYhUPqHd.nvfTzpyGh.nsIms3zCOLXyH.2etxwXF2N"
+global.accesscode = "00D2x000000D8Li!AQ8AQCHbGHxT1bZl9RV3KJN8LyKkn5s.Pc1G03uN3p.4AnUCTAVmSGESdWSdM4IO3tD.NrTIwD0NEIX4LEz.62M.x9X9l0Zg"
 global.orgId = "588"
 
 const Pool = require('pg-pool')
@@ -26,8 +26,8 @@ global.pool = new Pool({
   port: 5432,
   max: 20, // set pool max size to 20
   min: 4
-}) */
-  
+})
+   */
 
  //global DB Connection
 const Pool = require('pg-pool')
@@ -40,7 +40,7 @@ global.pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})  
+})   
 
 render(app, {
   root: path.join(__dirname, 'views'),
@@ -63,13 +63,13 @@ const CONFIG = {
   /** (boolean) automatically commit headers (default true) */
   overwrite: false,
   /** (boolean) can overwrite or not (default true) */
-  httpOnly: true,
+  httpOnly: false,
   /** (boolean) httpOnly or not (default true) */
   signed: true,
   /** (boolean) signed or not (default true) */
   rolling: true,
   /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. (default is false) */
-  renew: true,
+  renew: false,
   /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false)*/
 };
 
