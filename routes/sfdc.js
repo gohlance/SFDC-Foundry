@@ -212,7 +212,7 @@ module.exports = ({
                 result: result
             })
         })
-//BUG : Wrong Routing 
+//BUG : Check should be working now. August 2020
         .get('showChart', '/getChart', async (ctx) => {
             //console.log(ctx.query)
             const result = await sfdcmethods.get_childRelationship(ctx.query["t"], ctx.session)
