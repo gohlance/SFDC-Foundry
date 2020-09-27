@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Summary Report for {{org}}</title>
+	<head>
+		<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/litera/bootstrap.min.css" rel="stylesheet" integrity="sha384-pLgJ8jZ4aoPja/9zBSujjzs7QbkTKvKw1+zfKuumQF9U+TH3xv09UUsRI52fS+A6" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+			integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<meta charset="utf-8">
+</head>
+<body>
+	<div class="report-header">
+		<h3>{{title}}</h3>
+		<p>{{date}}</p>
+	</div>
+	<div class="report-body">
+		<div class="info">
+			<p>Student: {{name}}</p>
+			<p>OEN: {{oen}}</p>
+			<p>Age: {{age}}</p>
+			<p>Birthdate: {{birthdate}}</p>
+			<p>Course: {{course}}</p>
+		</div>
+		<ul style="width: 100%;">
+			<li><p>Total Objects : </p><p>{{objects}}</p></li>
+			<li><p>Total Profiles : </p><p>{{profiles}}</p></li>
+			<li><p>Total Layouts : </p><p>{{layout}}</p></li>
+			<li><p>Total Record Types : </p><p>{{recordtype}}</p></li>
+			<li><p>Total Custom Application : </p><p>{{application}}</p></li>
+			<li><p>Total Security Risk : </p><p>{{risk}}</p></li>
+		</ul>
+
+		<ul>
+			<li>
+				<p>Total Apex Pages</p><p>{{ApexPage}}</p>
+			</li>
+			<li>
+				<p>Total Apex Trigger</p><p>{{ApexTrigger}}</p>
+			</li>
+			<li>
+				<p>Total Apex Components</p><p>{{ApexComponents}}</p>
+			</li>
+		</ul>
+	
+		<p>License Information</p>
+		<ul>
+			{{#each licenses as |item|}}
+				<li><p>{{item.Name}}</p><p>{{item.UsedLicenses}}</p><p>{{item.TotalLicense}}</p></li>
+			{{/each}}
+		</ul>
+		<div class="obs">
+			<p>Obs: {{obs}}</p>
+		</div>
+	</div>
+	<div class="report-photo">
+		
+	</div>
+	<div class="report-footer">
+		A generic Company - All Rights reserved.
+	</div>
+</body>
+</html>
