@@ -13,6 +13,118 @@
 		<h3>{{title}}</h3>
 		<p>{{date}}</p>
 	</div>
+	<div class="row">
+        <div class="tab-content" style="width: 100%;">
+            <div class="tab-pane fade active show" id="orgHome">
+                <div class="row">
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Objects
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_objects %></h5>
+                                <p class="card-text">Your total objects are <%- result_objects %>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Profiles
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_profiles %></h5>
+                                <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Layouts
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_layouts %></h5>
+                                <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Records Types
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_recordTypes %></h5>
+                                <p class="card-text">Your total record types are <%- result_recordTypes %> 😞.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Custom Application(s)
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_customapp[0] %></h5>
+                                <p class="card-text"><%- result_customapp[1] %> app in Classic .</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Security Risk
+                            </div>
+                            <div class="card-body">
+								<h5 class="card-title"><%- result_securityRisk[0] %></h5>
+								<p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Apex Pages
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_apexPages %></h5>
+                                <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Apex Trigger
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_apexTriggers %></h5>
+                                <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-2 mb-4">
+                        <div class="card h-100">
+                            <div class="badge badge-primary text-wrap" style="width: 100%;">
+                                Total Apex Components
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%- result_ApexComponents %></h5>
+                                <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div> <!-- End of Org Home Tab-->
+		</div> 
+	</div>
+</div>
 	<div class="report-body">
 		<div class="info">
 			<p>Student: {{name}}</p>

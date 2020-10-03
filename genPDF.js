@@ -3,9 +3,9 @@ const path = require("path");
 const puppeteer = require('puppeteer');
 const handlebars = require("handlebars");
 
-//module.exports = {
-  //  createPDF
-//}
+module.exports = {
+    createPDF
+}
 
 const data = {
 	title: "A new Brazilian School",
