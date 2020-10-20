@@ -18,7 +18,7 @@ var oauth2 = new jsforce.OAuth2({
 const axios = require('axios')
 const Pool = require('pg-pool')
 //DEV
-/** 
+
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: global.instanceUrl,
@@ -35,10 +35,10 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-  }) */
+  }) 
 
 //#endregion
-
+/**
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     version: '48.0'
@@ -54,7 +54,8 @@ const pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4
-})  
+})   
+*/
 
 module.exports = {
     getAllMeta,
@@ -80,7 +81,7 @@ module.exports = {
     set_ConnObject,
     insertBackgroundData,
     getAllProcessBuilderANDFlow,
-    getMoreDetails_ProcessbuilderAndFlow, insertDataDebugMode
+    getMoreDetails_ProcessbuilderAndFlow, insertDataDebugMode, getAppComponets_Beta
 }
 
 async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, securityrisk, sobject, apextrigger, apexpage, apexclass, apexcomponent, profile, userbyProfile, layout, profilelayout, customapp,businessprocess, workflowrules, validationRules, recordtype, processflow, processflow_meta){
@@ -560,5 +561,26 @@ async function getAllEntityDefinition() {
         })
     } catch (error) {
         console.error("Error [sfdc-api/getAllEntityDefinition] : " + error)
+    }
+}
+
+async function getAppComponets_Beta() {
+    try{
+        return new Promise((resolve, reject) => {
+            console.log("Starting")
+            var appid = "02u2x000000DKK1AAO"
+          //  var query = "SELECT MetadataComponentName, MetadataComponentType, RefMetadataComponentId, RefMetadataComponentName, RefMetadataComponentType FROM MetadataComponentDependency WHERE MetadataComponentId = '" + appid + "'"
+            var query = "SELECT MetadataComponentId, MetadataComponentName, MetadataComponentType, RefMetadataComponentId, RefMetadataComponentName, RefMetadataComponentType FROM MetadataComponentDependency Where RefMetadataComponentType = 'Flow'"
+
+           conn.tooling.query(query, function (error,result) {
+            if (error) {
+                console.log("Error [ - conn.tooling] : " + error)
+            }
+            resolve(result)
+           })
+            
+        })
+    }catch (error){
+        console.error("Beta : " + error)
     }
 }

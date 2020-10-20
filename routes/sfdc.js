@@ -14,6 +14,7 @@ const processbuilder = require('../processbuilder-api')
 
 const dot = require('../dotNotation');
 const { OAuth2 } = require('jsforce');
+const sfdcApi_background = require('../svc_background/sfdc-api_background');
 
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
@@ -25,7 +26,7 @@ oauth2 = new jsforce.OAuth2({
 
 conn = new jsforce.Connection({
     oauth2: oauth2,
-    version: '48.0'
+    version: '50.0'
 })
 
 async function private_gettoken(code) {
@@ -257,4 +258,10 @@ module.exports = ({
 
             processbuilder.demystify_processbuilder(did, oid)
         })
+
+        .get('tsting2', '/depend', async (ctx) => {
+            const result = await sfdcApi_background.getAppComponets_Beta()
+            console.log("t : " + result)
+        })
+
 }

@@ -12,6 +12,10 @@ module.exports = ({
     .get('welcome', '/welcome', async (ctx) => {
       //console.log("QueryString : " + ctx.request.query["org"])
       //console.log("Authenticated : " + ctx.isAuthenticated())
+      //DEV
+      ctx.session.instanceUrl = global.instanceUrl
+      ctx.session.accesscode = global.accesscode
+      //end Dev
       if (ctx.isAuthenticated()){
         if (!ctx.session.orgId){
           ctx.session.orgId = ctx.request.query["org"]
