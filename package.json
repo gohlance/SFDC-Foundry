@@ -10,7 +10,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.20.0",
+        "axios": "^0.21.1",
         "bcrypt": "^5.0.0",
         "handlebars": "^4.7.6",
         "jsforce": "^1.10.0",
