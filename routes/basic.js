@@ -66,16 +66,14 @@ module.exports = ({
     })
     .post('login','/auth/login', async (ctx) => {
       return passport.authenticate('local', (err, user, info, status) => {
-        if (user) {
-          ctx.login(user);
-          ctx.redirect('/getstarted');
-        } else {
+        try {
+          if (user) {
+            ctx.login(user);
+            ctx.redirect('/getstarted');
+          } 
+        } catch (error) {
           ctx.status = 400;
-          this.throw('Login Failed',400);
-          //TODO : show error page.
-          //ctx.body = {
-          //  status: 'error'
-          //};
+          this.throw(error);
         }
       })(ctx);
     })
