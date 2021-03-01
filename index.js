@@ -141,10 +141,6 @@ app.use(async (ctx, next) => {
   }
 })
 
-// throw an error anywhere you want!
-router.get('/404', ctx => ctx.throw(404));
-router.get('/500', ctx => ctx.throw(500));
-
 //router configuration
 const router = new koa_router()
 
@@ -154,6 +150,10 @@ require('./routes/basic')({
 require('./routes/sfdc')({
   router
 })
+
+// throw an error anywhere you want!
+router.get('/404', ctx => ctx.throw(404));
+router.get('/500', ctx => ctx.throw(500));
 
 app.use(router.routes()).use(router.allowedMethods)
 
