@@ -1,5 +1,6 @@
 'use strict';
-
+const errorHandler = require('koa-better-error-handler');
+const koa404Handler = require('koa-404-handler');
 const Koa = require('koa')
 const session = require('koa-session')
 const render = require('koa-ejs')
@@ -10,6 +11,9 @@ const passport = require('koa-passport')
 
 const path = require('path')
 const app = new Koa()
+
+// override koa's undocumented error handler
+app.context.onerror = errorHandler;
 
 //** Only for Development 
 /**
@@ -74,6 +78,7 @@ const CONFIG = {
 };
 
 app.use(session(CONFIG, app))
+
 // body parser
 const bodyParser = require('koa-bodyparser')
 app.use(bodyParser())
@@ -122,6 +127,9 @@ app.use(serve('./public'))
 //log all events to the terminal
 app.use(logger());
 
+app.context.onerror = errorHandler(passport.session());
+app.use(koa404Handler);
+
 //Error Handling
 app.use(async (ctx, next) => {
   try {
@@ -132,6 +140,10 @@ app.use(async (ctx, next) => {
     ctx.body = error.message;
   }
 })
+
+// throw an error anywhere you want!
+router.get('/404', ctx => ctx.throw(404));
+router.get('/500', ctx => ctx.throw(500));
 
 //router configuration
 const router = new koa_router()
