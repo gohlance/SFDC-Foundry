@@ -29,9 +29,7 @@ async function start_background_call() {
             sfdcmethod.get_UserWithLicense2(), //testing
             sfdcmethod.get_Org_limitInfo(workerData.accesscode, workerData.instance),
             sfdcmethod.getAllSecurityRisk(), //Testing
-            sfdcmethod.getAllObjectOnce(), //testing
-            sfdcmethod.getAllProcessBuilderANDFlow(),
-            sfdcmethod.getMoreDetails_ProcessbuilderAndFlow()
+            sfdcmethod.getAllObjectOnce()
          ]).then((
                 [meta, 
                 layout, 
@@ -50,7 +48,7 @@ async function start_background_call() {
                 license, 
                 orglimit, 
                 securityrisk, 
-                objectinfo, processflow, processflow_detail ]
+                objectinfo ]
              ) => {
                     sfdcmethod.insertBackgroundData(workerData.orgId, 
                         JSON.stringify(meta), 
@@ -71,7 +69,7 @@ async function start_background_call() {
                         JSON.stringify(businessprocess), 
                         JSON.stringify(workflowrules), 
                         JSON.stringify(validationRules), 
-                        JSON.stringify(recordtype), JSON.stringify(processflow), JSON.stringify(processflow_detail))
+                        JSON.stringify(recordtype))
                 
                 parentPort.postMessage({
                     status: 'Done'
