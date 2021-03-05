@@ -41,7 +41,7 @@ const pool = new Pool({
 
 var conn = new jsforce.Connection({
     oauth2: oauth2,
-    version: '48.0'
+    version: '51.0'
     // instanceUrl: global.instanceUrl,
     // accessToken: global.accesscode
 })
@@ -391,6 +391,8 @@ async function sObjectDescribe(result) {
                 lessthan100fields++
             }
 
+            console.log("Total Fields : " + totalfields);
+
             return {
                 Objectname: item.name,
                 totalfields: totalfields.totalfields,
@@ -469,6 +471,7 @@ async function insertDataDebugMode(result){
 
 async function getAllProcessBuilderANDFlow() {
     try {
+        console.log("Get Process");
         return new Promise((resolve, reject) => {
             conn.tooling.query("SELECT DefinitionId, Description, IsTemplate, ManageableState, MasterLabel, ProcessType, RunInMode, Status, VersionNumber FROM FLOW", function (error, result) {
                 if (error) {
