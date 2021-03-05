@@ -152,6 +152,9 @@ async function getAllObjectOnce() {
                 jsonResult = await sObjectDescribe(res.sobjects)
                 
                 console.log("GetAllObject Once Returning")
+                console.log("Res.Sobject s: " + res.sobjects);
+                console.log("JsonReuslt : " + jsonResult);
+                
                 resolve([res.sobjects, jsonResult])
             })
         })
