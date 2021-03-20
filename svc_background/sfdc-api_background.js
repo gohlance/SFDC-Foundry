@@ -96,7 +96,7 @@ async function insertBackgroundData(orgid, meta, objectinfo, license, orglimit, 
 async function letsGetEverything(session) {
     try {
         return new Promise((resolve, reject) => {
-            const worker = new Worker('./svc_background/backgroundsvc.js', {
+           const worker = new Worker('./svc_background/backgroundsvc.js', {
                 workerData: {
                     instance: session.instanceUrl,
                     accesscode: session.accesscode,

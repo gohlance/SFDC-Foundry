@@ -1,5 +1,6 @@
 const sfdcmethods = require('../sfdc-api')
 const sfdcbackground_methods = require('../svc_background/sfdc-api_background')
+const new_sfdc_Background = require("../core/sfdc_background_start");
 const {
     Worker,
     isMainThread,
@@ -91,7 +92,8 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
-                const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
+               // const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
+                const result = await new_sfdc_Background.start_BackGroundService(ctx.session);
                 console.log("***  : "  +result)
                 ctx.body ={ data: result}
             } catch (err) {
