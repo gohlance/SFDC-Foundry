@@ -18,6 +18,8 @@ let conn = new jsforce.Connection({
     // accessToken: global.accesscode
 })
 
+const axios = require('axios');
+
 function set_ConnObject(workerData) {
     conn.accessToken = workerData.accesscode
     conn.instanceUrl = workerData.instance
@@ -98,7 +100,7 @@ async function get_Org_limitInfo(accesscode, instanceurl) {
             'Authorization': 'Bearer ' + accesscode,
             'X-PrettyPrint': 1,
         };
-        return await axios.get(instanceurl + '/services/data/v45.0/limits/', {
+        return await axios.get( instanceurl + '/services/data/v51.0/limits/', {
             headers
         })
     } catch (error) {
@@ -192,4 +194,23 @@ module.exports = {
     get_TotalUsersByProfile,
     getAllObjectOnce
 }
-module.exports.queryType = _query.Type;
+
+const Type = {
+    ApexTrigger: "apexTrigger", 
+    ApexPage: "apexPage",
+    ApexClass: "apexClass",
+    ApexComponent: "apexComponent",
+    Layout: "layout",
+    Profile: "profile",
+    ProfileLayout: "profileLayout",
+    RecordType: "recordType",
+    ValidationRule: "validationRules",
+    WorkflowRule: "workflowRules",
+    BusinessProcess: "businessProcess",
+    Flow: "flow",
+    FlowandProcessDetails: "flowdetails",
+    CustomApplication: "customapplication",
+    SecurityRisk: "securityRisk"
+}
+
+module.exports.queryType = Type;

@@ -28,12 +28,12 @@ async function start() {
             sfdc_connect.toolingQuery(sfdc_connect.queryType.WorkflowRule),
             sfdc_connect.get_TotalUsersByProfile(),
             sfdc_connect.getUserLicense(),
-            sfdc_connect.get_Org_limitInfo(workerData.accessCode, workerData.instance),
+            sfdc_connect.get_Org_limitInfo(workerData.accesscode, workerData.instance),
             sfdc_connect.getAllObjectOnce()
         ]).then(([
             _meta,_apexClass, _apexComponent, _apexPage, _apexTrigger, _businessProcess, _customApplication, _flow, _flowDetails, _layout, _profile, _profilelayout, _recordType, _securityRisk, _validationRule, _workflowRule, _userByProfile, _license, _orglimit, _objectInfo
         ]) => {
-            insertData(worker.orgId, _meta, _apexClass, _apexComponent, _apexPage, _apexTrigger, _businessProcess, _customApplication, _flow, _flowDetails, _layout, _profile, _profilelayout, _recordType, _securityRisk, _validationRule, _workflowRule, _userByProfile, _license, _orglimit, _objectInfo[0],_objectInfo[1]);
+            insertData(workerData.orgId, _meta, _apexClass, _apexComponent, _apexPage, _apexTrigger, _businessProcess, _customApplication, _flow, _flowDetails, _layout, _profile, _profilelayout, _recordType, _securityRisk, _validationRule, _workflowRule, _userByProfile, _license, _orglimit, _objectInfo[0],_objectInfo[1]);
         });
     } catch (error) {
         console.log("Start () - Error " + error);
@@ -51,5 +51,8 @@ async function insertData(orgid, meta, apexclass, apexcomponent, apexpage, apext
      }
 }
 //Private Methods End
-
-start();
+try {
+    start();
+} catch (error) {
+    console.log("Error " + error);
+}
