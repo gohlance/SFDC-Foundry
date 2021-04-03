@@ -53,7 +53,8 @@ const pool = new Pool({
     password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
     port: 5432,
     max: 20, // set pool max size to 20
-    min: 4
+    min: 4,
+    ssl: true
 })  
 
 module.exports = {
