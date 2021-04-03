@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize('postgres://postgres:P@ssw0rd1@localhost:5432/public') // Example for postgres
-
+//const sequelize = new Sequelize('postgres://postgres:P@ssw0rd1@localhost:5432/public') // Example for postgres
+const sequelize = new Sequelize('postgres://bxhbybpvxuyesk:6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489@ec2-54-174-221-35.compute-1.amazonaws.com:5432/detjik593i3enh');
 class Users extends Model {}
 var _users = Users.init({
     user_id: {
