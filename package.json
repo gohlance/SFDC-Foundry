@@ -12,6 +12,7 @@
     "dependencies": {
         "axios": "^0.21.1",
         "bcrypt": "^5.0.0",
+        "custom-env": "^2.0.1",
         "handlebars": "^4.7.6",
         "jsforce": "^1.10.0",
         "koa": "2.12.1",

@@ -1,32 +1,10 @@
+require('custom-env').env();
 const { Sequelize, DataTypes, Model } = require('sequelize');
-//const sequelize = new Sequelize('postgres://postgres:P@ssw0rd1@localhost:5432/public') // Example for postgres
-const sequelize = new Sequelize('postgres://bxhbybpvxuyesk:6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489@ec2-54-174-221-35.compute-1.amazonaws.com:5432/detjik593i3enh');
-/**
- * id serial NOT NULL,
-	orgid text NULL,
-	metainformation jsonb NULL,
-	objectinformation jsonb NULL,
-	orgLicenseInformation jsonb NULL,
-	orgLimitsInformation jsonb NULL,
-	orgSecurityRisk jsonb NULL,
-	sobjectdescribe jsonb NULL,
-	apextrigger jsonb NULL,
-	apexpage jsonb NULL,
-	apexclass jsonb NULL,
-	apexcomponent jsonb NULL,
-	profile jsonb NULL,
-	profile_user jsonb NULL,
-	layout jsonb NULL,
-	profileslayout jsonb NULL,
-	customAppn jsonb NULL,
-	businessprocess jsonb NULL,
-	workflowrule jsonb NULL,
-	validationrule jsonb NULL,
-	recordtype jsonb NULL,
-	createdDate timestamp not null default CURRENT_TIMESTAMP, 
-	CONSTRAINT orginformation_pkey PRIMARY KEY (id)
- * 
- */
+if (process.env.APP_ENV ==  "dev"){
+    const sequelize = new Sequelize('postgres://postgres:P@ssw0rd1@localhost:5432/public') // Example for postgres
+}else{
+    const sequelize = new Sequelize('postgres://bxhbybpvxuyesk:6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489@ec2-54-174-221-35.compute-1.amazonaws.com:5432/detjik593i3enh');
+}
 
 class OrgInformation extends Model {}
 var _OrgInformation = OrgInformation.init({

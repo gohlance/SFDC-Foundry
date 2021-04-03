@@ -1,17 +1,26 @@
 
 module.exports = {start_BackGroundService}
+require('custom-env').env();
+const { Worker } = require('worker_threads');
 
 async function start_BackGroundService(session) {
     try {
         return new Promise((resolve, reject) => {
-            const worker = new Worker('./sfdc_background_service.js', {
+
+            if (process.env.APP_ENV ==  "dev"){
+                session.instanceUrl = global.instanceUrl;
+                session.accesscode = global.accesscode;
+                session.orgId = global.orgId;
+            }
+        
+            const worker = new Worker('./core/sfdc_background_service.js', {
                 workerData: {
                     instance: session.instanceUrl,
                     accesscode: session.accesscode,
                     orgId: session.orgId
                 }
             });
-            
+                      
             console.log("Worker Started")
             worker.on ('message', resolve("Success"));
             //worker.on('message', (message) => {

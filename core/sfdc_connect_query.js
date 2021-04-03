@@ -1,25 +1,6 @@
 module.exports = {
-    selectQuery,
-    Type
+    selectQuery
 };
-
-const Type = {
-    ApexTrigger: "apexTrigger", 
-    ApexPage: "apexPage",
-    ApexClass: "apexClass",
-    ApexComponent: "apexComponent",
-    Layout: "layout",
-    Profile: "profile",
-    ProfileLayout: "profileLayout",
-    RecordType: "recordType",
-    ValidationRule: "validationRules",
-    WorkflowRule: "workflowRules",
-    BusinessProcess: "businessProcess",
-    Flow: "flow",
-    FlowandProcessDetails: "flowdetails",
-    CustomApplication: "customapplication",
-    SecurityRisk: "securityRisk"
-}
 
 const _apexTrigger = "SELECT Name,BodyCrc,ApiVersion, Status, IsValid, EntityDefinitionId,UsageAfterDelete, UsageAfterInsert,UsageAfterUndelete,UsageAfterUpdate,UsageBeforeDelete,UsageBeforeInsert,UsageBeforeUpdate,UsageIsBulk FROM ApexTrigger";
 const _apexPage = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexPage";

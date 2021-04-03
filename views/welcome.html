@@ -274,6 +274,7 @@
 
             <script>
                 $(function () {
+                    /*
                     var a = _.defaultTo("<%- session.instanceUrl %>", 0);
                     var b = _.defaultTo("<%- session.accesscode %>", 0);
                     var c = $("#btnRefresh");
@@ -285,7 +286,7 @@
                         c.prop('disabled', false);
                         c.removeClass('btn btn-secondary');
                         c.addClass('btn btn-primary');
-                    }
+                    }*/
                     $("#btnRefresh").click(function () {
                         //console.log($(this).attr('id'));
                         $(this).prop("disabled", true);

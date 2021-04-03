@@ -1,4 +1,6 @@
 //#region Init Variable
+
+require('custom-env').env();
 const {
     Worker
 } = require('worker_threads')
@@ -17,45 +19,44 @@ var oauth2 = new jsforce.OAuth2({
 
 const axios = require('axios')
 const Pool = require('pg-pool')
-//DEV
-/** 
-var conn = new jsforce.Connection({
-    oauth2: oauth2,
-    instanceUrl: global.instanceUrl,
-    accessToken: global.accesscode,
-    version: '48.0'
-})
+var conn;
+var pool;
 
-
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Beaver2',
-    password: 'P@ssw0rd1',
-    port: 5432,
-    max: 20, // set pool max size to 20
-    min: 4
-  }) */
+if (process.env.APP_ENV ==  "dev"){
+    conn = new jsforce.Connection({
+        oauth2: oauth2,
+        instanceUrl: global.instanceUrl,
+        accessToken: global.accesscode,
+        version: process.env.APP_SFDC_API_VERSION
+    })
+    const pool = new Pool({
+        user: 'postgres',
+        host: 'localhost',
+        database: 'Beaver2',
+        password: 'P@ssw0rd1',
+        port: 5432,
+        max: 20, // set pool max size to 20
+        min: 4
+      }) 
+}else{
+    //production
+    conn = new jsforce.Connection({
+        oauth2: oauth2,
+        version: process.env.APP_SFDC_API_VERSION
+    })
+    pool = new Pool({
+        user: 'bxhbybpvxuyesk',
+        host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
+        database: 'detjik593i3enh',
+        password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
+        port: 5432,
+        max: 20, // set pool max size to 20
+        min: 4,
+        ssl: true
+    })  
+}
 
 //#endregion
-
-var conn = new jsforce.Connection({
-    oauth2: oauth2,
-    version: '51.0'
-    // instanceUrl: global.instanceUrl,
-    // accessToken: global.accesscode
-})
-
-const pool = new Pool({
-    user: 'bxhbybpvxuyesk',
-    host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
-    database: 'detjik593i3enh',
-    password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
-    port: 5432,
-    max: 20, // set pool max size to 20
-    min: 4,
-    ssl: true
-})  
 
 module.exports = {
     getAllMeta,

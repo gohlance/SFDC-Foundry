@@ -1,4 +1,5 @@
 'use strict';
+require('custom-env').env();
 const errorHandler = require('koa-better-error-handler');
 const koa404Handler = require('koa-404-handler');
 const Koa = require('koa')
@@ -14,27 +15,24 @@ const app = new Koa()
 
 // override koa's undocumented error handler
 app.context.onerror = errorHandler;
-/**
-//** Only for Development 
-global.instanceUrl = "https://lgoh-isos2020.my.salesforce.com"
-global.accesscode = "00D2x000000D8Li!AQ8AQCHbGHxT1bZl9RV3KJN8LyKkn5s.Pc1G03uN3p.4AnUCTAVmSGESdWSdM4IO3tD.NrTIwD0NEIX4LEz.62M.x9X9l0Zg"
-global.orgId = "588"
+if (process.env.APP_ENV == "dev") {
+  global.instanceUrl = process.env.APP_INSTANCE;
+  global.accesscode = process.env.APP_ACCESSCODE;
+  global.orgId = "8888"
 
-const Pool = require('pg-pool')
-global.pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'Beaver2',
-  password: 'P@ssw0rd1',
-  port: 5432,
-  max: 20, // set pool max size to 20
-  min: 4
-})
- */
- //global DB Connection
-const Pool = require('pg-pool')
-
-global.pool = new Pool({
+  const Pool = require('pg-pool')
+  global.pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Beaver2',
+    password: 'P@ssw0rd1',
+    port: 5432,
+    max: 20, // set pool max size to 20
+    min: 4
+  })
+} else {
+  const Pool = require('pg-pool')
+  global.pool = new Pool({
     user: 'bxhbybpvxuyesk',
     host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
     database: 'detjik593i3enh',
@@ -45,7 +43,8 @@ global.pool = new Pool({
     ssl: { //Changes for heroku pg8 issue
       rejectUnauthorized: false
     }
-})   
+  })
+}
 
 render(app, {
   root: path.join(__dirname, 'views'),
