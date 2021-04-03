@@ -9,6 +9,7 @@ const _apexComponent = "SELECT Name, NamespacePrefix, ApiVersion FROM ApexCompon
 
 const _layout = "SELECT Name, LayoutType, ManageableState, TableEnumOrId FROM Layout";
 const _profile = "SELECT Description, Name FROM Profile";
+//This is not in used
 const _profileLayout = "SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout;"
 const _recordType = "SELECT BusinessProcessId, Description, Name, IsActive,ManageableState,SobjectType FROM RecordType";
 

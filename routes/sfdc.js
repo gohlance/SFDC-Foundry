@@ -1,5 +1,5 @@
 const sfdcmethods = require('../sfdc-api')
-const sfdcbackground_methods = require('../svc_background/sfdc-api_background')
+const sfdcbackground_methods = require('../z. svc_background - not in use/sfdc-api_background')
 const new_sfdc_Background = require("../core/sfdc_background_start");
 const {
     Worker,
@@ -13,7 +13,7 @@ const _ = require('lodash')
 
 const processbuilder = require('../processbuilder-api')
 
-const dot = require('../dotNotation');
+const dot = require('../modules/processbuilder/dotNotation');
 const { OAuth2 } = require('jsforce');
 
 oauth2 = new jsforce.OAuth2({

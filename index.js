@@ -15,6 +15,7 @@ const app = new Koa()
 
 // override koa's undocumented error handler
 app.context.onerror = errorHandler;
+
 if (process.env.APP_ENV == "dev") {
   global.instanceUrl = process.env.APP_INSTANCE;
   global.accesscode = process.env.APP_ACCESSCODE;

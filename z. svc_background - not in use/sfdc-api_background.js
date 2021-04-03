@@ -428,7 +428,7 @@ async function sObjectDescribe(result) {
 async function get_UserWithLicense2() {
     try {
         return new Promise((resolve, reject) => {
-            conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result) {
+            conn.query("SELECT LicenseDefinitionKey,MasterLabel,Name,Status,SystemModstamp,TotalLicenses,UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result) {
                 if (err) {
                     return console.error("Error : " + err)
                 }

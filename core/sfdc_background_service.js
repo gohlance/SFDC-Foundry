@@ -21,7 +21,7 @@ async function start() {
             sfdc_connect.toolingQuery(sfdc_connect.queryType.FlowandProcessDetails),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.Layout),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.Profile),
-            sfdc_connect.toolingQuery(sfdc_connect.queryType.ProfileLayout),
+            //sfdc_connect.toolingQuery(sfdc_connect.queryType.ProfileLayout),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.RecordType),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.SecurityRisk),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.ValidationRule),

@@ -183,6 +183,35 @@ async function _sObjectDescribe(result) {
         console.log("Error [sfdc-api/sObjectDescribe]" + err)
     }
 }
+
+function filter_BeforeCallingAPI(result) {
+    console.log("result : " + result.length)
+    var custom_is_false = _.filter(result, function (o) {
+        if (o.custom == false)
+            return o
+    })
+    console.log("*******************")
+    console.log(custom_is_false.length)
+
+    var layoutable_is_true = _.filter(custom_is_false, function (i) {
+        if (i.layoutable == true) {
+            return i
+        }
+    })
+
+    console.log(layoutable_is_true.length)
+
+    var createable_is_true = _.filter(layoutable_is_true, function (i) {
+        if (i.createable == true) {
+            return i
+        }
+    })
+
+    console.log(createable_is_true.length)
+
+    return createable_is_true
+}
+
 //Private Methods End
 
 module.exports = {

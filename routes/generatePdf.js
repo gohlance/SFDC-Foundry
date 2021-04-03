@@ -1,6 +1,6 @@
 const sfdcmethods = require('../sfdc-api')
 const _ = require('lodash')
-const genPDF = require('../genPDF');
+const genPDF = require('../modules/pdf/genPDF');
 
 module.exports = ({
     router
