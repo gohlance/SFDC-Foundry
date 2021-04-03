@@ -42,7 +42,9 @@ global.pool = new Pool({
     port: 5432,
     max: 20, // set pool max size to 20
     min: 4,
-    ssl: true
+    ssl: { //Changes for heroku pg8 issue
+      rejectUnauthorized: false
+    }
 })   
 
 render(app, {
