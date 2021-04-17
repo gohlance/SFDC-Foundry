@@ -22,12 +22,16 @@ async function start_BackGroundService(session) {
             });
                       
             console.log("Worker Started")
-            worker.on ('message', resolve("Success"));
-            //worker.on('message', (message) => {
-            //    console.log("Completed !!!! I am here " + message.status);
-            //    //resolve("Success")
+            //worker.on ('message', resolve("Success"));
+            worker.on('message', (message) => {
+                console.log("Completed !!!! I am here " + message);
+                if (message == "done"){
+                    console.log("Hello");
+                    resolve("Success");
+                }
+                resolve("No");
             //    return "Success"
-            //});
+            });
             worker.on('error', reject);
             worker.on('exit', (code) => {
                 if (code !== 0)

@@ -95,7 +95,7 @@ module.exports = ({
                // const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
                 const result = await new_sfdc_Background.start_BackGroundService(ctx.session);
                 console.log("***  : "  +result)
-                ctx.body ={ data: result}
+                ctx.body ={ data: result};   
             } catch (err) {
                 console.error("Error [everything]:" + err)
             }

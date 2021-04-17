@@ -144,7 +144,6 @@ app.use(async (ctx, next) => {
 
 //router configuration
 const router = new koa_router()
-
 require('./routes/basic')({
   router
 })
@@ -159,8 +158,8 @@ router.get('/500', ctx => ctx.throw(500));
 app.use(router.routes()).use(router.allowedMethods)
 
 //port configuration
-var port = process.env.PORT || 1234
-app.listen(port, () => console.log("Running on port " + port))
+var port = process.env.PORT || 3000
+app.listen(port, () => console.log("Running on port " + port));
 
 process.on('unhandledRejection', (reason, promise) => {
   console.log('Unhandled Rejection at:', reason.stack || reason)

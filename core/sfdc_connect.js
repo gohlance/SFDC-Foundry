@@ -2,6 +2,35 @@ const jsforce = require('jsforce');
 const _ = require('lodash');
 const _query = require('./sfdc_connect_query');
 
+//Pg Connection String
+const Pool = require('pg-pool')
+let pool;
+if (process.env.APP_ENV == "dev") {
+    pool = new Pool({
+      user: 'postgres',
+      host: 'localhost',
+      database: 'Beaver2',
+      password: 'P@ssw0rd1',
+      port: 5432,
+      max: 20, // set pool max size to 20
+      min: 4
+    })
+  } else {
+    pool = new Pool({
+      user: 'bxhbybpvxuyesk',
+      host: 'ec2-54-174-221-35.compute-1.amazonaws.com',
+      database: 'detjik593i3enh',
+      password: '6ec25f57a5d561b4a6eb6e8cd93b8de3f1dbae20fed0dc55b484637bd7ef1489',
+      port: 5432,
+      max: 20, // set pool max size to 20
+      min: 4,
+      ssl: { //Changes for heroku pg8 issue
+        rejectUnauthorized: false
+      }
+    })
+  }
+//End Pg Connection String
+
 //JSFORCE Init Section
 let oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
@@ -26,70 +55,71 @@ function set_ConnObject(workerData) {
 }
 //JSFORCE Init Section End
 
-async function toolingQuery(queryType){
+async function toolingQuery(queryType, rowId){
     try {
-        return new Promise((resolve) => {
             let query = _query.selectQuery(queryType);
             conn.tooling.query(query, function (error, result){
                 if (error){
                     console.log("Error @ toolingQuery - " + queryType + " : " + error);
                 }
-                resolve(result);
+                let update = _query.updateQuery(queryType);
+                pool.query(update,[result, rowId]); 
             })
-        })
     } catch (error) {
         console.log("Error @ toolingQuery (m) - " + queryType + " : " + error);
     }
 }
 
-async function get_MetaData(){
+async function get_MetaData(rowId){
     try {
-        return new Promise((resolve) => {
-            conn.metadata.describe().then(response => {
-                console.log("[sfdc-api/getAllMeta] : " + response)
-                resolve(response)
-            })
-        })
+        conn.metadata.describe().then(response => {
+            //console.log("[sfdc-api/getAllMeta] : " + response)
+            let update = _query.updateQuery("meta");
+            pool.query(update, [response, rowId]);
+        }) 
     } catch (error) {
         console.error("Error [sfdc-api/getAllMeta]: " + error)
     }
 }
 
-async function getAllObjectOnce() {
+async function getAllObjectOnce(rowId) {
     try {
-        return new Promise((resolve, reject) => {
-            conn.describeGlobal(async function (err, res) {
-                if (err) {
-                    return console.error("Error [sfdc-api/getAllObjectsOnce - describeGlobal] : " + err)
-                }
-                console.log('[sfdc-api/getAllObjectsOnce] No of Objects ' + res.sobjects.length)
-                //resolve(res.sobjects)
-                console.log("GetAllObject Once : " + res)
-                jsonResult = await _sObjectDescribe(res.sobjects)
-                
-                console.log("GetAllObject Once Returning")
-                console.log("Res.Sobject s: " + res.sobjects);
-                console.log("JsonReuslt : " + jsonResult);
-                
-                resolve([res.sobjects, jsonResult])
-            })
+        conn.describeGlobal(async function (err, res) {
+            if (err) {
+                return console.error("Error [sfdc-api/getAllObjectsOnce - describeGlobal] : " + err)
+            }
+            console.log('[sfdc-api/getAllObjectsOnce] No of Objects ' + res.sobjects.length)
+            //resolve(res.sobjects)
+            //console.log("GetAllObject Once : " + res)
+            jsonResult = await _sObjectDescribe(res.sobjects)
+            
+            console.log("GetAllObject Once Returning")
+            //console.log("Res.Sobject s: " + res.sobjects);
+            //console.log("JsonReuslt : " + jsonResult);
+            
+            //resolve([res.sobjects, jsonResult])
+            let update = _query.updateQuery("sobject");
+            //pool.query(update, [res.sobjects, jsonResult, rowId]);
+            pool.query(update, [jsonResult, rowId]);
         })
     } catch (error) {
         console.error("Error [sfdc-api/getAllObjectsOnce] : " + error)
+        pool.query("INSERT INTO errorlogs (description) VALUES ($1)",[error]);
     }
 }
 
-async function getUserLicense() {
+async function getUserLicense(rowId) {
     try {
-        return new Promise((resolve, reject) => {
-            conn.query("SELECT LicenseDefinitionKey, MasterLabel, MonthlyLoginsEntitlement, MonthlyLoginsUsed, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result) {
-                if (err) {
-                    return console.error("Error : " + err)
-                }
-                console.log("[sfdc-api/get_UserWithLicense2] : " + result.records)
-                resolve(result.records)
-            })
+        conn.query("SELECT LicenseDefinitionKey, MasterLabel, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result) {
+            if (err) {
+                return console.error("Error : " + err)
+            }
+            //console.log("[sfdc-api/get_UserWithLicense2] : " + result.records)
+            //resolve(result.records)
+            let update = _query.updateQuery("license");
+            pool.query(update,[result.records, rowId]);
         })
+        
     } catch (error) {
         console.error("Error [sfdc-api/get_UserWithLicense2] : " + error)
     }
@@ -107,18 +137,17 @@ async function get_Org_limitInfo(accesscode, instanceurl) {
         console.error("Error [sfdc-api/get_Org_limitInfo] : " + error)
     }
 }
-async function get_TotalUsersByProfile() {
+async function get_TotalUsersByProfile(rowId) {
     try {
-        return new Promise((resolve, reject) => {
-            conn.query("select count(id) Total ,profile.name from user  WHERE Profile.UserLicense.Name != null group by profile.name", function (err, result) {
-                if (err) {
-                    return console.error("Error " + err)
-                }
-                let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value()
-                console.log("[sfdc-api/get_TotalUsersByProfile] : " + totalUserLicense)
-                resolve(totalUserLicense)
-            });
-        })
+        conn.query("select count(id) Total ,profile.name from user  WHERE Profile.UserLicense.Name != null group by profile.name", function (err, result) {
+            if (err) {
+                return console.error("Error " + err)
+            }
+            let totalUserLicense = _(result.records).groupBy('Profile.UserLicense.Name').value()
+            //console.log("[sfdc-api/get_TotalUsersByProfile] : " + totalUserLicense)
+            let update = _query.updateQuery("userProfile");
+            pool.query(update, [totalUserLicense,rowId]);
+        });
     } catch (error) {
         console.error("Error [sfdc-api/get_TotalUsersByProfile] : " + error)
     }
@@ -212,6 +241,11 @@ function filter_BeforeCallingAPI(result) {
     return createable_is_true
 }
 
+async function insert_blankRow(orgid){
+    const _newRow = "INSERT INTO orginformation (orgid) VALUES ( $1 ) RETURNING id ";
+    let sql_id = await pool.query(_newRow,[orgid]);
+    return sql_id.rows[0].id;
+}
 //Private Methods End
 
 module.exports = {
@@ -221,7 +255,8 @@ module.exports = {
     getUserLicense,
     get_Org_limitInfo,
     get_TotalUsersByProfile,
-    getAllObjectOnce
+    getAllObjectOnce,
+    insert_blankRow
 }
 
 const Type = {
@@ -239,7 +274,8 @@ const Type = {
     Flow: "flow",
     FlowandProcessDetails: "flowdetails",
     CustomApplication: "customapplication",
-    SecurityRisk: "securityRisk"
+    SecurityRisk: "securityRisk",
+    NewRow: "newRow"
 }
 
 module.exports.queryType = Type;
