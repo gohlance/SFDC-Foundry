@@ -89,18 +89,19 @@ async function getAllObjectOnce(rowId) {
                 return console.error("Error [sfdc-api/getAllObjectsOnce - describeGlobal] : " + err)
             }
             console.log('[sfdc-api/getAllObjectsOnce] No of Objects ' + res.sobjects.length)
-            //resolve(res.sobjects)
-            //console.log("GetAllObject Once : " + res)
-            jsonResult = await _sObjectDescribe(res.sobjects)
+            let update_query1 = _query.updateQuery("objInfo");
+            pool.query(update_query1, [JSON.stringify(res.sobjects), rowId]);
             
+            //console.log("GetAllObject Once : " + res)
+            jsonResult = await _sObjectDescribe(res.sobjects);
+            let update = _query.updateQuery("sobject");
+            pool.query(update, [jsonResult, rowId]);
             console.log("GetAllObject Once Returning")
-            //console.log("Res.Sobject s: " + res.sobjects);
+            //console.log("Res.Sobject: " + res.sobjects);
             //console.log("JsonReuslt : " + jsonResult);
             
             //resolve([res.sobjects, jsonResult])
-            let update = _query.updateQuery("sobject");
-            //pool.query(update, [res.sobjects, jsonResult, rowId]);
-            pool.query(update, [jsonResult, rowId]);
+            
         })
     } catch (error) {
         console.error("Error [sfdc-api/getAllObjectsOnce] : " + error)
@@ -117,7 +118,7 @@ async function getUserLicense(rowId) {
             //console.log("[sfdc-api/get_UserWithLicense2] : " + result.records)
             //resolve(result.records)
             let update = _query.updateQuery("license");
-            pool.query(update,[result.records, rowId]);
+            pool.query(update,[JSON.stringify(result.records), rowId]);
         })
         
     } catch (error) {

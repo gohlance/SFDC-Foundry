@@ -24,16 +24,18 @@ async function start_BackGroundService(session) {
             console.log("Worker Started")
             //worker.on ('message', resolve("Success"));
             worker.on('message', (message) => {
-                console.log("Completed !!!! I am here " + message);
-                if (message == "done"){
+                //console.log("Completed !!!! I am here " + JSON.stringify(message));
+                if (message.status == "Done"){
                     console.log("Hello");
                     resolve("Success");
                 }
-                resolve("No");
             //    return "Success"
             });
-            worker.on('error', reject);
+            worker.on('error', (error) => {
+                console.log("Error : " + error);
+            });
             worker.on('exit', (code) => {
+                console.log("Exited for backgroundservice with code : " + code);
                 if (code !== 0)
                     reject(new Error(`Worker stopped with exit code ${code}`));
             })

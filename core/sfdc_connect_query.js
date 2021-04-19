@@ -78,8 +78,7 @@ const _update_customApplication = "UPDATE orginformation SET customappn = $1 WHE
 const _update_securityRisk = "UPDATE orginformation SET orgsecurityrisk = $1 WHERE id = $2";
 const _update_meta = "UPDATE orginformation SET metainformation = $1 WHERE id = $2";
 const _update_profile_user = "UPDATE orginformation SET profile_user = $1 WHERE id = $2"
-//Objectinformation ERROR!!
-//const _update_sobject = "UPDATE orginformation SET objectinformation =$1, sobjectdescribe = $2 WHERE id =$3";
+const _update_objInfo = "UPDATE orginformation SET objectinformation =$1 WHERE id =$2";
 const _update_sobject = "UPDATE orginformation SET sobjectdescribe =$1 WHERE id =$2";
 
 const _update_license = "UPDATE orginformation SET orgLicenseInformation = $1 WHERE id = $2";
@@ -122,6 +121,8 @@ function updateQuery(selector){
             return _update_profile_user;
         case "sobject":
             return _update_sobject;
+        case "objInfo":
+            return _update_objInfo;
         case "license":
             return _update_license;
     }
