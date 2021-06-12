@@ -22,11 +22,17 @@ function compareChanges(orgId){
   var records = await global.pool.query(query, [orgId]);
   var result_diff = "";
   if (records.rowCount > 0){
-      for (var i = 0; i > Object.keys(records[0].name_data).length; i++){
-        var json1 = JSON.parse(records[0][i]);
-        var json2 = JSON.parse(records[1][i]);
-        result_diff = result_diff + " " + jsonDiff(json1,json2);
+      if (records.rowCount > 2){
+        for (var i = 0; i > Object.keys(records[0].name_data).length; i++){
+          var json1 = JSON.parse(records[0][i]);
+          var json2 = JSON.parse(records[1][i]);
+          result_diff = result_diff + " " + jsonDiff(json1,json2);
+        }
+      }else{
+        return 0;
       }
+  }else {
+    return 0;
   }
   return result_diff;
 }

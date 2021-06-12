@@ -247,6 +247,14 @@ async function insert_blankRow(orgid){
     let sql_id = await pool.query(_newRow,[orgid]);
     return sql_id.rows[0].id;
 }
+
+//TODO: Not tested
+async function get_MetaData_Zip(){
+
+    var fs = require('fs');
+    conn.metadata.retrieve({ packageNames: [ 'My Test Package' ] })
+             .stream().pipe(fs.createWriteStream("./path/to/MyPackage.zip"));
+}
 //Private Methods End
 
 module.exports = {
