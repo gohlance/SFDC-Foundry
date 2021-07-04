@@ -255,6 +255,12 @@ async function get_MetaData_Zip(){
     conn.metadata.retrieve({ packageNames: [ 'My Test Package' ] })
              .stream().pipe(fs.createWriteStream("./path/to/MyPackage.zip"));
 }
+
+async function get_OrgIdFromDB(url){
+    const _getId = "SELECT orgid from orgs where orgurl = $1";
+    let orgId = await pool.query(_getId,[url]);
+    return orgId.rows[0].orgid;
+}
 //Private Methods End
 
 module.exports = {
@@ -265,7 +271,8 @@ module.exports = {
     get_Org_limitInfo,
     get_TotalUsersByProfile,
     getAllObjectOnce,
-    insert_blankRow
+    insert_blankRow,
+    get_OrgIdFromDB
 }
 
 const Type = {

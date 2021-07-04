@@ -19,7 +19,8 @@ app.context.onerror = errorHandler;
 if (process.env.APP_ENV == "dev") {
   global.instanceUrl = process.env.APP_INSTANCE;
   global.accesscode = process.env.APP_ACCESSCODE;
-  global.orgId = "8888"
+  const sfdcmethod = require('./core/sfdc_connect');
+  global.orgId = sfdcmethod.get_OrgIdFromDB(process.env.APP_INSTANCE);
 
   const Pool = require('pg-pool')
   global.pool = new Pool({

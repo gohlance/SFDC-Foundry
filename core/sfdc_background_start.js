@@ -12,7 +12,7 @@ async function start_BackGroundService(session) {
                 session.accesscode = global.accesscode;
                 session.orgId = global.orgId;
             }
-        
+           
             const worker = new Worker('./core/sfdc_background_service.js', {
                 workerData: {
                     instance: session.instanceUrl,
