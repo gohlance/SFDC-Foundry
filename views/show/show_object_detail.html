@@ -1,0 +1,69 @@
+<div class="row">
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Fields</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Fields Changes</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Child relationship</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Child relationship changed</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+</div>
+<div class="row" style=" margin-top:20px;">
+    <div class="col">
+            <table id="dtObjects" class="table table-striped table-bordered table-sm"
+                    cellspacing="0" width="100%">
+                    <thead>
+                            <th>Object Name</th>
+                            <th>Custom</th>
+                            <th>Total Fields</th>
+                            <th>Label</th>
+                            <th>ChildRelationship</th>
+                            <th>Record Types</th>
+                            <th>Layout</th>
+                    </thead>
+                    <tbody>
+                            <% for(var i =0; i< allObject.length; i ++){ %>
+                            <tr>
+                                    <td><a href="/getChart?t=<%- allObject[i].Objectname %> "><%- allObject[i].Objectname%></a>
+                                    </td>
+                                    <td> <%-allObject[i].Custom%></td>
+                                    <td> <%- allObject[i].totalfields%> </td>
+                                    <td> <%- allObject[i].Label%> </td>
+                                    <td> <%- allObject[i].childRelationships%> </td>
+                                    <td> <%- allObject[i].recordType%> </td>
+                                    <td> <%- allObject[i].layout%></td>
+                            </tr>
+                            <%}%> 
+                    </tbody>   
+            </table>
+    </div>
+</div> 
