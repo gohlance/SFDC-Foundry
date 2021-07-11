@@ -1,4 +1,5 @@
 const sfdcmethods = require('../sfdc-api')
+require('custom-env').env();
 const sfdcbackground_methods = require('../z. svc_background - not in use/sfdc-api_background')
 const new_sfdc_Background = require("../core/sfdc_background_start");
 const {
@@ -19,9 +20,9 @@ const { OAuth2 } = require('jsforce');
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
     loginUrl : 'https://login.salesforce.com',
-    clientId: '3MVG9i1HRpGLXp.qKwbWJHwmeMEDkgggAcpbAf1Y1O7YvezHR_7aOv00w2a_Vz3gst8vk23v4e3qfLRbkKsFi',
-    clientSecret: '5675F7043344E39EC5A402927491DA9040F7C857C7A6F0B4D0AF8D3AE69BA8DF',
-    redirectUri: 'https://warm-garden-23298.herokuapp.com/auth3/login/return'
+    clientId: process.env.APP_CLIENTID,
+    clientSecret: process.env.APP_SECRET,
+    redirectUri: process.env.APP_REDIRECTURL
 });
 
 conn = new jsforce.Connection({

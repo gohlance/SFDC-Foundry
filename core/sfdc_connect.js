@@ -1,7 +1,7 @@
 const jsforce = require('jsforce');
 const _ = require('lodash');
 const _query = require('./sfdc_connect_query');
-
+require('custom-env').env();
 //Pg Connection String
 const Pool = require('pg-pool')
 let pool;
@@ -35,9 +35,9 @@ if (process.env.APP_ENV == "dev") {
 let oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
     // loginUrl : 'https://test.salesforce.com',
-    clientId: process.env.clientId,
-    clientSecret: process.env.clientSecret,
-    redirectUri: process.env.redirectUri
+    clientId: process.env.APP_CLIENTID,
+    clientSecret: process.env.APP_SECRET,
+    redirectUri: process.env.APP_REDIRECTURL
 });
 
 let conn = new jsforce.Connection({
@@ -259,7 +259,7 @@ async function get_MetaData_Zip(){
 async function get_OrgIdFromDB(url){
     const _getId = "SELECT orgid from orgs where orgurl = $1";
     let orgId = await pool.query(_getId,[url]);
-    return orgId.rows[0].orgid;
+    return JSON.stringify(orgId.rows[0].orgid);
 }
 //Private Methods End
 
