@@ -260,4 +260,9 @@ module.exports = ({
 
             processbuilder.demystify_processbuilder(did, oid)
         })
+
+        .get('compareTest','/compare', async (ctx)=> {
+            const compare = require('../modules/compare/compare_changes');
+            console.log("**** :" + await compare.compareChanges(8889));
+        })
 }

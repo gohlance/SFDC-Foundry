@@ -1,38 +1,91 @@
-var jsonString1 = '{"Name":"ABC","Work":"Programmer","State":"123"}';
-var jsonString2 = '{"Name":"XYZ","Work":"Engineer","State":"456"}';
-
-var jsonObject1 = JSON.parse(jsonString1);
-var jsonObject2 = JSON.parse(jsonString2);
-/**
-var keys = Object.keys(jsonObject1);
-for (var i = 0; i < keys.length; i++) {
-  var key = keys[i];
-  if (jsonObject1[key] != jsonObject2[key]) {
-    console.log(key + " value changed from '" + jsonObject1[key] + "' to '" + jsonObject2[key] + "'");
-  }
-}
-*/
-var jsonDiff = require('json-diff');
-var result = jsonDiff.diff(jsonObject1,jsonObject2);
-console.log(result);
-//result.Name ; result.Work
-
-function compareChanges(orgId){
-  let query = "SELECT * FROM orginformation WHERE orgid = $1 DESC id LIMIT 2";
+const _ = require('lodash');
+async function compareObjectInformation(orgId){
+  let query = "SELECT objectinformation FROM orginformation WHERE orgid = $1 LIMIT 2";
   var records = await global.pool.query(query, [orgId]);
   var result_diff = "";
+
   if (records.rowCount > 0){
-      if (records.rowCount > 2){
-        for (var i = 0; i > Object.keys(records[0].name_data).length; i++){
-          var json1 = JSON.parse(records[0][i]);
-          var json2 = JSON.parse(records[1][i]);
-          result_diff = result_diff + " " + jsonDiff(json1,json2);
-        }
-      }else{
-        return 0;
-      }
-  }else {
-    return 0;
+    for (var i=0; i < Object.keys(records.rows[0]).length; i++){
+        var keyValue = Object.keys(records.rows[0])[i];
+        var diff = require('deep-diff').diff;
+        var records_previous = records.rows[0][keyValue];
+        var records_new = records.rows[1][keyValue];
+        for (var i=0; i < records_previous.length; i ++){
+          let r =  _.find(records_new, records_previous[i]);
+          if (_.isEmpty(r)){
+            console.log("Found : " + records_previous[i]);
+          }
+         }
+    }
   }
-  return result_diff;
+}
+
+async function compareObjectMeta(orgId){
+  let query = "SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 LIMIT 2";
+  var records = await global.pool.query(query, [orgId]);
+  var result_diff = "";
+  
+  if (records.rowCount > 0){
+    for (var i=0; i < Object.keys(records.rows[0]).length; i++){
+        var keyValue = Object.keys(records.rows[0])[i];
+        var diff = require('deep-diff').diff;
+        var records_previous = records.rows[0][keyValue]['allObject'];
+        var records_new = records.rows[1][keyValue]['allObject'];
+       //TODO : need to go down to the totalfields to compare
+       if (records_new[i]['totalfields'] != records_previous[i]['totalfields']){
+          for (var i = 0;  i < _.max([records_new[i]['totalfields'], records_previous[i]['totalfields']]).length; i++){
+            let r = _.find(records_new, records_previous[i]);
+            if (_.isEmpty(r)){
+              console.log("Found : " +  records_previous[i]);
+            }
+          }
+       }
+
+        for (var i=0; i < records_previous.length; i ++){
+          let r =  _.find(records_new, records_previous[i]);
+          if (_.isEmpty(r)){
+            console.log("Found : " + records_previous[i]);
+          }
+         }
+        
+    }
+  }
+}
+
+async function compareSecurityRisk(orgId){
+  let query = "SELECT orgsecurityrisk FROM orginformation WHERE orgid = $1 LIMIT 2";
+  var records = await global.pool.query(query, [orgId]);
+  var result_diff = "";
+  
+  if (records.rowCount > 0){
+    for (var i=0; i < Object.keys(records.rows[0]).length; i++){
+        var keyValue = Object.keys(records.rows[0])[i];
+        var records_previous = records.rows[0][keyValue]['records'];
+        var records_new = records.rows[1][keyValue]['records'];
+
+        for (var i=0; i < records_previous.length; i ++){
+         let r =  _.find(records_new, records_previous[i]);
+         if (_.isEmpty(r)){
+           console.log("Found : " + records_previous[i]);
+         }
+        }
+
+        //let  result = _.difference(records_previous, records_new);
+        //console.log(result);      
+    }
+  }
+}
+async function compareChanges(orgId) {
+  try {
+    compareObjectMeta(orgId);
+    //compareObjectInformation(orgId);
+    //compareSecurityRisk(orgId);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+module.exports = {
+  compareChanges
 }

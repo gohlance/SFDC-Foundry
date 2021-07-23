@@ -168,6 +168,7 @@ async function _sObjectDescribe(result) {
         let allObjectTotalFields = await Promise.all(result2.map(async (item) => limit(async () => {
             var totalfields = await conn.sobject(item.name).describe().then(async response => {
                 return {
+                    fieldsDetails: response.fields,
                     totalfields: response.fields.length,
                     layout: response.namedLayoutInfos.length,
                     childRelationships: response.childRelationships.length,
@@ -185,10 +186,11 @@ async function _sObjectDescribe(result) {
                 lessthan100fields++
             }
 
-            console.log("Total Fields : " + totalfields);
+            console.log("Total Fields : " + totalfields.fieldsDetails);
 
             return {
                 Objectname: item.name,
+                fields: totalfields.fieldsDetails,
                 totalfields: totalfields.totalfields,
                 Custom: item.custom,
                 Label: item.label,
