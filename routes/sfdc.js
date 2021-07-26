@@ -215,15 +215,6 @@ module.exports = ({
                 result: result
             })
         })
-//BUG : Check should be working now. August 2020
-/**
-        .get('showChart', '/getChart', async (ctx) => {
-            //console.log(ctx.query)
-            const result = await sfdcmethods.get_childRelationship(ctx.query["t"], ctx.session)
-            return ctx.render('/show/show_chart', {
-                chart: result
-            })
-        }) */
 
         .post('deleteConnectedOrg','/deleteOrg', async (ctx) => {
             const result = await sfdcmethods.deleteUserOrg(ctx.request.body.id)
@@ -236,7 +227,7 @@ module.exports = ({
                processes: result[0].process
            })
         })
-       .get ('testing', '/getChart', async (ctx) => {
+       .get ('showObjectRelationship', '/getChart', async (ctx) => {
            const result = await sfdcmethods.get_childRelationshipDetails(ctx.query["t"])
            const dot_result = dot.convertToDOT(result, ctx.query["t"])
            return ctx.render('/show/show_chart',{
