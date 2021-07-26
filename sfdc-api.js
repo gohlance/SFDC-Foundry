@@ -5,7 +5,7 @@ module.exports = {
     getCustomApps,
 
     selectAll_RecordTypesByOrder,
-    get_childRelationship,
+
     check_firstTime_Login,
     //Welcome Page Method
     getUserLicenseDetails,
@@ -95,25 +95,6 @@ async function get_childRelationshipDetails(objectname, session){
   } 
 }
 
-//TODO :unique_object[item] - get key value - which is an array to get the fields that is linked
-//TODO : orderby issue with createdDate 
-async function get_childRelationship(objectName, session){
-    let result = await global.pool.query("select elem ->> 'childRelationship_details' as relationship from public.orginformation , lateral jsonb_array_elements(objectinformation -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2",  [objectName,session.orgId])
-
-    const json_result = JSON.parse(result.rows[0]["relationship"])
-
-    let unique_Object2 = _(json_result).partition(function (item){
-        return item.relationshipName == null
-    }).value()
-
-    let newObject3 = _.groupBy(unique_Object2[1],'childSObject')
-
-    let chart_schema = "classDiagram\n"
-    Object.keys(newObject3).forEach(function (item){
-        chart_schema = chart_schema + objectName + " <|-- " + item + "\n"
-    })
-    return chart_schema
-}
 
   async function display_Homepage_Objects(session) {
     try {
