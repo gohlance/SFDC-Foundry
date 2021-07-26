@@ -173,6 +173,7 @@ async function _sObjectDescribe(result) {
                     layout: response.namedLayoutInfos.length,
                     childRelationships: response.childRelationships.length,
                     recordType: response.recordTypeInfos.length,
+                    recordTypeDetails: response.recordTypeInfos,
                     createable: response.createable,
                     deletable: response.deletable,
                     childRelationship_details: response.childRelationships,
@@ -200,7 +201,8 @@ async function _sObjectDescribe(result) {
                 createable: totalfields.createable,
                 deletable: totalfields.deletable,
                 undeletable: totalfields.undeletable,
-                childRelationship_details: totalfields.childRelationship_details
+                childRelationship_details: totalfields.childRelationship_details,
+                recordType_details: totalfields.recordTypeDetails
             }
         })))
         let jsonResult = {
