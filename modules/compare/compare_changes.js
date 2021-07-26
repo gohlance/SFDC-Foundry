@@ -1,113 +1,125 @@
 const _ = require('lodash');
-async function compareObjectInformation(orgId){
-  let query = "SELECT objectinformation FROM orginformation WHERE orgid = $1 LIMIT 2";
-  var records = await global.pool.query(query, [orgId]);
-  var result_diff = "";
+async function compareObjectInformation(orgId) {
+	let query = "SELECT objectinformation FROM orginformation WHERE orgid = $1 LIMIT 2";
+	var records = await global.pool.query(query, [orgId]);
+	var result_diff = "";
 
-  if (records.rowCount > 0){
-    for (var i=0; i < Object.keys(records.rows[0]).length; i++){
-        var keyValue = Object.keys(records.rows[0])[i];
-        var diff = require('deep-diff').diff;
-        var records_previous = records.rows[0][keyValue];
-        var records_new = records.rows[1][keyValue];
-        for (var i=0; i < records_previous.length; i ++){
-          let r =  _.find(records_new, records_previous[i]);
-          if (_.isEmpty(r)){
-            console.log("Found : " + records_previous[i]);
-          }
-         }
-    }
-  }
+	if (records.rowCount > 0) {
+		for (var i = 0; i < Object.keys(records.rows[0]).length; i++) {
+			var keyValue = Object.keys(records.rows[0])[i];
+			var diff = require('deep-diff').diff;
+			var records_previous = records.rows[0][keyValue];
+			var records_new = records.rows[1][keyValue];
+			for (var i = 0; i < records_previous.length; i++) {
+				let r = _.find(records_new, records_previous[i]);
+				if (_.isEmpty(r)) {
+					console.log("Found : " + records_previous[i]);
+				}
+			}
+		}
+	}
 }
 
+//Private Methods
+function compareFields(recordA, recordB) {
+	let max_recordLength = _.max([recordA.length, recordB.length]);
+	var result_diff;
+	for (var i = 0; i < max_recordLength; i++) {
+		//Get each object in the records
+		let object_from_A = recordA[i];
+		let object_from_B = recordB[i];
 
-function compareFields(recordA, recordB){
-  let max_recordLength = _.max([recordA.length, recordB.length]);
-  for (var i = 0; i < max_recordLength; i++){
-    //Get each object in the records
-    let object_from_A = recordA[i];
-    let object_from_B = recordB[i];
-	var result_diff= []
-    let max_totalFieldLength = _.max([object_from_A['totalfields'], object_from_B['totalfields']]);
-    for (var j = 0; j < max_totalFieldLength; j++){
-      //search into individual fields to compare
-      let r = _.find(object_from_A['fields'], object_from_B['fields'][j]);
-      if (_.isEmpty(r)){
-        result_diff.push(object_from_B['fields'][j]);
-        console.log("Found : " + object_from_B['fields'][j]);
-      }
-    }
-  }
+		let max_totalFieldLength = _.max([object_from_A['totalfields'], object_from_B['totalfields']]);
+		for (var j = 0; j < max_totalFieldLength; j++) {
+			//search into individual fields to compare
+			let r = _.find(object_from_A['fields'], object_from_B['fields'][j]);
+			if (_.isEmpty(r)) {
+				result_diff = JSON.stringify(object_from_B['fields'][j]);
+				//console.log("Found : " + object_from_B['fields'][j]);
+			}
+		}
+	}
+	return result_diff;
 }
-async function compareObjectMeta(orgId){
-  let query = "SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 LIMIT 2";
-  var records = await global.pool.query(query, [orgId]);
-  var result_diff = "";
-  
-  if (records.rowCount > 0){
-    for (var i=0; i < Object.keys(records.rows[0]).length; i++){
-        var keyValue = Object.keys(records.rows[0])[i];
-        var diff = require('deep-diff').diff;
-        //var records_previous = records.rows[0][keyValue]['allObject'];
-        //var records_new = records.rows[1][keyValue]['allObject'];
-        var records_new = sample_record['allObject'];
-		var records_previous = sample_record2['allObject'];
-       
-        //Comparing totalfields
-        compareFields(records_new, records_previous);
-    
+//Private Methods
+function compareRelationship(recordA, recordB) {
+	let max_recordLength = _.max([recordA.length, recordB.length]);
+	var result_diff;
+	for (var i = 0; i < max_recordLength; i++) {
+		//Get each object in the records
+		let object_from_A = recordA[i];
+		let object_from_B = recordB[i];
 
-       //comparing relationship
-      if (records_new[i]['childRelationships'] != records_previous[i]['childRelationships']){
-        let max_records = _.max([records_new[i]['childRelationships'], records_previous[i]['childRelationships']])
-          for (var i = 0;  i < max_records; i++){
-            let r = _.find(records_new, records_previous[i]);
-            if (_.isEmpty(r)){
-              result_diff = result_diff +  records_previous[i];
-              console.log("Found : " +  records_previous[i]);
-            }
-          }
-      }
-    }
-  }
+		let max_totalFieldLength = _.max([object_from_A['childRelationships'], object_from_B['childRelationships']]);
+		for (var j = 0; j < max_totalFieldLength; j++) {
+			//search into individual fields to compare
+			let r = _.find(object_from_A['childRelationship_details'], object_from_B['childRelationship_details'][j]);
+			if (_.isEmpty(r)) {
+				result_diff = JSON.stringify(object_from_B['childRelationship_details'][j]);
+				//console.log("Found : " + object_from_B['fields'][j]);
+			}
+		}
+	}
+	return result_diff;
+}
+async function compareObjectMeta(orgId) {
+	let query = "SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 LIMIT 2";
+	var records = await global.pool.query(query, [orgId]);
+	var result_diff = "";
+
+	if (records.rowCount > 0) {
+		for (var i = 0; i < Object.keys(records.rows[0]).length; i++) {
+			var keyValue = Object.keys(records.rows[0])[i];
+			var diff = require('deep-diff').diff;
+			//This is production code
+			//var records_previous = records.rows[0][keyValue]['allObject'];
+			//var records_new = records.rows[1][keyValue]['allObject'];
+
+			//This is for testing
+			var records_new = sample_record['allObject'];
+			var records_previous = sample_record2['allObject'];
+			//TODO : Need to return this value.
+			//Comparing totalfields
+			let result_fields = compareFields(records_new, records_previous);
+			//Comparing relationship
+			let result_relationship = compareRelationship(records_new, records_previous);
+		}
+	}
 }
 
-async function compareSecurityRisk(orgId){
-  let query = "SELECT orgsecurityrisk FROM orginformation WHERE orgid = $1 LIMIT 2";
-  var records = await global.pool.query(query, [orgId]);
-  var result_diff = "";
-  
-  if (records.rowCount > 0){
-    for (var i=0; i < Object.keys(records.rows[0]).length; i++){
-        var keyValue = Object.keys(records.rows[0])[i];
-        var records_previous = records.rows[0][keyValue]['records'];
-        var records_new = records.rows[1][keyValue]['records'];
+async function compareSecurityRisk(orgId) {
+	let query = "SELECT orgsecurityrisk FROM orginformation WHERE orgid = $1 LIMIT 2";
+	var records = await global.pool.query(query, [orgId]);
+	var result_diff = "";
 
-        for (var i=0; i < records_previous.length; i ++){
-         let r =  _.find(records_new, records_previous[i]);
-         if (_.isEmpty(r)){
-           console.log("Found : " + records_previous[i]);
-         }
-        }
+	if (records.rowCount > 0) {
+		for (var i = 0; i < Object.keys(records.rows[0]).length; i++) {
+			var keyValue = Object.keys(records.rows[0])[i];
+			var records_previous = records.rows[0][keyValue]['records'];
+			var records_new = records.rows[1][keyValue]['records'];
 
-        //let  result = _.difference(records_previous, records_new);
-        //console.log(result);      
-    }
-  }
+			for (var i = 0; i < records_previous.length; i++) {
+				let r = _.find(records_new, records_previous[i]);
+				if (_.isEmpty(r)) {
+					console.log("Found : " + records_previous[i]);
+				}
+			}
+		}
+	}
 }
 async function compareChanges(orgId) {
-  try {
-    compareObjectMeta(orgId);
-    //compareObjectInformation(orgId);
-    //compareSecurityRisk(orgId);
-  } catch (error) {
-    console.log(error);
-  }
+	try {
+		compareObjectMeta(orgId);
+		//compareObjectInformation(orgId);
+		//compareSecurityRisk(orgId);
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 
 module.exports = {
-  compareChanges
+	compareChanges
 }
 
 var sample_record = {
@@ -5621,7 +5633,8 @@ var sample_record = {
 			"junctionIdListNames": [],
 			"junctionReferenceTo": []
 		}]
-	}]};
+	}]
+};
 
 var sample_record2 = {
 	"allObject": [{
@@ -6075,7 +6088,7 @@ var sample_record2 = {
 			"writeRequiresMasterRead": false,
 			"displayLocationInDecimal": false,
 			"formulaTreatNullNumberAsZero": false
-		},{
+		}, {
 			"mask": null,
 			"name": "LanceSpecial",
 			"type": "textarea",
@@ -11192,4 +11205,5 @@ var sample_record2 = {
 			"junctionIdListNames": [],
 			"junctionReferenceTo": []
 		}]
-	}]};
+	}]
+};

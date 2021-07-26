@@ -1,40 +1,76 @@
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
 <div class="main">
-  
   <div class="col-md-16 col-sm-12">
     <div class="row">
       <div class="container">
-              <button class="btn btn-info" onclick="history.back(-1)">Back</button>
+        <button class="btn btn-info" onclick="history.back(-1)">Back</button>
       </div>
     </div>
-    <br/>
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs">
-          <li class="nav-item"><a href="#relationTab" aria-controls="relationTab" class="nav-link active" role="tab"
-              data-toggle="tab">Relationship</a>
-          </li>
-          <li class="nav-item">
-              <a href="#graphTab" class="nav-link" aria-controls="graphTab" role="tab" data-toggle="tab">Graph</a>
-          </li>
-      </ul>
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="relationTab">
-          <div class="row" style=" margin-top:20px;">
-            <div class="col">
-                    <table id="dtObjects" class="table table-striped table-bordered table-sm"
-                            cellspacing="0" width="100%">
-                            <thead>
-                                    <th>Object</th>
-                                    <th>ChildRelationship</th>
-                            </thead>
-                            <tbody>
-                                    <% for(var i =0; i< allObject.length; i ++){ %>
-                                    <tr>
-                                        <td><%- allObject[i].childSObject%></td>
-                                        <td><%- allObject[i].field %> </td>      
-                                    </tr>  
-                                    <%}%> 
+    <br />
+    <!-- Header Panel -->
+    <div class="container-fluid" style="padding-top: 50px;">
+      <div class="card">
+        <div class="card-header text-center "
+          style="font-family: Sans-Serif; text-transform:uppercase; font-size:1.5rem">
+          <%- objectName %>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Total Fields</h5>
+                  <p class="card-text"><%- totalFields -%></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Child Relationships</h5>
+                  <p class="card-text"><%- relationCount %></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Layout</h5>
+                  <p class="card-text"><%- %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item"><a href="#relationTab" aria-controls="relationTab" class="nav-link active" role="tab"
+          data-toggle="tab">Relationship</a>
+      </li>
+      <li class="nav-item">
+        <a href="#graphTab" class="nav-link" aria-controls="graphTab" role="tab" data-toggle="tab">Graph</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="relationTab">
+        <div class="row" style=" margin-top:20px;">
+          <div class="col">
+            <table id="dtObjects" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+              <thead>
+                <th>Object</th>
+                <th>Field</th>
+              </thead>
+              <tbody>
+                <% for(var i =0; i< allObject.length; i ++){ %>
+                <tr>
+                  <td><%- allObject[i].childSObject%></td>
+                  <td><%- allObject[i].field %> </td>
+                </tr>
+                <%}%> 
                             </tbody>   
                     </table>
             </div>
@@ -51,55 +87,55 @@
   </div>
 </div>
 <script>
-var dotDefault = <%- dot_allObject %>;
+  var dotDefault = <%- dot_allObject %>;
 
-// create a network
-var container = document.getElementById('mynetwork');
-var options = {
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var options = {
   physics: {
-    stabilization: false,
-    barnesHut: {
-      springLength: 200
-    }
+  stabilization: false,
+  barnesHut: {
+  springLength: 200
   }
-};
-var data = {};
-var network = new vis.Network(container, data, options);
+  }
+  };
+  var data = {};
+  var network = new vis.Network(container, data, options);
 
-$(window).on('resize', function(){ resize()});
-$(window).on('load', function(){ draw()});
+  $(window).on('resize', function(){ resize()});
+  $(window).on('load', function(){ draw()});
 
-$('#data').keydown(function (event) {
+  $('#data').keydown(function (event) {
   if (event.ctrlKey && event.keyCode === 13) { // Ctrl+Enter
-    draw();
-    event.stopPropagation();
-    event.preventDefault();
+  draw();
+  event.stopPropagation();
+  event.preventDefault();
   }
-});
+  });
 
-function resize() {
+  function resize() {
   $('#contents').height($('body').height() - $('#header').height() - 30);
-}
+  }
 
-function draw () {
+  function draw () {
   try {
-    resize();
-   
-    // Provide a string with data in DOT language
-    data = vis.parseDOTNetwork(dotDefault);
+  resize();
 
-    network.setData(data);
+  // Provide a string with data in DOT language
+  data = vis.parseDOTNetwork(dotDefault);
+
+  network.setData(data);
   }
   catch (err) {
-    console.log(err.toString());
+  console.log(err.toString());
   }
-}
+  }
 
-function reset() {
+  function reset() {
   $('#data').val(dotDefault);
   draw();
-}
+  }
 
-$(window).on('load', function(){ reset()});
+  $(window).on('load', function(){ reset()});
 
 </script>
