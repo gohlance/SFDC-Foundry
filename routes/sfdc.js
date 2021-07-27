@@ -109,7 +109,7 @@ module.exports = ({
                     return item.length > 5
                 }).value()
 
-                const recordType_NotActive = _.partition(result.rows, 'active')
+                const recordType_NotActive = _.partition(result.rows, 'active');
 
                 return ctx.render('/show/show_recordType', {
                     recordType: result.rows,
@@ -228,11 +228,18 @@ module.exports = ({
            })
         })
        .get ('showObjectRelationship', '/getChart', async (ctx) => {
-           const result = await sfdcmethods.get_childRelationshipDetails(ctx.query["t"])
-           const dot_result = dot.convertToDOT(result, ctx.query["t"])
+           const result = await sfdcmethods.get_childRelationshipDetails(ctx.query["t"]);
+           const countRelationship = await sfdcmethods.get_childRelationshipDetails_Count(ctx.query["t"]);
+           const totalFields = await sfdcmethods.get_childRelationshipDetails_totalFields(ctx.query["t"]);
+           const dot_result = dot.convertToDOT(result, ctx.query["t"]);
+           const recordType = await sfdcmethods.get_childRelationshipDetails_RecordType(ctx.query["t"]);
            return ctx.render('/show/show_chart',{
                dot_allObject: dot_result,
-               allObject : result
+               allObject : result,
+               objectName: ctx.query["t"],
+               totalFields: totalFields,
+               relationCount: countRelationship,
+               recordType: recordType.length
            })
        })
         //TODO : Debug only New Features & created UX for it
