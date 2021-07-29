@@ -134,12 +134,16 @@ module.exports = ({
                     return item.Total == 1;
                 })
 
+                const result_allProfiles = await global.pool.query("SELECT profile FROM orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",[ctx.session.orgId]);
+
                 return ctx.render('/show/show_profiles', {
                     profiles: result.rows[0]["profile_user"]["undefined"],
                     morethan10: range[0].length,
                     lessthan10: range[1].length,
                     totalObject: result.rows[0]["profile_user"]["undefined"].length,
-                    singleuser: profileWithOnly_1User[0].length
+                    singleuser: profileWithOnly_1User[0].length,
+                    all_profiles: result_allProfiles.rows[0].profile.records,
+                    all_profiles_count: result_allProfiles.rows[0].profile.size
                 })
             } catch (error) {
                 console.error("Error [showProfiles]: " + error)
