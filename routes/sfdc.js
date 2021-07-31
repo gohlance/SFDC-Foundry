@@ -238,14 +238,17 @@ module.exports = ({
            const totalFields = await sfdcmethods.get_childRelationshipDetails_totalFields(ctx.query["t"]);
            const dot_result = dot.convertToDOT(result, ctx.query["t"]);
            const recordType = await sfdcmethods.get_childRelationshipDetails_RecordType(ctx.query["t"]);
+           const result_layout = await sfdcmethods.get_childRelationshipDetails_Layout(ctx.query["t"]);
+                
            return ctx.render('/show/show_chart',{
                dot_allObject: dot_result,
                allObject : result,
                objectName: ctx.query["t"],
                totalFields: totalFields,
                relationCount: countRelationship,
-               recordType: recordType.length
-           })
+               recordType: recordType.length,
+               layouts: result_layout
+           });
        })
         //TODO : Debug only New Features & created UX for it
         .get('testing', '/lance', async (ctx) => {

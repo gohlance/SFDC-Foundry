@@ -24,7 +24,8 @@ module.exports = {
     get_childRelationshipDetails,
     get_childRelationshipDetails_Count,
     get_childRelationshipDetails_totalFields,
-    get_childRelationshipDetails_RecordType
+    get_childRelationshipDetails_RecordType,
+    get_childRelationshipDetails_Layout
 }
 
 async function check_firstTime_Login(session){
@@ -85,7 +86,7 @@ async function getSecurityRisk(type, session){
     }
   }
 
-async function get_childRelationshipDetails(objectname, session){
+async function get_childRelationshipDetails(objectname){
   try {
    // let result = await global.pool.query("select sobjectdescribe from orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",  [global.orgId])
 
@@ -98,7 +99,7 @@ async function get_childRelationshipDetails(objectname, session){
   } 
 }
 
-async function get_childRelationshipDetails_totalFields(objectname, session){
+async function get_childRelationshipDetails_totalFields(objectname){
   try {
    // let result = await global.pool.query("select sobjectdescribe from orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",  [global.orgId])
 
@@ -111,7 +112,7 @@ async function get_childRelationshipDetails_totalFields(objectname, session){
   } 
 }
 
-async function get_childRelationshipDetails_RecordType(objectname, session){
+async function get_childRelationshipDetails_RecordType(objectname){
   try {
     let result =  await global.pool.query("select elem ->> 'recordType_details' as recordType from public.orginformation , lateral jsonb_array_elements(sobjectdescribe -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2 ORDER BY createdDate DESC FETCH FIRST ROW only", [objectname, global.orgId])
     let result_json = JSON.parse(result.rows[0].recordtype);
@@ -121,7 +122,7 @@ async function get_childRelationshipDetails_RecordType(objectname, session){
     return 0
   } 
 }
-async function get_childRelationshipDetails_Count(objectname, session){
+async function get_childRelationshipDetails_Count(objectname){
   try {
     let result =  await global.pool.query("select elem ->> 'childRelationships' as relationship from public.orginformation , lateral jsonb_array_elements(sobjectdescribe -> 'allObject') elem where elem ->> 'Label' = $1 and orgid = $2 ORDER BY createdDate DESC FETCH FIRST ROW only", [objectname, global.orgId])
     let result_json = JSON.parse(result.rows[0].relationship)
@@ -130,6 +131,15 @@ async function get_childRelationshipDetails_Count(objectname, session){
     console.log("Error [get_childRelationshipDetails]: " + error)
     return 0
   } 
+}
+
+async function get_childRelationshipDetails_Layout(objectname){
+  try{
+    let result = await global.pool.query("select elem ->> 'Name' as Name , elem->> 'LayoutType' as LayoutType, elem ->> 'ManageableState' as ManageableState, elem ->> 'TableEnumOrId' as TableEnumOrId from public.orginformation , lateral jsonb_array_elements(layout -> 'records') elem where( elem  ->> 'TableEnumOrId' = $1) and orgid = $2 and id = (select id from public.orginformation o order by createdDate desc fetch first row only)",[objectname, global.orgId]);
+    return result.rows;
+  }catch (error){
+    console.log("Error [get_childRelationshipDetails]: " + error);
+  }
 }
 
 

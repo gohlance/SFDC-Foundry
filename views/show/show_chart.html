@@ -13,7 +13,7 @@
       <div class="card">
         <div class="card-header text-center "
           style="font-family: Sans-Serif; text-transform:uppercase; font-size:1.5rem">
-          <%- objectName %>
+          <%- objectName %> 
         </div>
         <div class="card-body">
           <div class="row">
@@ -21,7 +21,7 @@
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Total Fields</h5>
-                  <p class="card-text"><%- totalFields -%></p>
+                  <p class="card-text"><%- totalFields %></p>
                 </div>
               </div>
             </div>
@@ -51,6 +51,7 @@
       <li class="nav-item"><a href="#relationTab" aria-controls="relationTab" class="nav-link active" role="tab"
           data-toggle="tab">Relationship</a>
       </li>
+      <li class="nav-item"><a href="#layoutTab" aria-controls="layoutTab" class="nav-link" role="tab" data-toggle="tab">Layout</a></li>
       <li class="nav-item">
         <a href="#graphTab" class="nav-link" aria-controls="graphTab" role="tab" data-toggle="tab">Graph</a>
       </li>
@@ -76,7 +77,31 @@
             </div>
           </div>           
         </div>
-        <div role="tabpanel" class="tab-pane" id="graphTab">
+      <div role="tabpanel" class="tab-pane" id="layoutTab">
+        <div class="row" style=" margin-top:20px;">
+          <div class="col">
+            <table id="dtObjects2" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+              <thead>
+                  <th>Name</th>
+                  <th>Layout Type</th>
+                  <th>Object</th>
+                  <th>Managed State</th>
+              </thead>
+              <tbody>
+                 <% for (var i=0; i < layouts.length; i ++){ %>
+                  <tr>
+                    <td><%-layouts[i].name%></td>
+                    <td><%-layouts[i].layouttype%></td>
+                    <td><%-layouts[i].tableenumorid%></td>
+                    <td><%-layouts[i].manageablestate%></td>
+                  </tr>
+                 <% } %>
+              </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="graphTab">
           <div id="contents">
             <div>
               <div id="mynetwork"></div>
