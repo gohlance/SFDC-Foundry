@@ -16,6 +16,7 @@ const processbuilder = require('../processbuilder-api')
 
 const dot = require('../modules/processbuilder/dotNotation');
 const { OAuth2 } = require('jsforce');
+const { env } = require('custom-env');
 
 oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.

@@ -65,7 +65,7 @@ const _update_apexComponent = "UPDATE orginformation SET apexcomponent = $1 WHER
 const _update_layout = "UPDATE orginformation SET layout = $1 WHERE id = $2";
 const _update_profile = "UPDATE orginformation SET profile = $1 WHERE id = $2";
 //This is not in used
-const _update_profileLayout = "SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout;"
+const _update_profileLayout = "SELECT LayoutId, ProfileId, RecordTypeId, TableEnumOrId FROM ProfileLayout";
 const _update_recordType = "UPDATE orginformation SET recordtype = $1 WHERE id = $2";
 
 const _update_validationRule = "UPDATE orginformation SET validationrule = $1 WHERE id = $2";
@@ -82,6 +82,7 @@ const _update_objInfo = "UPDATE orginformation SET objectinformation =$1 WHERE i
 const _update_sobject = "UPDATE orginformation SET sobjectdescribe =$1 WHERE id =$2";
 
 const _update_license = "UPDATE orginformation SET orgLicenseInformation = $1 WHERE id = $2";
+const _update_orglimit = "UPDATE orginformation SET orglimitsinformation = $1 WHERE id = $2";
 
 function updateQuery(selector){
     switch(selector){
@@ -125,5 +126,7 @@ function updateQuery(selector){
             return _update_objInfo;
         case "license":
             return _update_license;
+        case "orglimit":
+            return _update_orglimit;
     }
 }

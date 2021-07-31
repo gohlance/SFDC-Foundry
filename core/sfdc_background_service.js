@@ -29,8 +29,7 @@ async function start() {
             sfdc_connect.toolingQuery(sfdc_connect.queryType.WorkflowRule, newRowID),
             sfdc_connect.get_TotalUsersByProfile(newRowID),
             sfdc_connect.getUserLicense(newRowID),
-            //Need to work on the methods
-            //sfdc_connect.get_Org_limitInfo(workerData.accesscode, workerData.instance),
+            sfdc_connect.get_Org_limitInfo(workerData.accesscode, workerData.instance, newRowID),
             sfdc_connect.getAllObjectOnce(newRowID) 
         ]).then(()=>{
             parentPort.postMessage({

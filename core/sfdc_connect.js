@@ -125,15 +125,18 @@ async function getUserLicense(rowId) {
         console.error("Error [sfdc-api/get_UserWithLicense2] : " + error)
     }
 }
-async function get_Org_limitInfo(accesscode, instanceurl) {
+async function get_Org_limitInfo(accesscode, instanceurl, rowId) {
     try {
         const headers = {
             'Authorization': 'Bearer ' + accesscode,
             'X-PrettyPrint': 1,
         };
-        return await axios.get( instanceurl + '/services/data/v51.0/limits/', {
+        let result =  await axios.get( instanceurl + '/services/data/v51.0/limits/', {
             headers
-        })
+        });
+        let update = _query.updateQuery("orglimit");
+        pool.query(update, [result.data, rowId]);
+
     } catch (error) {
         console.error("Error [sfdc-api/get_Org_limitInfo] : " + error)
     }
@@ -187,7 +190,7 @@ async function _sObjectDescribe(result) {
                 lessthan100fields++
             }
 
-            console.log("Total Fields : " + totalfields.fieldsDetails);
+            //console.log("Total Fields : " + totalfields.fieldsDetails);
 
             return {
                 Objectname: item.name,
