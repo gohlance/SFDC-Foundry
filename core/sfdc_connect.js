@@ -108,7 +108,6 @@ async function getAllObjectOnce(rowId) {
         pool.query("INSERT INTO errorlogs (description) VALUES ($1)",[error]);
     }
 }
-
 async function getUserLicense(rowId) {
     try {
         conn.query("SELECT LicenseDefinitionKey, MasterLabel, Name, Status, TotalLicenses, UsedLicenses,UsedLicensesLastUpdated FROM UserLicense", function (err, result) {
@@ -156,6 +155,40 @@ async function get_TotalUsersByProfile(rowId) {
         console.error("Error [sfdc-api/get_TotalUsersByProfile] : " + error)
     }
 }
+
+async function getMoreDetails_ProcessbuilderAndFlow(rowId) {
+    try {
+            //conn.tooling.query("SELECT DefinitionId, VersionNumber, Status FROM FLOW WHERE Status = 'Active' GROUP BY DefinitionId, VersionNumber, Status ORDER BY DefinitionId ",async function (error, result) {
+                conn.tooling.query("SELECT DefinitionId, VersionNumber, Status FROM FLOW GROUP BY DefinitionId, VersionNumber, Status ORDER BY DefinitionId ",async function (error, result) {  
+            if (error) {
+                    console.log("Error [sfdc-api/getAllProcessBuilder - conn.tooling] : " + error)
+                }
+                //console.log("[sfdc-api/getAllProcessBuilder] : " + result)
+                let finalJson = JSON.stringify(await getEachProcessDefinition(result))
+                //need to use JSON.parse to get back JSON object
+                let update = "UPDATE orginformation SET processflow_metadata = $1 WHERE id = $2";
+                pool.query(update, [finalJson, rowId]);
+            })
+    
+    } catch (error) {
+        console.error("Error [sfdc-api/getAllProcessBuilder] : " + error)
+    }
+}
+//Private function for getMoreDetails_ProcessbuilderAndFlow
+async function getEachProcessDefinition(result){
+    try {
+        var tempArray = await Promise.all( result.records.map(async item => {
+            var something = await conn.tooling.query("SELECT FullName, DefinitionId, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber)
+            //return  JSON.stringify(something.records[0])
+            return something.records
+        }))
+        return tempArray 
+    }catch (error){
+        console.error("Erro [axxx] " + error)
+    }   
+}
+
+
 //Private Methods
 async function _sObjectDescribe(result) {
     var result2 = filter_BeforeCallingAPI(result)
@@ -279,7 +312,8 @@ module.exports = {
     get_TotalUsersByProfile,
     getAllObjectOnce,
     insert_blankRow,
-    get_OrgIdFromDB
+    get_OrgIdFromDB,
+    getMoreDetails_ProcessbuilderAndFlow
 }
 
 const Type = {

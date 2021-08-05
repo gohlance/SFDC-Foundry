@@ -142,7 +142,6 @@ async function get_childRelationshipDetails_Layout(objectname){
   }
 }
 
-
   async function display_Homepage_Objects(session) {
     try {
       const result_object = await global.pool.query('SELECT objectinformation FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [session.orgId])
