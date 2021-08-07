@@ -1,7 +1,7 @@
 module.exports = {
     convertToDOT
 }
-
+//This is for all object relationship
 function convertToDOT (source, parent){
     let dot_result = "'digraph { lines[label=\"$1\"];".replace("$1", parent);
  
@@ -10,4 +10,8 @@ function convertToDOT (source, parent){
     }
     dot_result += "}'"
     return dot_result
+}
+
+function drawProcessBuilder(){
+    
 }

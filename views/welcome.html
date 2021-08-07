@@ -30,7 +30,7 @@
             </li>
             <li><a class="nav-link" data-toggle="tab" href="#license">Licenses</a></li>
             <li><a class="nav-link" data-toggle="tab" href="#limit"> Limits</a></li>
-            <li><a class="nav-link" data-toggle="tab" href="#others">Others</a></li>
+            <li><a class="nav-link" data-toggle="tab" href="#process">Process Builder</a></li>
         </ul>
     </div>
     <div class="row">
@@ -241,6 +241,41 @@
                       </div>
                   </div>
                 <%}%>
+                <%}%>
+              </div>
+
+              <div class="tab-pane fade" id="process">
+                <% if (result_processBuilder != 0 || result_processBuilder != undefined) {%>
+                <div class="row">
+                    <div class="card-body">
+                        <table class="table table-striped w-100">
+                            <thead>
+                                <tr>
+                                    <th>Process Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i =0; i< result_processBuilder.length; i ++){ %>
+                                <tr>
+                                    <td><a href="/process?id=<%-result_processBuilder[i].definitionid%>"><%-result_processBuilder[i].fullname%></a></td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                          </table>
+                      </div>
+                  </div>
+                <%}else {%>
+                    <div class="row">
+                        <div class="card-body">
+                            <table class="table table-striped w-100">
+                                <tbody>
+                                    <tr>
+                                        <td> THere's no process in your org. If you believe that's and error drop us a note and let us kow.</td>
+                                    </tr>    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 <%}%>
               </div>
           </div>

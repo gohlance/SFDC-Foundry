@@ -16,7 +16,9 @@ module.exports = ({
         if (!ctx.session.orgId){
           ctx.session.orgId = ctx.request.query["org"]
         }
-        console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId)
+        console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId);
+        const processbuilder = require('../modules/processbuilder/processbuilder-api');
+
         return ctx.render('welcome', {
           result_objects: _.defaultTo(await sfdcmethods.display_Homepage_Objects(ctx.session), 0),
           result_profiles: _.defaultTo(await sfdcmethods.display_Homepage_Profiles(ctx.session), 0),
@@ -29,6 +31,7 @@ module.exports = ({
           result_userLicense: _.defaultTo(await sfdcmethods.getUserLicenseDetails(ctx.session), 0),
           result_securityRisk: _.defaultTo(await sfdcmethods.getSecurityRisk("HOME", ctx.session), [0, 0]),
           result_customapp: _.defaultTo(await sfdcmethods.getCustomApps("HOME", ctx.session), [0, 0, 0]),
+          result_processBuilder: _.defaultTo(await processbuilder.all_process(ctx.session), 0),
           session: ctx.session,
           orgname: ctx.request.query["n"]
         })

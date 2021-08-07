@@ -12,7 +12,7 @@ const {
 const jsforce = require('jsforce')
 const _ = require('lodash')
 
-const processbuilder = require('../processbuilder-api')
+const processbuilder = require('../modules/processbuilder/processbuilder-api')
 
 const dot = require('../modules/processbuilder/dotNotation');
 const { OAuth2 } = require('jsforce');
@@ -250,6 +250,15 @@ module.exports = ({
                layouts: result_layout
            });
        })
+
+       .get('processBuilder', '/process', async (ctx) => {
+           const processBuilder = require('../modules/processbuilder/processbuilder-api');
+           const processBuilderNode = await processBuilder.demystify_processbuilder(ctx.query["id"],ctx.session.id);
+           return ctx.render('../views/show/show_process',{
+                result: processBuilderNode
+           })
+       })
+       
         //TODO : Debug only New Features & created UX for it
         .get('testing', '/lance', async (ctx) => {
            //const result = await sfdcbackground_methods.getMoreDetails_ProcessbuilderAndFlow()
@@ -272,9 +281,7 @@ module.exports = ({
         .get('testingBPM','/bpm', async (ctx) => {
             var c = "graph TD\n A[Hard] -->|Text| B(Round)\n B --> C{Decision}\n C -->|One| D[Result 1]\n C -->|Two| E[Result 2]";
 
-
-
-            const processbuilder = require('../processbuilder-api');
+            const processbuilder = require('../modules/processbuilder/processbuilder-api');
             
             processbuilder.all_process(ctx.session.orgId);
             var a= "3005g000000HZuZAAW";
