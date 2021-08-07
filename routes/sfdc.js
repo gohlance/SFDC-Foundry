@@ -239,7 +239,9 @@ module.exports = ({
            const dot_result = dot.convertToDOT(result, ctx.query["t"]);
            const recordType = await sfdcmethods.get_childRelationshipDetails_RecordType(ctx.query["t"]);
            const result_layout = await sfdcmethods.get_childRelationshipDetails_Layout(ctx.query["t"]);
-                
+
+            const processBuilder = require('../modules/processbuilder/processbuilder-api');
+            const result_processBuilder = processBuilder.getProcessByObject(ctx.query["t"]);
            return ctx.render('/show/show_chart',{
                dot_allObject: dot_result,
                allObject : result,
@@ -247,7 +249,8 @@ module.exports = ({
                totalFields: totalFields,
                relationCount: countRelationship,
                recordType: recordType.length,
-               layouts: result_layout
+               layouts: result_layout,
+               process: result_processBuilder
            });
        })
 

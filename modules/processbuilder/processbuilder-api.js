@@ -1,10 +1,15 @@
 const _ = require('lodash')
 
-module.exports = {demystify_processbuilder, draw, all_process}
+module.exports = {demystify_processbuilder, draw, all_process, getProcessByObject}
 
 async function all_process(session){
     const result =  await global.pool.query("SELECT processflow_metadata ->0->0->> 'DefinitionId' as DefinitionId, processflow_metadata ->0->0->> 'FullName' as FullName FROM orginformation o where orgid=$1 order by createddate  desc fetch first row only", [session.orgId]);
     //console.log(result.rows);
+    return result.rows;
+}
+
+async function getProcessByObject(objectName){
+    const result = await global.pool.query("SELECT processflow_metadata ->0->0->'FullName' FROM orginformation o where processflow_metadata ->0->0->'Metadata'->'processMetadataValues'->0->'value'->>'stringValue' = $1 and orgid = $2 order by createddate  desc fetch first row ONLY",[objectName, global.orgId])
     return result.rows;
 }
 
