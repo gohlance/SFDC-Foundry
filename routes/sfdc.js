@@ -241,7 +241,7 @@ module.exports = ({
            const result_layout = await sfdcmethods.get_childRelationshipDetails_Layout(ctx.query["t"]);
 
             const processBuilder = require('../modules/processbuilder/processbuilder-api');
-            const result_processBuilder = processBuilder.getProcessByObject(ctx.query["t"]);
+            const result_processBuilder = await processBuilder.getProcessByObject(ctx.query["t"]);
            return ctx.render('/show/show_chart',{
                dot_allObject: dot_result,
                allObject : result,
@@ -256,7 +256,7 @@ module.exports = ({
 
        .get('processBuilder', '/process', async (ctx) => {
            const processBuilder = require('../modules/processbuilder/processbuilder-api');
-           const processBuilderNode = await processBuilder.demystify_processbuilder(ctx.query["id"],ctx.session.id);
+           const processBuilderNode = await processBuilder.demystify_processbuilder(ctx.query["id"],ctx.session.orgId);
            return ctx.render('../views/show/show_process',{
                 result: processBuilderNode
            })

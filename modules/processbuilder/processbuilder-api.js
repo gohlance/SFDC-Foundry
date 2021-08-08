@@ -9,7 +9,7 @@ async function all_process(session){
 }
 
 async function getProcessByObject(objectName){
-    const result = await global.pool.query("SELECT processflow_metadata ->0->0->'FullName' FROM orginformation o where processflow_metadata ->0->0->'Metadata'->'processMetadataValues'->0->'value'->>'stringValue' = $1 and orgid = $2 order by createddate  desc fetch first row ONLY",[objectName, global.orgId])
+    const result = await global.pool.query("SELECT processflow_metadata ->0->0->> 'DefinitionId' as DefinitionId, processflow_metadata ->0->0->'FullName' as fullname FROM orginformation o where processflow_metadata ->0->0->'Metadata'->'processMetadataValues'->0->'value'->>'stringValue' = $1 and orgid = $2 order by createddate  desc fetch first row ONLY",[objectName, global.orgId])
     return result.rows;
 }
 
