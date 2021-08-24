@@ -51,11 +51,13 @@ if (process.env.APP_ENV == "dev") {
 
 render(app, {
   root: path.join(__dirname, 'views'),
-  layout: 'layout',
+  layout: '/layout/layout',
   viewExt: 'html',
   cache: false,
   debug: true
 })
+
+
 
 app.keys = ['82a5193f-37e4-4dba-bf9c-750389f80699']
 //Session for App
@@ -126,6 +128,7 @@ passport.use(new LocalStrategy({}, (username, password, done) => {
 
 //Serving File from public folder
 app.use(serve('./public'))
+app.use(serve('./assets'))
 
 //log all events to the terminal
 app.use(logger());

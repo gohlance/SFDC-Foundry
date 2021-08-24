@@ -10,9 +10,11 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "argon-design-system-free": "^1.2.0",
         "axios": "^0.21.1",
         "bcrypt": "^5.0.0",
         "custom-env": "^2.0.1",
+        "express-url-breadcrumb": "^1.0.2",
         "handlebars": "^4.7.6",
         "jsforce": "^1.10.0",
         "json-diff": "^0.5.4",
@@ -35,7 +37,8 @@
         "promise-throttle": "^1.1.1",
         "puppeteer": "^5.5.0",
         "sequelize": "^6.5.0",
-        "split": "^1.0.1"
+        "split": "^1.0.1",
+        "xmlbuilder": "^11.0.1"
     },
     "engines": {
         "node": "15.3.0"

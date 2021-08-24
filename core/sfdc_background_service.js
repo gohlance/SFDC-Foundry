@@ -24,6 +24,7 @@ async function start() {
             sfdc_connect.toolingQuery(sfdc_connect.queryType.Layout, newRowID),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.Profile, newRowID),
             //sfdc_connect.toolingQuery(sfdc_connect.queryType.ProfileLayout),
+            //TODO : this may not be used... RecordTypefi
             sfdc_connect.toolingQuery(sfdc_connect.queryType.RecordType, newRowID),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.SecurityRisk, newRowID),
             sfdc_connect.toolingQuery(sfdc_connect.queryType.ValidationRule, newRowID),

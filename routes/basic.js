@@ -37,7 +37,7 @@ module.exports = ({
         })
 
       }else{
-        return ctx.render('index')
+        return ctx.render('login_index')
       }
     })
     .get('index', '/index', (ctx) => {
@@ -83,7 +83,7 @@ module.exports = ({
     .get('logout','/auth/logout',(ctx) => {
       if (ctx.isAuthenticated()){
         ctx.logout()
-        ctx.redirect('index')
+        ctx.redirect('login_index')
       } else {
         ctx.body = { success: false }
         ctx.throw(401)
@@ -97,7 +97,7 @@ module.exports = ({
           session: ctx.session
         })
       }else{
-        ctx.redirect('index');
+        ctx.redirect('login_index');
       }
     })
 }
