@@ -262,41 +262,6 @@ module.exports = ({
            })
        })
        
-        //TODO : Debug only New Features & created UX for it
-        .get('testing', '/lance', async (ctx) => {
-           //const result = await sfdcbackground_methods.getMoreDetails_ProcessbuilderAndFlow()
-           //await sfdcbackground_methods.insertDataDebugMode(result)
-
-            const result = await sfdcmethods.debug_select()
-            console.log(result)
-            let caseupdated = _.find(result.rows[0].processflow_metadata, function (o) {
-                return o[0].FullName === "Case_Updated"
-            })
-            console.log(caseupdated)
-
-            let did = "3002x000000g2jmAAA"
-            let oid = "588"
-
-            processbuilder.demystify_processbuilder(did, oid)
-        })
-
-        //Using Mermaid.js
-        .get('testingBPM','/bpm', async (ctx) => {
-            var c = "graph TD\n A[Hard] -->|Text| B(Round)\n B --> C{Decision}\n C -->|One| D[Result 1]\n C -->|Two| E[Result 2]";
-
-            const processbuilder = require('../modules/processbuilder/processbuilder-api');
-            
-            processbuilder.all_process(ctx.session.orgId);
-            var a= "3005g000000HZuZAAW";
-            c = await processbuilder.demystify_processbuilder(a,ctx.session.orgId);
-            
-            return ctx.render('../views/testBPM',{
-                result : c
-            });
-
-            
-        })
-
         .get('compareTest','/compare', async (ctx)=> {
             const compare = require('../modules/compare/compare_changes');
             console.log("**** :" + await compare.compareChanges(8889));
