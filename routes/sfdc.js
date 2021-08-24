@@ -67,7 +67,7 @@ module.exports = ({
                 ctx.session.orgId = decrypt[3]
                 ctx.redirect('/welcome')
             }else{
-                ctx.redirect('/index')
+                ctx.redirect('/login_index')
             }
         })
         .get('logout', '/logout', (ctx) => {
@@ -77,7 +77,7 @@ module.exports = ({
                 }
                 ctx.session = null
             });
-            return ctx.render('index')
+            return ctx.render('login_index')
         })
         .get('showObjects', '/showObject', async (ctx) => {
             try {
