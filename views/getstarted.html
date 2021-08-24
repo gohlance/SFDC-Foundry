@@ -1,10 +1,14 @@
 <div class="container">
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
+            <h5 class="card title"> 
+                <div class="badge badge-primary" style="width: 100%;">
+                Add a new Salesforce instance
+            </div> </h5>
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-5">
-                        <h5 class="card-title">Add a new Salesforce Org</h5>
+                        
                         <p class="card-text">Click Connect and login with your Salesforce Credentials
                         </p>
                         <a href="/oauth2/auth" class="btn btn-primary">Connect</a>
@@ -15,9 +19,11 @@
     </div>
     <div class="row">
         <div class="card mt-10 my-2 mx-2" style="width: 93%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
+            <h5 class="card title"> 
+                <div class="badge badge-primary" style="width: 100%;">
                 Connected Org Information 
-            </div>
+            </div> </h5>
+           
             <div class="card-body">
         <% if (allOrgs != 0) {%>
             <div class="container">

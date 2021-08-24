@@ -128,7 +128,6 @@ passport.use(new LocalStrategy({}, (username, password, done) => {
 
 //Serving File from public folder
 app.use(serve('./public'))
-app.use(serve('./assets'))
 
 //log all events to the terminal
 app.use(logger());
