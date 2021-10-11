@@ -1,33 +1,47 @@
-<div class="row">
-    <div class="row">
-        <div class="col-md-4">
-            <button class="btn btn-info" onclick="history.back(-1)">Back</button>
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 fw-bold">Custom Apps</p>
         </div>
-        <div class="col-md-6">Custom Apps ( <%-result[0].length%> )</div>
-    </div>
-    <div class="row">
-        <table class="table table-striped table-bordered" id="dtObjects">
-            <thead> 
-            <th>Name</th>
-            <th>Nav Type</th>
-            <th>UiType</th>
-            <th>Description</th>
-            </thead>
-            <tbody>
-            <% for(var i =0; i< result[0].length; i ++){ %>
-            <tr>
-                <td><%- result[0][i].DeveloperName%></td>
-                <td><%- result[0][i].NavType%></td>
-                <td><%- result[0][i].UiType%></td>
-                <td><%- result[0][i].Description%></td>
-            </tr>
-            <%}%> <!--End of For Loop-->
-        </tbody>
-        </table>
+        <div class="card-body">
+            <div class="row">
+                <div class="card" style="width: 70%;height:220px">
+                    <canvas id="myChart" width="200" height="50"></canvas>
+                </div>
+                <div class="card" style="width: 30%;height:220px">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">Custom Apps ( <%-result[0].length%> )</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table my-0" id="dtObjects">
+                        <thead> 
+                            <th>Name</th>
+                            <th>Nav Type</th>
+                            <th>UiType</th>
+                            <th>Description</th>
+                            </thead>
+                            <tbody>
+                            <% for(var i =0; i< result[0].length; i ++){ %>
+                            <tr>
+                                <td><%- result[0][i].DeveloperName%></td>
+                                <td><%- result[0][i].NavType%></td>
+                                <td><%- result[0][i].UiType%></td>
+                                <td><%- result[0][i].Description%></td>
+                            </tr>
+                            <%}%> <!--End of For Loop-->
+                        </tbody>   
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+
 <script>
-  $(document).ready( function () {
-            $('#dtObjects').DataTable();
-        } );
+    $(document).ready( function () {
+              $('#dtObjects').DataTable();
+          } );
 </script>

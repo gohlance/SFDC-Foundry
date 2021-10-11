@@ -1,79 +1,97 @@
-
-    <div class="row">
-        <div class="col">
-            <button class="btn btn-info" onclick="history.back(-1)">Back</button>
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 fw-bold">Processes & Flows</p>
         </div>
-        <div class="col">Processes & Flows </div>
-        <div class="col">
-            <ul class="nav nav-pills" style="width: 100%;">
-                <li><a class="nav-link active" data-toggle="tab" href="#Flow">Flow</a></li>
-                <li><a class="nav-link" data-toggle="tab" href="#Process">Process</a></li>
-            </ul>
-        </div>
-       
-    </div>
-    <div class="row">
-        
-    </div>
-    <div class="row">
-        
-        <div class="tab-content" style="width: 100%;">
-            <div class="tab-pane fade active show" id="Flow">
-                <div class="row">
-                    <table id="dtObjects" class="table table-striped table-bordered table-sm width: 100%;" cellspacing="0" width="100%">
-                        <thead>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>VersionNumber</th>
-                            <th>Type</th>
-                        </thead>
-                        <tbody>
-                            <% 
-                                    flows.map(function(a){
-                            %>
-                            <tr>
-                                <td><a href='/show_processdetails?id=<%-a.DefinitionId%>'> <%-a.MasterLabel%></a></td>
-                                <td><%-a.Status%></td>
-                                <td><%-a.VersionNumber%></td>
-                                <td><%-a.ProcessType%></td>
-                            </tr>
-                            <% })%>
-                        </tbody>
-                    </table>
+        <div class="card-body">
+            <div class="row">
+                <div class="card" style="width: 70%;height:220px">
+                    <canvas id="myChart" width="200" height="50"></canvas>
+                </div>
+                <div class="card" style="width: 30%;height:220px">
+                    <div class="card-body text-center">
+                        <h2 class="card-title"><%-notactive%></h2>
+                        <% if (notactive > 0){ %>
+                        <p class="card-text">You have <%-notactive%> Record Types that is not active. You may consider
+                            removing it?</p>
+                        <% } else { %>
+                        <p class="card-text">You have <%-notactive%> Record Types that is not active. Well done.</p>
+                        <% } %>
+                    </div>
                 </div>
             </div>
+            <div>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab"
+                            href="#Flow">Flow</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab"
+                            href="#Process">Process</a></li>
+                </ul>
 
-            <div class="tab-pane fade" id="Process">
-                <div class="row">
-                    <table id="dtObjects2" class="table table-striped table-bordered table-sm width: 100%;" cellspacing="0" width="100%">
-                        <thead>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>VersionNumber</th>
-                            <th>Type</th>
-                        </thead>
-                        <tbody>
-                            <% 
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="Flow">
+                        <div class="row">
+                            <table id="dtObjects" class="table table-striped table-bordered table-sm width: 100%;"
+                                cellspacing="0" width="100%">
+                                <thead>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>VersionNumber</th>
+                                    <th>Type</th>
+                                </thead>
+                                <tbody>
+                                    <% 
+                                            flows.map(function(a){
+                                    %>
+                                    <tr>
+                                        <td><a href='/show_processdetails?id=<%-a.DefinitionId%>'>
+                                                <%-a.MasterLabel%></a></td>
+                                        <td><%-a.Status%></td>
+                                        <td><%-a.VersionNumber%></td>
+                                        <td><%-a.ProcessType%></td>
+                                    </tr>
+                                    <% })%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="Process">
+                        <div class="row">
+                            <table id="dtObjects2" class="table table-striped table-bordered table-sm width: 100%;"
+                                cellspacing="0" width="100%">
+                                <thead>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>VersionNumber</th>
+                                    <th>Type</th>
+                                </thead>
+                                <tbody>
+                                    <% 
                                     processes.map(function(a){
                             %>
-                            <tr>
-                                <td><%-a.MasterLabel%></td>
-                                <td><%-a.Status%></td>
-                                <td><%-a.VersionNumber%></td>
-                                <td><%-a.ProcessType%></td>
-                            </tr>
-                            <% })%>
-                        </tbody>
-                    </table>
+                                    <tr>
+                                        <td><%-a.MasterLabel%></td>
+                                        <td><%-a.Status%></td>
+                                        <td><%-a.VersionNumber%></td>
+                                        <td><%-a.ProcessType%></td>
+                                    </tr>
+                                    <% })%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
+</div>
 
 <script>
-        $(document).ready( function () {
-                $('#dtObjects').DataTable();
-                $('#dtObjects2').DataTable();
-        } );
+    $(document).ready(function () {
+        $('#dtObjects').DataTable();
+        $('#dtObjects2').DataTable();
+    });
 </script>

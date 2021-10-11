@@ -67,7 +67,7 @@ module.exports = ({
                 ctx.session.orgId = decrypt[3]
                 ctx.redirect('/welcome')
             }else{
-                ctx.redirect('/login_index')
+                ctx.redirect('//p/login_index')
             }
         })
         .get('logout', '/logout', (ctx) => {
@@ -77,7 +77,7 @@ module.exports = ({
                 }
                 ctx.session = null
             });
-            return ctx.render('login_index')
+            return ctx.render('/p/login_index')
         })
         .get('showObjects', '/showObject', async (ctx) => {
             try {
@@ -126,11 +126,14 @@ module.exports = ({
         .get('showProfiles', '/showProfiles', async (ctx) => {
             try {
                 const result = await global.pool.query("SELECT profile_user FROM orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",[ctx.session.orgId])
+                if (result.rows[0]["profile_user"] == null){
+                    return;
+                };
 
                 const range = _.partition(result.rows[0]["profile_user"]["undefined"], function (item) {
                     return item.Total >= 10;
                 })
-
+                
                 const profileWithOnly_1User = _.partition(result.rows[0]["profile_user"]["undefined"], function (item) {
                     return item.Total == 1;
                 })

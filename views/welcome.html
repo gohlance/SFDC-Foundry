@@ -1,14 +1,21 @@
 <div class="container">
     <div class="row">
-        <div class="card mx-auto" style="width: 100%;">
-            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                Salesforce Org Information
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-5">
-                        <h5 class="card-title">Your Salesforce Org Information</h5>
-                        <p class="card-text">Instance Connected : <%- orgname %></p>
+        <div class="col-lg-12 col-xl-12">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0">Salesforce Org Information</h6>
+                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                        <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="text-center medium mt-4">
+                        <p class="card-text">Instance Connected : <b> <%- orgname %> </b>
+                        </p>
+                        <p class="card-text"><i><h6>If Refresh Data button is grey out, you need to reconnect your salesforce instance, with the Connect button.</h6></i></p>
                         <button class="btn btn-primary" id="btnRefresh" type="button" data-toggle="tooltip"
                             data-placement="top"
                             title="If this is greyed out, we will need to connect to Salesforce with the Connect button on the right.">
@@ -16,167 +23,182 @@
                         </button>
                         <a href="/oauth2/auth" class="btn btn-primary">Connect</a>
                     </div>
-                    <div class="col-lg-4">
-                        If Refresh Data button is grey out, you need to reconnect your salesforce instance, with the Connect button.
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row"><br></div>
-    <div class="row">
-        <ul class="nav nav-pills" style="width: 100%;">
-            <li class="active"><a class="nav-link active" data-toggle="tab" href="#orgHome">Instance Information</a>
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#orgHome">Instance Information</a>
             </li>
-            <li><a class="nav-link" data-toggle="tab" href="#license">Licenses</a></li>
-            <li><a class="nav-link" data-toggle="tab" href="#limit"> Limits</a></li>
-            <li><a class="nav-link" data-toggle="tab" href="#process">Process Builder</a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#license">Licenses</a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#limit"> Limits</a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#process">Process Builder</a></li>
         </ul>
-    </div>
-    <div class="row">
-        <div class="tab-content" style="width: 100%;">
-            <div class="tab-pane fade active show" id="orgHome">
+        <div class="tab-content">
+            <div class="tab-pane fade active show" id="orgHome" style=" padding-top: 10px;">
                 <div class="row">
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Objects
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Total Objects</h6>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%- result_objects %></h5>
-                                <p class="card-text">Your total objects are <%- result_objects %>.</p>
+                                <div class="text-center medium mt-4">
+                                    <h5 class="card-title"><%- result_objects %></h5>
+                                    <p class="card-text">Your total objects are <%- result_objects %>.</p>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/showObject" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Profiles
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Total Profiles </h6>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%- result_profiles %></h5>
-                                <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+                                <div class="text-center medium mt-4">
+                                    <h5 class="card-title"><%- result_profiles %></h5>
+                                    <p class="card-text">Your total profiles are <%- result_profiles %>.</p>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/showProfiles" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Layouts
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Total Layouts </h6>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%- result_layouts %></h5>
-                                <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
+                                <div class="text-center medium mt-4">
+                                    <h5 class="card-title"><%- result_layouts %></h5>
+                                    <p class="card-text">Your total layouts are <%- result_layouts %>.</p>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/getLayout" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Records Types
+
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Total Records Types </h6>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%- result_recordTypes %></h5>
+                                <div class="text-center medium mt-4">
+                                    <h5 class="card-title"><%- result_recordTypes %></h5>
                                 <p class="card-text">Your total record types are <%- result_recordTypes %>.</p>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/showRecordType" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Custom Application(s)
+
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Custom Application(s) </h6>
                             </div>
                             <div class="card-body">
-                                <% if (result_customapp == 0) {%>
-                                <h5 class="card-title">0></h5>
-                                <p class="card-text">0 custom app </p>
-                                <%}else{%>
-                                <h5 class="card-title"><%- result_customapp[0] %></h5>
-                                <p class="card-text"><%- result_customapp[1] %> app in Classic .</p>
-                                <%}%>
+                                <div class="text-center medium mt-4">
+                                    <% if (result_customapp == 0) {%>
+                                        <h5 class="card-title">0></h5>
+                                        <p class="card-text">0 custom app </p>
+                                        <%}else{%>
+                                        <h5 class="card-title"><%- result_customapp[0] %></h5>
+                                        <p class="card-text"><%- result_customapp[1] %> app in Classic .</p>
+                                        <%}%>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/showCustomApp" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Security Risk
+
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Security Risk </h6>
                             </div>
                             <div class="card-body">
-                                <%if (result_securityRisk == 0) {%>
-                                    <h5 class="card-title">0</h5>
-                                    <p class="card-text">There are 0 High Security Risk</p>
-                                <%}else{%>
-                                    <h5 class="card-title"><%- result_securityRisk[0] %></h5>
-                                    <p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
-                                <%}%>
+                                <div class="text-center medium mt-4">
+                                    <%if (result_securityRisk == 0) {%>
+                                        <h5 class="card-title">0</h5>
+                                        <p class="card-text">There are 0 High Security Risk</p>
+                                    <%}else{%>
+                                        <h5 class="card-title"><%- result_securityRisk[0] %></h5>
+                                        <p class="card-text">There are <%- result_securityRisk[1] %> High Security Risk.</p>
+                                    <%}%>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/showSecurityRisk" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Apex Pages
+
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Total Apex Pages </h6>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%- result_apexPages %></h5>
-                                <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
+                                <div class="text-center medium mt-4">
+                                    <h5 class="card-title"><%- result_apexPages %></h5>
+                                    <p class="card-text">Your apex pages are <%- result_apexPages %> 😞.</p>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/getApexPage" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Apex Trigger
+                   
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Total Apex Trigger </h6>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%- result_apexTriggers %></h5>
+                                <div class="text-center medium mt-4">
+                                    <h5 class="card-title"><%- result_apexTriggers %></h5>
                                 <p class="card-text">Your apex triggers are <%- result_apexTriggers %> 😞.</p>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/getApexTrigger" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 my-2 mb-4">
-                        <div class="card h-100">
-                            <div class="badge badge-primary text-wrap" style="width: 100%;">
-                                Total Apex Components
+
+                    <div class="col-lg-4 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary fw-bold m-0"> Total Apex Components </h6>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%- result_ApexComponents %></h5>
-                                <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
+                                <div class="text-center medium mt-4">
+                                    <h5 class="card-title"><%- result_ApexComponents %></h5>
+                                    <p class="card-text">Your apex components are <%- result_ApexComponents %> 😞.</p>
+                                </div>
                             </div>
                             <div class="card-footer text-center">
                                 <a href="/getApexComponent" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
-                    </div>                    
+                    </div>          
                 </div>
             </div> <!-- End of Org Home Tab-->
 
@@ -278,73 +300,73 @@
                     </div>
                 <%}%>
               </div>
-          </div>
-      </div>
+        </div>
+    </div>
 </div>
 
-            <div class="modal" id="myModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance...
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p class="card-text">You dont have an instance connected 😞, click Connect below to get
-                                started.</p>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" id="btnConnect2" type="button">
-                                Connect
-                            </button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
+<div class="modal" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Let's Get Started By Connecting your Salesforce Instance...
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+                <p class="card-text">You dont have an instance connected 😞, click Connect below to get
+                    started.</p>
 
-            <script>
-                $(function () {
-                    /*
-                    var a = _.defaultTo("<%- session.instanceUrl %>", 0);
-                    var b = _.defaultTo("<%- session.accesscode %>", 0);
-                    var c = $("#btnRefresh");
-                    if (a == 0 || b == 0) {
-                        c.prop('disabled', true);
-                        c.removeClass('btn btn-primary');
-                        c.addClass('btn btn-secondary');
-                    } else {
-                        c.prop('disabled', false);
-                        c.removeClass('btn btn-secondary');
-                        c.addClass('btn btn-primary');
-                    }*/
-                    $("#btnRefresh").click(function () {
-                        //console.log($(this).attr('id'));
-                        $(this).prop("disabled", true);
-                        $(this).html(
-                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
-                        );
-                        var btn = $(this);
-                        $.ajax({
-                            type: 'POST',
-                            cache: false,
-                            url: '/everything',
-                            contentType: "application/json",
-                            dataType: "text",
-                            success: function (data) {
-                                console.log("Success");
-                                console.log(data);
-                                location.reload(true);
-                            },
-                            complete: function (response, status) {
-                                btn.removeAttr("disabled");
-                                btn.remove(".spinner-border.spinner-border-sm");
-                            }
-                        });
-                    });
-                });
-            </script>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnConnect2" type="button">
+                    Connect
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        /*
+        var a = _.defaultTo("<%- session.instanceUrl %>", 0);
+        var b = _.defaultTo("<%- session.accesscode %>", 0);
+        var c = $("#btnRefresh");
+        if (a == 0 || b == 0) {
+            c.prop('disabled', true);
+            c.removeClass('btn btn-primary');
+            c.addClass('btn btn-secondary');
+        } else {
+            c.prop('disabled', false);
+            c.removeClass('btn btn-secondary');
+            c.addClass('btn btn-primary');
+        }*/
+        $("#btnRefresh").click(function () {
+            //console.log($(this).attr('id'));
+            $(this).prop("disabled", true);
+            $(this).html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+            );
+            var btn = $(this);
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                url: '/everything',
+                contentType: "application/json",
+                dataType: "text",
+                success: function (data) {
+                    console.log("Success");
+                    console.log(data);
+                    location.reload(true);
+                },
+                complete: function (response, status) {
+                    btn.removeAttr("disabled");
+                    btn.remove(".spinner-border.spinner-border-sm");
+                }
+            });
+        });
+    });
+</script>

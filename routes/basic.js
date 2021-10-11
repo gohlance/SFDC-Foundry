@@ -7,7 +7,7 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', async (ctx) => {
-      return ctx.render('login_index')
+      return ctx.render('/p/login_index',  {layout: false});
     })
     .get('welcome', '/welcome', async (ctx) => {
       //console.log("QueryString : " + ctx.request.query["org"])
@@ -37,11 +37,11 @@ module.exports = ({
         })
 
       }else{
-        return ctx.render('login_index')
+        return ctx.render('/p/login_index')
       }
     })
     .get('index', '/index', (ctx) => {
-      return ctx.render('login_index')
+      return ctx.render('/p/login_index')
     })
     .get('about', '/about', (ctx) => {
       ctx.body = "About US..."
@@ -83,7 +83,7 @@ module.exports = ({
     .get('logout','/auth/logout',(ctx) => {
       if (ctx.isAuthenticated()){
         ctx.logout()
-        ctx.redirect('login_index')
+        ctx.redirect('/p/login_index')
       } else {
         ctx.body = { success: false }
         ctx.throw(401)
@@ -97,7 +97,7 @@ module.exports = ({
           session: ctx.session
         })
       }else{
-        ctx.redirect('login_index');
+        ctx.redirect('/p/login_index');
       }
     })
 }
