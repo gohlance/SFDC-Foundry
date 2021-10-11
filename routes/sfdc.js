@@ -1,6 +1,5 @@
 const sfdcmethods = require('../sfdc-api')
 require('custom-env').env();
-const sfdcbackground_methods = require('../z. svc_background - not in use/sfdc-api_background')
 const new_sfdc_Background = require("../core/sfdc_background_start");
 const {
     Worker,
@@ -94,7 +93,6 @@ module.exports = ({
         })
         .post('everything', '/everything', async (ctx) => {
             try {
-               // const result = await sfdcbackground_methods.letsGetEverything(ctx.session)
                 const result = await new_sfdc_Background.start_BackGroundService(ctx.session);
                 console.log("***  : "  +result)
                 ctx.body ={ data: result};   
