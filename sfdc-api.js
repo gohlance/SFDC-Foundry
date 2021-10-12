@@ -75,7 +75,7 @@ async function getSecurityRisk(type, session){
         })
         
         if (type == "HOME")
-            return [result.rows[0]["orgsecurityrisk"].length, highrisk[0].length]
+            return [result.rows[0]["orgsecurityrisk"].records.length, highrisk[0].length]
         else
         //HighRisk[1] : everything else that is not highrisk.
             return [highrisk[1], highrisk[0]]
