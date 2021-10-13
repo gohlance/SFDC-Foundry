@@ -259,7 +259,7 @@ async function get_childRelationshipDetails_Layout(objectname){
   }
   async function getUserLicenseDetails(session) {
     try {
-      const result = await global.pool.query("SELECT orglicenseinformation FROM orginformation WHERE orgid=$1 ORDER BY id, createdDate DESC limit 1", [session.orgId])
+      const result = await global.pool.query("SELECT orglicenseinformation FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [session.orgId])
       if (result.rows[0]["orglicenseinformation"].length > 0)
         return result.rows[0]["orglicenseinformation"]
       else {
