@@ -2,6 +2,7 @@ const sfdcmethods = require('../sfdc-api')
 const _ = require('lodash')
 const passport = require('koa-passport');
 const bcrypt = require('bcrypt');
+const { session } = require('koa-passport');
 module.exports = ({
   router
 }) => {
@@ -84,7 +85,7 @@ module.exports = ({
         }
       })(ctx);
     })
-    .get('logout','/auth/logout',(ctx) => {
+    .get('logout','/logout',(ctx) => {
       if (ctx.isAuthenticated()){
         ctx.logout()
         ctx.redirect('/p/login_index')
@@ -95,6 +96,7 @@ module.exports = ({
     })
     .get('getStarted','/getstarted',async (ctx) => {
       if (ctx.isAuthenticated()){
+        console.log("A");
         //Call a method to get all the orgs with the userid
         return ctx.render('getstarted',{
           allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0),
@@ -129,8 +131,32 @@ module.exports = ({
         console.log(error);
       }
     })
-    .post('documentation','/documentation', async (ctx) => {
+    .post('saveSession','/saveSession', async (ctx) => {
       const data = JSON.stringify(ctx.request.body);
-      console.log(data);
+      ctx.session.docgen = data;
+      ctx.status = 200;
     })
+
+    .get('previewDoc','/previewDoc', async (ctx)=>{
+      var data = ctx.session.docgen;
+      if (ctx.session.docgen.length > 0){
+          return ctx.render('template',{
+            result_objects : data["Objects"],
+            result_profiles: data["Profiles"],
+            result_layouts: "",
+            result_recordTypes: "",
+            result_customapp: "",
+            result_securityRisk: "",
+            result_apexPages:"",
+            result_apexTriggers: data["Trigger"],
+            result_ApexComponents:"",
+          }); 
+      }
+    })
+
+    .get('getUsername','/getUsername', async (ctx)=>{
+      const username = ctx.state.user.userName;   
+      ctx.status =200;
+      ctx.body = { success: true, name:username};  
+    });
 }

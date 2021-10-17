@@ -157,8 +157,8 @@ type="text/css" />
 </div>
 <script>
     $(document).ready(function(){
+    
         var btnFinish = $('<button id="btnFinish"></button>').text('Finish').addClass('btn btn-info disabled').on('click', function(){
-            alert('Done');
             // Ajax call to generate documentation.
             //need to get the selected element from all the UL picklist
             var data ={};
@@ -178,11 +178,15 @@ type="text/css" />
             $.ajax({
                 type:'POST',
                 data: JSON.stringify(data),
-                contentType: 'application/JSON',
-                dataType: 'JSON',
-                url: '/documentation'
+                //contentType: 'application/JSON',
+                //dataType: 'JSON',
+                url: '/saveSession',
+                success: function(result){
+                    window.location = "/previewDoc";
+                }
             });
         });
+        
  // SmartWizard initialize
         $('#smartwizard').smartWizard({toolbarSettings: {
         toolbarPosition: 'top', // none, top, bottom, both
