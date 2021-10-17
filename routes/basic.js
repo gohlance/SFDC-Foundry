@@ -7,7 +7,11 @@ module.exports = ({
 }) => {
   router
     .get('home', '/', async (ctx) => {
-      return ctx.render('/p/login_index',  {layout: false});
+      if (ctx.isAuthenticated()){
+        ctx.redirect('/getstarted');
+      }else{
+        return ctx.render('/p/login_index',  {layout: false});
+      }
     })
     .get('welcome', '/welcome', async (ctx) => {
       //console.log("QueryString : " + ctx.request.query["org"])
@@ -99,5 +103,34 @@ module.exports = ({
       }else{
         ctx.redirect('/p/login_index');
       }
+    })
+    .get('docgen','/docgen', async (ctx) => {
+      try {
+        if (ctx.isAuthenticated()){
+          const result_obj = await global.pool.query('SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
+          const result_profile = await global.pool.query("SELECT profile_user FROM orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",[ctx.session.orgId])
+          const result_apexPages = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
+          const result_apexComponent = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
+          const result_apexTriggers = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
+          //TODO: This section need to test
+          const processbuilder = require('../modules/processbuilder/processbuilder-api')
+          const result_workflow = await processbuilder.all_process(ctx.session); 
+          //const result_validation = ;
+          return ctx.render('/docgen',{
+            docgen_Objects : result_obj.rows[0]["sobjectdescribe"]["allObject"],
+            docgen_Profiles: result_profile.rows[0]["profile_user"]["undefined"],
+            docgen_apexPage: result_apexPages.rows[0]["apexpage"].records,
+            docgen_apexComponent: result_apexComponent.rows[0]["apexcomponent"].records,
+            docgen_apexTrigger: result_apexTriggers.rows[0]["apextrigger"].records,
+            docgen_process: result_workflow
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })
+    .post('documentation','/documentation', async (ctx) => {
+      const data = JSON.stringify(ctx.request.body);
+      console.log(data);
     })
 }

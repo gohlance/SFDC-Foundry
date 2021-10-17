@@ -1,0 +1,352 @@
+<!-- CSS -->
+<link href="https://cdn.jsdelivr.net/npm/smartwizard@5/dist/css/smart_wizard_all.min.css" rel="stylesheet"
+type="text/css" />
+<!-- JavaScript -->
+<script src="assets/js/quickPagination.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/smartwizard@5/dist/js/jquery.smartWizard.min.js" type="text/javascript">
+</script>
+
+<div class="container-fluid">
+    <div id="smartwizard">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#step-1">
+                    Step 1 -  Select the Object(s) & RecordType
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#step-2">
+                    Step 2 - Select any Process / Workflow
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#step-3">
+                    Step 3 - Select any Profiles & Layouts
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#step-4">
+                    Step 4 - Select any Apex Trigger
+                </a>
+            </li>
+        </ul>
+        
+        <div class="tab-content">
+            <div id="step-1" class="tab-pane" role="tabpanel">
+                <!-- Populate all the list items -->
+                <div class="dropdown-advanced">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card-body">
+                                <div class="text-center medium mt-4">
+                                    <div class="options-selected dropdown-advanced-fire-action">
+                                        Select Options <span class=""></span>
+                                    </div>
+                                    <input type="text" value="" placeholder="Search..." class="search-button" id="search-button-object">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end of row-->
+                    <!-- start of Object selection-->
+                    <div class="closed container-elements">
+                      <ul class="list-group list-group-flush" id= "ul_list_object">
+                         <%
+                            for (var i=0; i < docgen_Objects.length; i ++ ){
+                         %>
+                            <li><label><input class="item-option" value="<%-docgen_Objects[i].Objectname %>" type="checkbox"><%-docgen_Objects[i].Objectname %></label></li>
+                         <%
+                            }
+                         %>
+                      </ul>
+                    </div>
+                    <div class="container-buttons closed" align="center">
+                      <button class="accept">Accept</button>
+                      <button class="cancel">Cancel</button>
+                      <button class="lance">What did u choose?</button>
+                    </div>
+                  </div>
+                  <!-- End of populating all the items -->
+            </div>
+            <!-- start of Process & workflow section-->
+            <div id="step-2" class="tab-pane" role="tabpanel">
+                <div class="dropdown-advanced">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card-body">
+                                <div class="text-center medium mt-4">
+                                    <div class="options-selected dropdown-advanced-fire-action">
+                                        Select Options <span class=""></span>
+                                    </div>
+                                    <input type="text" value="" placeholder="Search..." class="search-button" id="search-button-process">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end of row-->
+                    <!-- start of Object selection-->
+                    <div class="closed container-elements">
+                        <ul class="list-group list-group-flush" id="ul_list_process">
+                        <%
+                        for (var i=0; i < docgen_process.length; i ++){
+                        %>
+                            <li><label><input class="item-option" value="<%-docgen_process[i].MasterLabel %>" type="checkbox"><%-docgen_process[i].MasterLabel %> </label> <label> / <%-docgen_process[i].ProcessType%></label></li>
+                        <%
+                            }
+                        %>
+                        </ul>
+                    </div>
+                  </div>
+            </div>
+            <div id="step-3" class="tab-pane" role="tabpanel">
+                <div class="dropdown-advanced">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card-body">
+                                <div class="text-center medium mt-4">
+                                    <div class="options-selected dropdown-advanced-fire-action">
+                                        Select Options <span class=""></span>
+                                    </div>
+                                    <input type="text" value="" placeholder="Search..." class="search-button" id="search-button-profile">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end of row-->
+       
+                    <div class="closed container-elements">
+                      <ul class="list-group list-group-flush" id= "ul_list_profile">
+                         <%
+                            for (var i=0; i < docgen_Profiles.length; i ++ ){
+                         %>
+                            <li><label><input class="item-option" value="<%-docgen_Profiles[i].Name %>" type="checkbox"><%-docgen_Profiles[i].Name %></label></li>
+                         <%
+                            }
+                         %>
+                      </ul>
+                    </div>
+                  </div>
+            </div>
+            <div id="step-4" class="tab-pane" role="tabpanel">
+                <div class="dropdown-advanced">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card-body">
+                                <div class="text-center medium mt-4">
+                                    <div class="options-selected dropdown-advanced-fire-action">
+                                        Select Options <span class=""></span>
+                                    </div>
+                                    <input type="text" value="" placeholder="Search..." class="search-button" id="search-button-apexTrigger">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end of row-->
+       
+                    <div class="closed container-elements">
+                      <ul class="list-group list-group-flush" id= "ul_list_apexTrigger">
+                         <%
+                            for (var i=0; i < docgen_apexTrigger.length; i ++ ){
+                         %>
+                            <li><label><input class="item-option" value="<%-docgen_apexTrigger[i].Name %>" type="checkbox"><%-docgen_apexTrigger[i].Name %></label></li>
+                         <%
+                            }
+                         %>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        var btnFinish = $('<button id="btnFinish"></button>').text('Finish').addClass('btn btn-info disabled').on('click', function(){
+            alert('Done');
+            // Ajax call to generate documentation.
+            //need to get the selected element from all the UL picklist
+            var data ={};
+            data.Objects = $('#ul_list_object .item-option:checked').map(function(){
+                    return this.getAttribute("value");
+                }).get();
+            data.Process = $('#ul_list_process .item-option:checked').map(function(){
+                    return this.getAttribute("value");
+                }).get();
+            data.Profiles = $('#ul_list_profile .item-option:checked').map(function(){
+                    return this.getAttribute("value");
+                }).get();
+            data.Trigger = $('#ul_list_apexTrigger .item-option:checked').map(function(){
+                    return this.getAttribute("value");
+                }).get();
+
+            $.ajax({
+                type:'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/JSON',
+                dataType: 'JSON',
+                url: '/documentation'
+            });
+        });
+ // SmartWizard initialize
+        $('#smartwizard').smartWizard({toolbarSettings: {
+        toolbarPosition: 'top', // none, top, bottom, both
+        toolbarButtonPosition: 'right', // left, right, center
+        showNextButton: true, // show/hide a Next button
+        showPreviousButton: true, // show/hide a Previous button
+        toolbarExtraButtons:[btnFinish]
+        }});
+
+        $('#smartwizard').on("showStep", function(e, anchorObject, stepNumber, stepDirection, stepPosition){
+            if ( stepPosition === 'last'){
+                $('#btnFinish').removeClass('disabled');
+            }
+        });
+    });
+</script>
+
+<!-- Script for Picklist -->
+<script>
+$(document).ready(function() {
+  $(".list-group").quickPagination({pagerLocation:"top", pageSize:"10"});
+  $("body").on("click", ".re-order-filter", function() {
+     $('.select-all-option').prop('checked', false);
+     let action = $(this).attr('data-action'),
+          list_elements = [];
+     $('.item-option').each(function(index) {
+          list_elements.push({
+              name : $(this).val(),
+              id : $(this).attr('data-id'),
+          });
+     });
+     if ( action == "asc" ) {
+         list_elements = list_elements.sort((a, b) => {
+             if (a.name < b.name) return -1
+             return a.name > b.name ? 1 : 0
+         });
+     }
+     else {
+         list_elements = list_elements.sort((a, b) => {
+             if (a.name < b.name) return -1
+             return a.name > b.name ? 1 : 0
+         }).reverse();
+     }
+     $('.container-elements ul').html('');
+     for ( let item = 0; item < list_elements.length; item++ ) {
+         $('.container-elements ul').append(function() {
+             let html = '';
+             html = '<li><label><input data-id="'+(list_elements[item].id)+'" class="item-option" value="'+(list_elements[item].name)+'" type="checkbox">'+(list_elements[item].name)+'</label></li>';
+             return html;
+         });
+     }
+  });
+  
+  $("body").on("keyup","#search-button-object", function() {
+    let search_content = $('#search-button-object').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_object .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_object .item-option').parent('label').parent('li').show();
+      }
+  });
+  $("body").on("keyup","#search-button-process", function() {
+    let search_content = $('#search-button-process').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_process .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_process .item-option').parent('label').parent('li').show();
+      }
+  });
+  $("body").on("keyup","#search-button-profile", function() {
+    let search_content = $('#search-button-profile').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_profile .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_profile .item-option').parent('label').parent('li').show();
+      }
+  });
+  $("body").on("keyup","#search-button-apexTrigger", function() {
+    let search_content = $('#search-button-apexTrigger').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_apexTrigger .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_apexTrigger .item-option').parent('label').parent('li').show();
+      }
+  });
+ 
+  $("body").on("click", ".container-buttons .accept", function() {
+      $('.dropdown-advanced .container-elements').removeClass('opened');
+      $('.dropdown-advanced .container-buttons').removeClass('opened');
+
+      $('.dropdown-advanced .container-elements').addClass('closed');
+      $('.dropdown-advanced .container-buttons').addClass('closed');
+
+      $('.options-selected span').html('('+($('.item-option:checked').length)+') selected');
+      $('.search-button').val("");
+      $('.item-option').parent('label').parent('li').show();
+  });
+  $("body").on("click",".container-buttons .lance", function(){
+    var conceptName = $('.item-option:checked')[0].value;
+    alert(conceptName);
+    //console.log(conceptName);
+  });
+  $("body").on("click", ".container-buttons .cancel", function() {
+      $('.dropdown-advanced .container-elements').removeClass('opened');
+      $('.dropdown-advanced .container-buttons').removeClass('opened');
+
+      $('.dropdown-advanced .container-elements').addClass('closed');
+      $('.dropdown-advanced .container-buttons').addClass('closed');
+      $('.search-button').val("");
+      $('.item-option').parent('label').parent('li').show();
+  });
+ $("body").on("change", ".select-all-option", function() {
+      if ( $(this).is(':checked') ) {
+          $('.item-option').prop('checked', true);
+      }
+      else {
+          $('.item-option').prop('checked', false);
+      }
+ });
+ $("body").on("click", ".dropdown-advanced-fire-action", function() {
+     if ( $('.dropdown-advanced .container-elements').hasClass('opened') ) {
+         $('.dropdown-advanced .container-elements').removeClass('opened');
+         $('.dropdown-advanced .container-buttons').removeClass('opened');
+
+         $('.dropdown-advanced .container-elements').addClass('closed');
+         $('.dropdown-advanced .container-buttons').addClass('closed');
+     }
+     else {
+         $('.dropdown-advanced .container-elements').addClass('opened');
+         $('.dropdown-advanced .container-buttons').addClass('opened');
+
+         $('.dropdown-advanced .container-elements').removeClass('closed');
+         $('.dropdown-advanced .container-buttons').removeClass('closed');
+     }
+
+ });
+});
+</script>
+<!-- End Script for Picklist -->

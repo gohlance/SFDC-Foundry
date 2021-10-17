@@ -285,7 +285,7 @@ async function get_childRelationshipDetails_Layout(objectname){
     try {
       const result = await global.pool.query("SELECT processflow FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC limit 1", [session.orgId])
       var flows = _.filter(result.rows[0]["processflow"].records, function (o) {
-        if (o.ProcessType != "Workflow" && o.Status == "Active")
+        if (o.ProcessType != "Flow" && o.Status == "Active")
             return o
       })
       var processbuilders = _.filter(result.rows[0]["processflow"].records, function (o) {

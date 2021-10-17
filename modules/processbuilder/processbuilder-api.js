@@ -3,9 +3,11 @@ const _ = require('lodash')
 module.exports = {demystify_processbuilder, draw, all_process, getProcessByObject}
 
 async function all_process(session){
-    const result =  await global.pool.query("SELECT processflow_metadata ->0->0->> 'DefinitionId' as DefinitionId, processflow_metadata ->0->0->> 'FullName' as FullName FROM orginformation o where orgid=$1 order by createddate  desc fetch first row only", [session.orgId]);
-    //console.log(result.rows);
-    return result.rows;
+    //const result =  await global.pool.query("SELECT processflow_metadata ->0->0->> 'DefinitionId' as DefinitionId, processflow_metadata ->0->0->> 'FullName' as FullName FROM orginformation o where orgid=$1 order by createddate  desc", [session.orgId]);
+    //return result.rows;
+    const result = await global.pool.query("SELECT processflow FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC limit 1", [session.orgId]);
+    console.log(result);
+    return result.rows[0]["processflow"].records
 }
 
 async function getProcessByObject(objectName){
