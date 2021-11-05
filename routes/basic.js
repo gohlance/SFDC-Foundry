@@ -36,7 +36,7 @@ module.exports = ({
           result_userLicense: _.defaultTo(await sfdcmethods.getUserLicenseDetails(ctx.session), 0),
           result_securityRisk: _.defaultTo(await sfdcmethods.getSecurityRisk("HOME", ctx.session), [0, 0]),
           result_customapp: _.defaultTo(await sfdcmethods.getCustomApps("HOME", ctx.session), [0, 0, 0]),
-          result_processBuilder: _.defaultTo(await processbuilder.all_process(ctx.session), 0),
+          result_processBuilder: _.defaultTo(await processbuilder.all_process(ctx.session.orgId), 0),
           session: ctx.session,
           orgname: ctx.request.query["n"]
         })
@@ -96,7 +96,6 @@ module.exports = ({
     })
     .get('getStarted','/getstarted',async (ctx) => {
       if (ctx.isAuthenticated()){
-        console.log("A");
         //Call a method to get all the orgs with the userid
         return ctx.render('getstarted',{
           allOrgs: _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0),
@@ -106,22 +105,27 @@ module.exports = ({
         ctx.redirect('/p/login_index');
       }
     })
+    
+    //DocGen Section
     .get('docgen','/docgen', async (ctx) => {
       try {
         if (ctx.isAuthenticated()){
-          const result_obj = await global.pool.query('SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [ctx.session.orgId])
-          const result_profile = await global.pool.query("SELECT profile_user FROM orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",[ctx.session.orgId])
-          const result_apexPages = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
-          const result_apexComponent = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
-          const result_apexTriggers = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [ctx.session.orgId])
+          const orgId = JSON.parse(ctx.session.doc_orgId).oid[0];
+          const result_obj = await global.pool.query('SELECT sobjectdescribe FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY', [orgId])
+          const result_profile = await global.pool.query("SELECT profile_user FROM orginformation where orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY",[orgId])
+          const result_apexPage = await global.pool.query("SELECT apexpage FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [orgId])
+          const result_apexClass = await global.pool.query("SELECT apexclass FROM orginformation WHERE orgid=$1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [orgId])
+          const result_apexComponent = await global.pool.query("SELECT apexcomponent FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [orgId])
+          const result_apexTriggers = await global.pool.query("SELECT apextrigger FROM orginformation WHERE orgid = $1 ORDER BY createdDate DESC FETCH FIRST ROW ONLY", [orgId])
           //TODO: This section need to test
           const processbuilder = require('../modules/processbuilder/processbuilder-api')
-          const result_workflow = await processbuilder.all_process(ctx.session); 
+          const result_workflow = await processbuilder.all_process(orgId); 
           //const result_validation = ;
           return ctx.render('/docgen',{
             docgen_Objects : result_obj.rows[0]["sobjectdescribe"]["allObject"],
             docgen_Profiles: result_profile.rows[0]["profile_user"]["undefined"],
-            docgen_apexPage: result_apexPages.rows[0]["apexpage"].records,
+            docgen_apexPage: result_apexPage.rows[0]["apexpage"].records,
+            docgen_apexClass: result_apexClass.rows[0]["apexclass"].records,
             docgen_apexComponent: result_apexComponent.rows[0]["apexcomponent"].records,
             docgen_apexTrigger: result_apexTriggers.rows[0]["apextrigger"].records,
             docgen_process: result_workflow
@@ -131,6 +135,13 @@ module.exports = ({
         console.log(error);
       }
     })
+    //Save the data before wizard, selected Org for the documentation generation.
+    .post('saveSelectedOrgId','/saveSelectedOrgId', async (ctx) =>{
+      const data = JSON.stringify(ctx.request.body);
+      ctx.session.doc_orgId = data;
+      ctx.status = 200;
+    })
+    //Save the data from wizard to session.
     .post('saveSession','/saveSession', async (ctx) => {
       const data = JSON.stringify(ctx.request.body);
       ctx.session.docgen = data;
@@ -138,8 +149,8 @@ module.exports = ({
     })
 
     .get('previewDoc','/previewDoc', async (ctx)=>{
-      var data = ctx.session.docgen;
-      if (ctx.session.docgen.length > 0){
+      var data = JSON.parse(ctx.session.docgen);
+      if (_.isUndefined(data) != true){
           return ctx.render('template',{
             result_objects : data["Objects"],
             result_profiles: data["Profiles"],
@@ -154,9 +165,31 @@ module.exports = ({
       }
     })
 
+    .get('saveAsPDF','/saveAsPDF', async (ctx)=>{
+      const saveAsPDF = require('../modules/pdf/genPDF');
+      //TODO: Need to see how this docGen_data structure looks like and map to template
+      const docGen_data = await saveAsPDF.assembleData(JSON.parse(ctx.session.docgen), JSON.parse(ctx.session.doc_orgId).oid[0]);
+      var pdf = await saveAsPDF.createPDF(docGen_data);
+
+      ctx.response.set({'Content-Type': 'application/pdf', 'Content-Length': pdf.length});
+      ctx.set('Content-disposition', 'attachment;filename=docname.pdf');
+      ctx.body = pdf;
+      //ctx.response.attachment(pdf);
+    })
+
+    //for modal dialog selecting the Org, used on layout.html - Doc Gen
+    .get('getAllOrgsAPI','/getAllOrgsAPI', async (ctx)=>{
+      const allOrg = _.defaultTo(await sfdcmethods.getAllOrgsByUserId(ctx.session.passport.user.id),0);
+      ctx.status = 200;
+      ctx.body = {orgs: allOrg};
+    })
+
+    //DocGen Section End
+
+    //this is for layout.html, displaying username in layout
     .get('getUsername','/getUsername', async (ctx)=>{
       const username = ctx.state.user.userName;   
       ctx.status =200;
       ctx.body = { success: true, name:username};  
-    });
+    })
 }

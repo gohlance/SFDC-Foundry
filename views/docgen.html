@@ -29,6 +29,21 @@ type="text/css" />
                     Step 4 - Select any Apex Trigger
                 </a>
             </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#step-5">
+                    Step 5 - Select any Apex Class
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#step-6">
+                    Step 5 - Select any Apex Component
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#step-7">
+                    Step 5 - Select any Apex Page
+                </a>
+            </li>
         </ul>
         
         <div class="tab-content">
@@ -152,6 +167,90 @@ type="text/css" />
                     </div>
                 </div>
             </div>
+            <div id="step-5" class="tab-pane" role="tabpanel">
+                <div class="dropdown-advanced">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card-body">
+                                <div class="text-center medium mt-4">
+                                    <div class="options-selected dropdown-advanced-fire-action">
+                                        Select Options <span class=""></span>
+                                    </div>
+                                    <input type="text" value="" placeholder="Search..." class="search-button" id="search-button-apexClass">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end of row-->
+       
+                    <div class="closed container-elements">
+                      <ul class="list-group list-group-flush" id= "ul_list_apexClass">
+                         <%
+                            for (var i=0; i < docgen_apexClass.length; i ++ ){
+                         %>
+                            <li><label><input class="item-option" value="<%-docgen_apexClass[i].Name %>" type="checkbox"><%-docgen_apexClass[i].Name %></label></li>
+                         <%
+                            }
+                         %>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="step-6" class="tab-pane" role="tabpanel">
+                <div class="dropdown-advanced">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card-body">
+                                <div class="text-center medium mt-4">
+                                    <div class="options-selected dropdown-advanced-fire-action">
+                                        Select Options <span class=""></span>
+                                    </div>
+                                    <input type="text" value="" placeholder="Search..." class="search-button" id="search-button-apexComponent">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end of row-->
+       
+                    <div class="closed container-elements">
+                      <ul class="list-group list-group-flush" id= "ul_list_apexComponent">
+                         <%
+                            for (var i=0; i < docgen_apexComponent.length; i ++ ){
+                         %>
+                            <li><label><input class="item-option" value="<%-docgen_apexComponent[i].Name %>" type="checkbox"><%-docgen_apexComponent[i].Name %></label></li>
+                         <%
+                            }
+                         %>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="step-7" class="tab-pane" role="tabpanel">
+                <div class="dropdown-advanced">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card-body">
+                                <div class="text-center medium mt-4">
+                                    <div class="options-selected dropdown-advanced-fire-action">
+                                        Select Options <span class=""></span>
+                                    </div>
+                                    <input type="text" value="" placeholder="Search..." class="search-button" id="search-button-apexPage">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end of row-->
+       
+                    <div class="closed container-elements">
+                      <ul class="list-group list-group-flush" id= "ul_list_apexPage">
+                         <%
+                            for (var i=0; i < docgen_apexPage.length; i ++ ){
+                         %>
+                            <li><label><input class="item-option" value="<%-docgen_apexPage[i].Name %>" type="checkbox"><%-docgen_apexPage[i].Name %></label></li>
+                         <%
+                            }
+                         %>
+                      </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -174,10 +273,21 @@ type="text/css" />
             data.Trigger = $('#ul_list_apexTrigger .item-option:checked').map(function(){
                     return this.getAttribute("value");
                 }).get();
+            data.Class = $('#ul_list_apexClass .item-option:checked').map(function(){
+                return this.getAttribute("value");
+            }).get();
+            data.Component = $('#ul_list_apexComponent .item-option:checked').map(function(){
+                return this.getAttribute("value");
+            }).get(); 
+            data.Page = $('#ul_list_apexPage .item-option:checked').map(function(){
+                return this.getAttribute("value");
+            }).get();
 
+            console.log("Data : " + data);
+            console.log("JDATA : " + JSON.stringify(data));
             $.ajax({
                 type:'POST',
-                data: JSON.stringify(data),
+                data: data,
                 //contentType: 'application/JSON',
                 //dataType: 'JSON',
                 url: '/saveSession',
@@ -298,6 +408,66 @@ $(document).ready(function() {
         });
     }else {
           $('#ul_list_apexTrigger .item-option').parent('label').parent('li').show();
+      }
+  });
+  $("body").on("keyup","#search-button-apexClass", function() {
+    let search_content = $('#search-button-apexClass').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_apexClass .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_apexClass .item-option').parent('label').parent('li').show();
+      }
+  });
+  $("body").on("keyup","#search-button-apexComponent", function() {
+    let search_content = $('#search-button-apexComponent').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_apexComponent .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_apexComponent .item-option').parent('label').parent('li').show();
+      }
+  });
+  $("body").on("keyup","#search-button-apexPage", function() {
+    let search_content = $('#search-button-apexPage').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_apexPage .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_apexPage .item-option').parent('label').parent('li').show();
+      }
+  });
+  $("body").on("keyup","#search-button-apexClass", function() {
+    let search_content = $('#search-button-apexClass').val().trim().toLowerCase();
+    if (search_content.length > 0){
+        $('#ul_list_apexClass .item-option').each(function(index){
+            let content = $(this).val().toLowerCase(),
+                  element = $(this);
+              element.parent('label').parent('li').hide();
+              if ( content.indexOf(search_content) >= 0 ) {
+                  element.parent('label').parent('li').show();
+              }
+        });
+    }else {
+          $('#ul_list_apexClass .item-option').parent('label').parent('li').show();
       }
   });
  

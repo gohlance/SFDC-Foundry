@@ -4,7 +4,8 @@ const puppeteer = require('puppeteer');
 const handlebars = require("handlebars");
 
 module.exports = {
-    createPDF
+    createPDF,
+    assembleData
 }
 
 const data = {
@@ -31,45 +32,36 @@ const data = {
 }
 
 async function createPDF(data){
-    //console.log(process.cwd());
-    var templateHtml = fs.readFileSync(path.join(process.cwd(), 'template.html'), 'utf8');
-    //console.log(templateHtml);
-	var template = handlebars.compile(templateHtml);
+    var templateHtml = fs.readFileSync(path.join(process.cwd(), 'printtemplate.html'), 'utf8');
+  	var template = handlebars.compile(templateHtml);
 	var html = template(data);
-    console.log(html);
-	var milis = new Date();
-	milis = milis.getTime();
-
-	var pdfPath = path.join('pdf', `${data.name}-${milis}.pdf`);
-
-	var options = {
-		width: '1230px',
-		headerTemplate: "<p></p>",
-		footerTemplate: "<p></p>",
-		displayHeaderFooter: false,
-		margin: {
-			top: "10px",
-			bottom: "30px"
-		},
-		printBackground: true,
-		path: pdfPath
-	}
-
-	const browser = await puppeteer.launch({
-		args: ['--no-sandbox'],
+  
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox'],
 		headless: true
 	});
 
 	var page = await browser.newPage();
-    
-    //BUG: this will be a issue with local browser, need to load page with parameter
-	//await page.goto(`data:text/html;charset=UTF-8,${html}`, {
-	//	waitUntil: 'networkidle0'
-    //});
-    
+      
+    await page.setContent(html,{ waitUntil: ['domcontentloaded', 'load', "networkidle0"] });
+    await page.emulateMediaType("screen");
+    var result_pdf =  await page.pdf({ path: 'pdfPath.pdf',
+    format: 'A4',
+    printBackground: true,
+    waitUntil: 'networkidle0',
+    margin: {
+      top: '20px',
+      bottom: '20px',
+      right: '20px',
+      left: '20px' }});
+      
+    return result_pdf;
+    /**
+
     await page.setContent(html,{ waitUntil: ['domcontentloaded', 'load', "networkidle0"] }).then(function (response) {
         //    page.emulateMedia('screen')
-            page.pdf({ path: pdfPath,
+        
+            page.pdf({ path: 'pdfPath.pdf',
                 format: 'A4',
                 printBackground: true,
                 waitUntil: 'networkidle0',
@@ -79,15 +71,53 @@ async function createPDF(data){
                   right: '20px',
                   left: '20px' }})
               .then(function (res) {
-                
+                var pdf = page.pdf;
                 browser.close();
+                return pdf;
               }).catch(function (e) {
                 browser.close();
               })
-          })
-
+    })
+     */
 	//await page.pdf(options);
 	//await browser.close();
 }
 
-createPDF(data);
+async function assembleData(parameter, orgid){
+    const _ = require('lodash');
+    var result = {};
+    if (_.isUndefined(parameter["Objects"]) != true){
+        const d_obj = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(sobjectdescribe-> 'allObject') elem where elem->>'Objectname' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Objects"], orgid]);
+        //console.log(JSON.parse(d_obj.rows));
+        result.Objects = d_obj.rows;
+        //d_obj.rows[0]["records"];
+        //d_obj.rows[1]["records"];
+    }
+    if (_.isUndefined(parameter["Profiles"]) != true){
+        const d_Profiles =  await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(profile-> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Objects"], orgid]);
+        result.profile = d_Profiles.rows;
+    }
+    if (_.isUndefined(parameter["Trigger"]) != true){
+        const d_Trigger = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apextrigger -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["ApexTrigger"], orgid]);
+        result.trigger  = d_Trigger.rows;
+    }
+    if (_.isUndefined(parameter["Class"])!= true){
+        const d_ApexPage = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apexpage -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Class"], orgid]);
+        result.page =  d_ApexPage.rows;
+    }
+    if (_.isUndefined(parameter["Component"])!= true){
+        const d_Component = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apexcomponet -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Component"], orgid]);
+        result.component = d_Component.rows;
+    }
+    if (_.isUndefined(parameter["Class"])!=true){
+        const d_Class = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apexclass -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Class"], orgid]);
+        result.class = d_Class.rows;
+    }
+    if (_.isUndefined(parameter["Process"]) != true){
+        
+    }
+    if (_.isUndefined(parameter["Option_relationshipDetails"]) == true){
+       result.Option_relationshipDetails = false;
+    }
+    return result;
+}

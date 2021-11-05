@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Summary Report for {{org}}</title>
+
+	<head>
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css"
+			integrity="sha512-Mk4n0eeNdGiUHlWvZRybiowkcu+Fo2t4XwsJyyDghASMeFGH6yUXcdDI3CKq12an5J8fq4EFzRVRdbjerO3RmQ=="
+			crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet"
+			href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+		<meta charset="utf-8">
+	</head>
+
+<body>
+	<style>
+		@page {
+			width: 210mm;
+			min-height: 297mm;
+			padding: 20mm;
+			margin: 10mm auto;
+			border: 1px #D3D3D3 solid;
+			border-radius: 5px;
+			background: white;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			size: A4;
+		}
+		
+		table {
+			page-break-inside: avoid;
+		}
+	</style>
+	{{#each Objects as |object|}}
+		<div class="row">
+			<table>
+				<tr>
+					<td>
+						<table class="table">
+							<tr>
+								<th colspan="2">{{object.records.Label}} Summary</th>
+							</tr>
+							<tr>
+								<td>Custom</td>
+								<td>{{object.records.Custom}}</td>
+							</tr>
+							<tr>
+								<td>Deletable</td>
+								<td>{{object.records.deletable}}</td>
+							</tr>
+							<tr>
+								<td>Total Fields</td>
+								<td>{{object.records.totalfields}}</td>
+							</tr>
+							<tr>
+								<td>Child Relationships</td>
+								<td>{{object.records.childRelationships}}</td>
+							</tr>
+							<tr>
+								<td>Record Types</td>
+								<td>{{object.records.recordType}}</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="table" id="tbl_details_recordType">
+							<tr>
+								<th colspan="4">Record Type Details</th>
+							</tr>
+							<tr>
+								<th>Name</th>
+								<th>Active</th>
+								<th>Master</th>
+								<th>Default Record Type</th>
+							</tr>
+							{{#each object.records.recordType_details as |recordType|}}
+							<tr>
+								<td>{{recordType.name}}</td>
+								<td>{{recordType.active}}</td>
+								<td>{{recordType.master}}</td>
+								<td>{{recordType.defaultRecordTypeMapping}}</td>
+							</tr>
+							{{/each}}
+						</table>
+					</td>
+				</tr>
+				{{#if Option_relationshipDetails}}
+				<tr>
+					<td>
+						<table class="table" id="tbl_details_recordType">
+							<tr>
+								<th colspan="3">Relationships Type Details</th>
+							</tr>
+							<tr>
+								<th>Object</th>
+								<th>Field Name</th>
+								<th>Cascading Delete</th>
+							</tr>
+							{{#each object.records.childRelationship_details as |relationship|}}
+							<tr>
+								<td>{{relationship.childSObject}}</td>
+								<td>{{relationship.field}}</td>
+								<td>{{relationship.cascadeDelete}}</td>
+							</tr>
+							{{/each}}
+						</table>
+					</td>
+				</tr>
+				{{/if}}
+				<tr>
+					<td>
+						<table class="table" id="tbl_Profiles">
+							<tr>
+								<th></th>
+							</tr>
+							{{#each profile.records.xxx as |p|}}
+							<tr>
+								<td>{{p.aaa}}</td>
+							</tr>
+							{{/each}}
+						</table>
+					</td>
+				</tr>
+			</table>
+			
+		</div>
+	{{/each}}
+</body>
+
+</html>

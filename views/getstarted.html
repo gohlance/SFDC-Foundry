@@ -60,15 +60,15 @@
         $(function (){
             $('#dtObjects').on('click', 'a.btn.btn-danger', function (e) {
                 e.preventDefault();
-                var orgid = $(this).attr('id');
-                $(this).parent().parent().remove();
+                var orgid = $(this).attr('id');             
                 $.ajax({
                     type: 'POST',
                     url: '/deleteOrg',
                     data: JSON.stringify({id: orgid}),
                     contentType: "application/json",
                     success: function (data) {
-                        console.log("Success");
+                        //Succes in delete, removing from UX
+                        $(this).parent().parent().remove();
                     }
                 });
             });
