@@ -94,8 +94,8 @@ async function assembleData(parameter, orgid){
         //d_obj.rows[1]["records"];
     }
     if (_.isUndefined(parameter["Profiles"]) != true){
-        const d_Profiles =  await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(profile-> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Objects"], orgid]);
-        result.profile = d_Profiles.rows;
+        const d_Profiles =  await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(profile-> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Profiles"], orgid]);
+        result.Profiles = d_Profiles.rows;
     }
     if (_.isUndefined(parameter["Trigger"]) != true){
         const d_Trigger = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apextrigger -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["ApexTrigger"], orgid]);

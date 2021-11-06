@@ -115,23 +115,23 @@
 					</td>
 				</tr>
 				{{/if}}
-				<tr>
-					<td>
-						<table class="table" id="tbl_Profiles">
-							<tr>
-								<th></th>
-							</tr>
-							{{#each profile.records.xxx as |p|}}
-							<tr>
-								<td>{{p.aaa}}</td>
-							</tr>
-							{{/each}}
-						</table>
-					</td>
-				</tr>
-			</table>
-			
+			</table>	
 		</div>
+	{{/each}}
+	{{each Profiles as |profile|}}
+	<div class="row">
+			<table class="table" id="tbl_Profiles">
+				<tr>
+					<th></th>
+				</tr>
+				{{#each profile.records as |record|}}
+				<tr>
+					<td>{{record.Name}}</td>
+					<td>{{records.Decription}}</td>
+				</tr>
+				{{/each}}
+		</table>
+	</div>
 	{{/each}}
 </body>
 
