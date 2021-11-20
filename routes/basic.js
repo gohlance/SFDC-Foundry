@@ -21,6 +21,9 @@ module.exports = ({
         if (!ctx.session.orgId){
           ctx.session.orgId = ctx.request.query["org"]
         }
+        if (!_.isEqual(ctx.session.orgId, ctx.request.query["org"])){
+          ctx.session.orgId = ctx.request.query["org"];
+        }
         console.log("Debug Mode : " + ctx.session.accesscode + " / " + ctx.session.instanceUrl + " / " + ctx.session.orgId);
         const processbuilder = require('../modules/processbuilder/processbuilder-api');
 
@@ -158,9 +161,9 @@ module.exports = ({
             result_recordTypes: "",
             result_customapp: "",
             result_securityRisk: "",
-            result_apexPages:"",
-            result_apexTriggers: data["Trigger"],
-            result_ApexComponents:"",
+            result_apexPages:data["Pages"],
+            result_apexTriggers: data["Triggers"],
+            result_ApexComponents:data["Components"],
           }); 
       }
     })

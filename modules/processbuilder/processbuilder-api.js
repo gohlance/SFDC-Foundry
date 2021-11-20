@@ -19,7 +19,8 @@ async function demystify_processbuilder(definitionId, orgId){
     //const result = await global.pool.query("SELECT elem FROM orginformation o, jsonb_array_elements(processflow_metadata) elem where elem -> 0 ->> 'DefinitionId' = $1 and orgid = $2",[definitionId, orgId])
     const result = await global.pool.query("SELECT processflow_metadata->0->0 as Meta FROM orginformation o where processflow_metadata ->0->0->> 'DefinitionId' = $1 and orgid = $2", [definitionId, orgId]);
 
-    let _meta = result.rows[0].meta.Metadata;
+    if (result.rowCount > 0){
+        let _meta = result.rows[0].meta.Metadata;
     let actions = _meta.actionCalls;
     let decision_array = _meta.decisions;
 
@@ -55,7 +56,7 @@ async function demystify_processbuilder(definitionId, orgId){
                 
             }
         }else{
-            chart = chart + " " + last_counter_forChart +" --> |True| " +  nextStep +"[" + _find[0].label + "] \n";
+     //   chart = chart + " " + last_counter_forChart +" --> |True| " +  nextStep +"[" + _find[0].label + "] \n";
         }
         
         
@@ -67,6 +68,10 @@ async function demystify_processbuilder(definitionId, orgId){
     chart = chart + " " + last_counter_forChart + "[END]";
 
     return chart;
+    }else{
+        return "";
+    }
+    
 
 
 

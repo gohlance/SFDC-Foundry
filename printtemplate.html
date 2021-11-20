@@ -3,8 +3,6 @@
 
 <head>
 	<title>Summary Report for {{org}}</title>
-
-	<head>
 		<link rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css"
 			integrity="sha512-Mk4n0eeNdGiUHlWvZRybiowkcu+Fo2t4XwsJyyDghASMeFGH6yUXcdDI3CKq12an5J8fq4EFzRVRdbjerO3RmQ=="
@@ -17,7 +15,7 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
 		<meta charset="utf-8">
-	</head>
+</head>
 
 <body>
 	<style>
@@ -118,21 +116,68 @@
 			</table>	
 		</div>
 	{{/each}}
-	{{each Profiles as |profile|}}
 	<div class="row">
 			<table class="table" id="tbl_Profiles">
 				<tr>
 					<th></th>
 				</tr>
-				{{#each profile.records as |record|}}
+				{{#each Profiles as |profile|}}
 				<tr>
-					<td>{{record.Name}}</td>
-					<td>{{records.Decription}}</td>
+					<td>{{profile.records.Name}}</td>
+					<td>{{profile.records.Decription}}</td>
 				</tr>
 				{{/each}}
 		</table>
 	</div>
+	
+	
+	{{#each Triggers as |trigger|}}
+	<div class="row">
+		
+	</div>
 	{{/each}}
+
+	{{#each Pages as |page|}}
+	<div class="row">
+		
+	</div>
+	{{/each}}
+
+	
+	<div class="row">
+		<table class="table" id="tbl_Profiles">
+			<tr>
+				<th>Name</th>
+				<th></th>
+				<th></th>
+			</tr>
+			{{#each Components as |component|}}
+			<tr>
+				<td>{{component.records.Name}}</td>
+				<td>{{component.records.ApiVersion}}</td>
+				<td>{{component.records.NamespacePrefix}}</td>
+			</tr>
+			{{/each}}
+	</table>
+	</div>
+
+	<div class="row">
+		<table class="table" id="tbl_ApexClass">
+			<tr>
+				<th>Name</th>
+				<th>ApiVersion</th>
+				<th>Status</th>
+			</tr>
+			{{#each Classes as |class|}}
+			<tr>
+				<td>{{class.records.Name}}</td>
+				<td>{{class.records.ApiVersion}}</td>
+				<td>{{class.records.Status}}</td>
+			</tr>
+			{{/each}}
+	</table>
+	</div>
+	
 </body>
 
 </html>

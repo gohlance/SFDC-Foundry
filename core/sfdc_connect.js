@@ -178,7 +178,7 @@ async function getMoreDetails_ProcessbuilderAndFlow(rowId) {
 async function getEachProcessDefinition(result){
     try {
         var tempArray = await Promise.all( result.records.map(async item => {
-            var something = await conn.tooling.query("SELECT FullName, DefinitionId, Metadata FROM FLOW Where DefinitionId = '" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber)
+            var something = await conn.tooling.query("SELECT FullName, DefinitionId, Metadata FROM FLOW Where DefinitionId ='" + item.DefinitionId + "' AND VersionNumber =" + item.VersionNumber)
             //return  JSON.stringify(something.records[0])
             return something.records
         }))

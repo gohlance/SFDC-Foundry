@@ -99,19 +99,19 @@ async function assembleData(parameter, orgid){
     }
     if (_.isUndefined(parameter["Trigger"]) != true){
         const d_Trigger = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apextrigger -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["ApexTrigger"], orgid]);
-        result.trigger  = d_Trigger.rows;
+        result.Triggers  = d_Trigger.rows;
     }
     if (_.isUndefined(parameter["Class"])!= true){
         const d_ApexPage = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apexpage -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Class"], orgid]);
-        result.page =  d_ApexPage.rows;
+        result.Pages =  d_ApexPage.rows;
     }
     if (_.isUndefined(parameter["Component"])!= true){
-        const d_Component = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apexcomponet -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Component"], orgid]);
-        result.component = d_Component.rows;
+        const d_Component = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apexcomponent -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Component"], orgid]);
+        result.Components = d_Component.rows;
     }
     if (_.isUndefined(parameter["Class"])!=true){
         const d_Class = await global.pool.query("SELECT elem as records FROM orginformation o, lateral jsonb_array_elements(apexclass -> 'records') elem where elem->>'Name' = ANY($1) and orgid = $2 ORDER BY createdDate DESC ",[parameter["Class"], orgid]);
-        result.class = d_Class.rows;
+        result.Classes = d_Class.rows;
     }
     if (_.isUndefined(parameter["Process"]) != true){
         
